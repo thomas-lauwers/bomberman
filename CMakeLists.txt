@@ -4,7 +4,7 @@ IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     SET (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/installed" CACHE PATH "default install path" FORCE)
 ENDIF()
 
-FIND_PACKAGE(SFML REQUIRED COMPONENTS System Window Graphics)
+FIND_PACKAGE(SFML REQUIRED COMPONENTS system window graphics)
 SET(SRC main.cpp
         src/view/Game.cpp
         include/view/Game.h
@@ -16,9 +16,11 @@ SET(SRC main.cpp
         include/logic/TitleState.h
         src/logic/PauseState.cpp
         include/logic/PauseState.h
+        src/logic/StateManager.cpp
+        include/logic/StateManager.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})
 
-TARGET_LINK_LIBRARIES(bomberman SFML::Graphics SFML::Window SFML::System)
+TARGET_LINK_LIBRARIES(bomberman sfml-graphics sfml-window sfml-system)
 INSTALL(TARGETS bomberman DESTINATION bin)

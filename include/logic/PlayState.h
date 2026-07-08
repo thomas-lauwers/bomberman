@@ -5,6 +5,7 @@
 
 class PlayState : public State {
 public:
+    void handleInput() override;
     void update() override;
     void render() override;
 };
