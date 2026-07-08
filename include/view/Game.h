@@ -1,7 +1,10 @@
 #ifndef BOMBERMAN_GAME_H
 #define BOMBERMAN_GAME_H
-#include <SFML/Graphics.hpp>
 
+#include "../logic/StateManager.h"
+#include <SFML/Graphics.hpp>
+#include <memory>
+using namespace std;
 
 class Game {
 public:
@@ -10,6 +13,7 @@ public:
 
 private:
     sf::RenderWindow window;
+    unique_ptr<StateManager> state_manager;
 };
 
 
