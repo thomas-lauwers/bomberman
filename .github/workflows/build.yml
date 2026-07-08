@@ -49,8 +49,11 @@ jobs:
         id: cache-sfml
         uses: actions/cache@v4
         with:
-          path: /usr/local/lib/cmake/SFML
-          key: sfml-${{ env.SFML_VERSION }}-ubuntu-24.04
+          path: |
+            /usr/local/lib/cmake/SFML
+            /usr/local/lib/libsfml*
+            /usr/local/include/SFML
+          key: sfml-${{ env.SFML_VERSION }}-ubuntu-24.04-v2
 
       - name: Download and build SFML ${{ env.SFML_VERSION }}
         if: steps.cache-sfml.outputs.cache-hit != 'true'
