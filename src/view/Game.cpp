@@ -1,13 +1,14 @@
 #include "../../include/view/Game.h"
 
-Game::Game() : window(sf::VideoMode({800, 600}), "Bomberman") {}
+Game::Game() : window(sf::VideoMode(800, 600), "Bomberman") {}
 
 void Game::run() {
     while (window.isOpen())
     {
-        while (const std::optional event = window.pollEvent())
+        sf::Event event{};
+        while (window.pollEvent(event))
         {
-            if (event->is<sf::Event::Closed>())
+            if (event.type == sf::Event::Closed)
                 window.close();
         }
 
@@ -19,4 +20,3 @@ void Game::run() {
         window.display();
     }
 }
-
