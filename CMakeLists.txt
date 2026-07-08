@@ -9,7 +9,7 @@ FIND_PACKAGE(SFML 3.1.0 COMPONENTS System Window Graphics)
 SET(SRC main.cpp
         src/view/Game.cpp
         include/view/Game.h
-        include/logic/State.cpp
+        src/logic/State.cpp
         src/logic/State.h
         src/logic/PlayState.cpp
         src/logic/PlayState.h
