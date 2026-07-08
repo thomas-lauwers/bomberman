@@ -1,0 +1,103 @@
+name: Build with G++ and Clang on Ubuntu 24.04
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:   # allows manual triggering
+
+env:
+  SFML_VERSION: 2.6.1
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    name: ${{ matrix.compiler }} - ${{ matrix.build_type }}
+    runs-on: ubuntu-24.04   # Ubuntu 24.04.3 LTS runner
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [g++, clang++]
+        build_type: [Release]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          # Build essentials, CMake, and the exact compiler versions
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            g++-13 \
+            clang-18 \
+            cmake=3.28.3-1build7 \
+            libx11-dev \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
+            libgl1-mesa-dev \
+            libfreetype6-dev \
+            libopenal-dev \
+            libvorbis-dev \
+            libflac-dev
+
+      - name: Cache SFML build
+        id: cache-sfml
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/cmake/SFML
+          key: sfml-${{ env.SFML_VERSION }}-ubuntu-24.04
+
+      - name: Download and build SFML ${{ env.SFML_VERSION }}
+        if: steps.cache-sfml.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/SFML/SFML/archive/refs/tags/${{ env.SFML_VERSION }}.tar.gz -O sfml.tar.gz
+          tar xzf sfml.tar.gz
+          cd SFML-${{ env.SFML_VERSION }}
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=ON \
+            -DSFML_BUILD_EXAMPLES=OFF \
+            -DSFML_BUILD_DOC=OFF
+          cmake --build build --parallel $(nproc)
+          sudo cmake --install build
+          cd ..
+          rm -rf sfml.tar.gz SFML-${{ env.SFML_VERSION }}
+
+      - name: Set up compiler (GCC 13)
+        if: matrix.compiler == 'g++'
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+          sudo update-alternatives --set gcc /usr/bin/gcc-13
+          sudo update-alternatives --set g++ /usr/bin/g++-13
+
+      - name: Set up compiler (Clang 18)
+        if: matrix.compiler == 'clang++'
+        run: |
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-18 100
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-18 100
+          sudo update-alternatives --set cc /usr/bin/clang-18
+          sudo update-alternatives --set c++ /usr/bin/clang++-18
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+
+      - name: Build project
+        run: cmake --build build --config ${{ matrix.build_type }} --parallel $(nproc)
+
+      - name: Run tests (if any)
+        run: |
+          if [ -f build/CTestTestfile.cmake ]; then
+            cd build && ctest --output-on-failure
+          fi
+
+      - name: Upload build artifacts (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.compiler }}-${{ matrix.build_type }}
+          path: build/
