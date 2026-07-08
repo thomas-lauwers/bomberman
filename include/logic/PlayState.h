@@ -4,6 +4,9 @@
 
 
 class PlayState : public State {
+public:
+    void update() override;
+    void render() override;
 };
 
 

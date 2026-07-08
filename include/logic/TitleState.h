@@ -3,6 +3,9 @@
 #include "State.h"
 
 class TitleState : public State {
+public:
+    void update() override;
+    void render() override;
 };
 
 

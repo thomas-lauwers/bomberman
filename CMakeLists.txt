@@ -9,13 +9,13 @@ SET(SRC main.cpp
         src/view/Game.cpp
         include/view/Game.h
         src/logic/State.cpp
-        src/logic/State.h
+        include/logic/State.h
         src/logic/PlayState.cpp
-        src/logic/PlayState.h
+        include/logic/PlayState.h
         src/logic/TitleState.cpp
-        src/logic/TitleState.h
+        include/logic/TitleState.h
         src/logic/PauseState.cpp
-        src/logic/PauseState.h
+        include/logic/PauseState.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})
