@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/thomas/Documents/GitHub/bomberman/build/cmake_install.cmake",
+		"/home/thomas/Documents/GitHub/bomberman/build/logic/cmake_install.cmake",
+		"/home/thomas/Documents/GitHub/bomberman/build/representation/cmake_install.cmake",
+		"/home/thomas/Documents/GitHub/bomberman/build/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
