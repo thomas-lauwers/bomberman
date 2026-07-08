@@ -8,8 +8,12 @@
 using namespace std;
 
 class StateManager {
+public:
+    void pushState(unique_ptr<State> state);
+    void popState();
+
 private:
-    stack<unique_ptr<State>> states;
+    stack<unique_ptr<State>> states{};
 
 };
 
