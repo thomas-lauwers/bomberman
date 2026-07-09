@@ -1,3 +1,4 @@
+#include "include/logic/Arena.h"
 #include "include/view/Game.h"
 
 int main() {
