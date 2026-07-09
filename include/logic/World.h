@@ -14,6 +14,7 @@ public:
     static constexpr int WIDTH = 15;
 
     World();
+    void randomizeTiles();
 
     [[nodiscard]] TileType getTile(int x, int y) const;
     void setTile(int x, int y, TileType type);

@@ -1,4 +1,5 @@
 #include "../../include/logic/World.h"
+#include "../../include/logic/Random.h"
 
 World::World() : grid{} {
     using T = TileType;
@@ -19,6 +20,20 @@ World::World() : grid{} {
         {T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W}
     }};
 
+    randomizeTiles();
+
+}
+
+void World::randomizeTiles() {
+    for (int y = 0; y < HEIGHT; ++y) {
+        for (int x = 0; x < WIDTH; ++x) {
+            if (const TileType type = getTile(x, y); type == TileType::D) {
+                if (Random::getInstance().roll(0.20)) {
+                    setTile(x, y, TileType::E);
+                }
+            }
+        }
+    }
 }
 
 
