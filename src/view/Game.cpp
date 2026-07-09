@@ -12,14 +12,13 @@ void Game::run() {
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            // Pass input events to state manager here if needed
         }
 
+        state_manager->handleInput();
+        state_manager->update();
+
         window.clear();
-
-        // draw everything here...
-        // window.draw(...);
-
+        state_manager->render(window);
         window.display();
     }
 }

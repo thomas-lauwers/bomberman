@@ -5,12 +5,21 @@
 #include <memory>
 #include <stack>
 
+// Forward declaration to avoid unnecessary SFML include in logic
+namespace sf {
+    class RenderWindow;
+}
+
 using namespace std;
 
 class StateManager {
 public:
     void pushState(unique_ptr<State> state);
     void popState();
+
+    void handleInput();
+    void update();
+    void render(sf::RenderWindow& window);
 
 private:
     stack<unique_ptr<State>> states{};
