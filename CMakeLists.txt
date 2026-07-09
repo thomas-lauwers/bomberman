@@ -22,6 +22,8 @@ SET(SRC main.cpp
         include/logic/World.h
         src/view/WorldRenderer.cpp
         include/view/WorldRenderer.h
+        src/util/ViewportUtility.cpp
+        include/util/ViewportUtility.h
         src/logic/Camera.cpp
         include/logic/Camera.h
 )
