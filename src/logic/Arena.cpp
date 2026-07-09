@@ -1,25 +1,23 @@
 #include "../../include/logic/Arena.h"
 
 Arena::Arena() : grid{} {
-    using enum TileType;
+    using T = TileType;
 
-    grid = {
-        {
-            {W, W, W, W, W, W, W, W, W, W, W, W, W, W, W},
-            {W, E, E, D, D, D, D, D, D, D, D, D, E, E, W},
-            {W, E, W, D, W, D, W, D, W, D, W, D, W, E, W},
-            {W, D, D, D, D, D, D, D, D, D, D, D, D, D, W},
-            {W, D, W, D, W, D, W, D, W, D, W, D, W, D, W},
-            {W, D, D, D, D, D, D, D, D, D, D, D, D, D, W},
-            {W, D, W, D, W, D, W, D, W, D, W, D, W, D, W},
-            {W, D, D, D, D, D, D, D, D, D, D, D, D, D, W},
-            {W, D, W, D, W, D, W, D, W, D, W, D, W, D, W},
-            {W, D, D, D, D, D, D, D, D, D, D, D, D, D, W},
-            {W, E, W, D, W, D, W, D, W, D, W, D, W, E, W},
-            {W, E, E, D, D, D, D, D, D, D, D, D, E, E, W},
-            {W, W, W, W, W, W, W, W, W, W, W, W, W, W, W},
-        }
-    };
+    grid = {{
+        {T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W},
+        {T::W, T::E, T::E, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::E, T::E, T::W},
+        {T::W, T::E, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::E, T::W},
+        {T::W, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::W},
+        {T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W},
+        {T::W, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::W},
+        {T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W},
+        {T::W, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::W},
+        {T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W},
+        {T::W, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::W},
+        {T::W, T::E, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::D, T::W, T::E, T::W},
+        {T::W, T::E, T::E, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::D, T::E, T::E, T::W},
+        {T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W}
+    }};
 
 }
 
