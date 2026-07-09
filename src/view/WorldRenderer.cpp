@@ -1,5 +1,5 @@
 #include "../../include/view/WorldRenderer.h"
-
+#include "../../include/logic/Camera.h"
 #include <memory>
 
 WorldRenderer::WorldRenderer() {
@@ -23,6 +23,11 @@ void WorldRenderer::loadAssets() {
 }
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
+    float cellW = static_cast<float>(window.getSize().x) / World::WIDTH;
+    float cellH = static_cast<float>(window.getSize().y) / World::HEIGHT;
+    float scaleX = cellW / 16.0f;
+    float scaleY = cellH / 16.0f;
+
     for (int y = 0; y < World::HEIGHT; ++y) {
         for (int x = 0; x < World::WIDTH; ++x) {
             const TileType type = world.getTile(x, y);
@@ -35,8 +40,11 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
             }
 
             if (current_sprite) {
-                constexpr float TILE_SIZE = 48.f;
-                current_sprite->setPosition(static_cast<float>(x) * TILE_SIZE, static_cast<float>(y) * TILE_SIZE);
+                current_sprite->setScale(scaleX, scaleY);
+                NormalizedPosition normPos = Camera::gridToNormalized(x, y);
+                PixelPosition pixelPos = Camera::normalizedToPixel(normPos, window.getSize().x, window.getSize().y);
+                
+                current_sprite->setPosition(pixelPos.x, pixelPos.y);
                 window.draw(*current_sprite);
             }
         }
