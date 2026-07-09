@@ -15,6 +15,9 @@ void WorldRenderer::loadAssets() {
 
     empty.loadFromFile("assets/tile_sprites.png", sf::IntRect(32, 0, 16, 16));
     empty_sprite.setTexture(empty);
+
+    empty_shaded.loadFromFile("assets/tile_sprites.png", sf::IntRect(48, 0, 16, 16));
+    empty_shaded_sprite.setTexture(empty_shaded);
 }
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
@@ -30,9 +33,21 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
             sf::Sprite* current_sprite = nullptr;
 
             switch (type) {
-                case TileType::W: current_sprite = &wall_sprite; break;
-                case TileType::D: current_sprite = &destructible_sprite; break;
-                case TileType::E: current_sprite = &empty_sprite; break;
+                case TileType::W:
+                    current_sprite = &wall_sprite;
+                    break;
+                case TileType::D:
+                    current_sprite = &destructible_sprite;
+                    break;
+                case TileType::E:
+                    if (y == 0 || world.getTile(x,y-1) != TileType::E) {
+                        current_sprite = &empty_shaded_sprite;
+                    } else {
+                        current_sprite = &empty_sprite;
+                    }
+                    break;
+                default:
+                    break;
             }
 
             if (current_sprite) {

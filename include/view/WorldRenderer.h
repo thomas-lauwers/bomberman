@@ -15,10 +15,12 @@ private:
     sf::Texture wall;
     sf::Texture destructible;
     sf::Texture empty;
+    sf::Texture empty_shaded;
 
     sf::Sprite wall_sprite;
     sf::Sprite destructible_sprite;
     sf::Sprite empty_sprite;
+    sf::Sprite empty_shaded_sprite;
 };
 
 
