@@ -8,7 +8,8 @@ class WorldRenderer {
 public:
     WorldRenderer();
 
-    void render(sf::RenderWindow& window, const World& world);
+    void loadAssets();
+    void render(sf::RenderWindow& window, const World& world) const;
 
 private:
     sf::Texture wall;
