@@ -23,10 +23,10 @@ World::World() : grid{} {
 
 
 TileType World::getTile(const int x, const int y) const {
-    return grid[x][y];
+    return grid[y][x];
 }
 
 void World::setTile(const int x, const int y, const TileType type) {
-    grid[x][y] = type;
+    grid[y][x] = type;
 }
 

@@ -9,7 +9,7 @@ public:
     WorldRenderer();
 
     void loadAssets();
-    void render(sf::RenderWindow& window, const World& world) const;
+    void render(sf::RenderWindow& window, const World& world);
 
 private:
     sf::Texture wall;

@@ -3,8 +3,10 @@
 #include "../../include/logic/PlayState.h"
 using namespace std;
 
-Game::Game() : window(sf::VideoMode({800, 600}), "Bomberman"),
-               state_manager(make_unique<StateManager>()){}
+Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
+               state_manager(make_unique<StateManager>()) {
+    window.setFramerateLimit(60);
+}
 
 void Game::run() {
     while (window.isOpen())
