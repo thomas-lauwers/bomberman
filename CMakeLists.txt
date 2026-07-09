@@ -18,8 +18,10 @@ SET(SRC main.cpp
         include/logic/PauseState.h
         src/logic/StateManager.cpp
         include/logic/StateManager.h
-        src/logic/Arena.cpp
-        include/logic/Arena.h
+        src/logic/World.cpp
+        include/logic/World.h
+        src/view/WorldRenderer.cpp
+        include/view/WorldRenderer.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})

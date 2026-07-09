@@ -2,4 +2,6 @@
 
 void PauseState::handleInput() {}
 void PauseState::update() {}
-void PauseState::render(sf::RenderWindow& window) {}
+void PauseState::render(sf::RenderWindow& window) {
+
+}

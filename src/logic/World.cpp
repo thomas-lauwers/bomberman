@@ -1,6 +1,6 @@
-#include "../../include/logic/Arena.h"
+#include "../../include/logic/World.h"
 
-Arena::Arena() : grid{} {
+World::World() : grid{} {
     using T = TileType;
 
     grid = {{
@@ -22,11 +22,11 @@ Arena::Arena() : grid{} {
 }
 
 
-TileType Arena::getTile(const int x, const int y) const {
+TileType World::getTile(const int x, const int y) const {
     return grid[x][y];
 }
 
-void Arena::setTile(const int x, const int y, const TileType type) {
+void World::setTile(const int x, const int y, const TileType type) {
     grid[x][y] = type;
 }
 

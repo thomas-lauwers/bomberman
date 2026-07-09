@@ -1,7 +1,9 @@
 #ifndef BOMBERMAN_PLAYSTATE_H
 #define BOMBERMAN_PLAYSTATE_H
+
+#include "../view/WorldRenderer.h"
 #include "State.h"
-#include "Arena.h"
+#include "World.h"
 #include <SFML/Graphics.hpp>
 
 class PlayState : public State {
@@ -13,7 +15,8 @@ public:
     void render(sf::RenderWindow& window) override;
 
 private:
-    Arena arena;
+    World world;
+    WorldRenderer renderer;
 };
 
 

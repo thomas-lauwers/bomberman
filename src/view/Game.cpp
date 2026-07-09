@@ -1,4 +1,6 @@
 #include "../../include/view/Game.h"
+
+#include "../../include/logic/PlayState.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({800, 600}), "Bomberman"),
@@ -21,5 +23,9 @@ void Game::run() {
         state_manager->render(window);
         window.display();
     }
+}
+
+void Game::addGameState(unique_ptr<State> state) const {
+    state_manager->pushState(std::move(state));
 }
 

@@ -11,6 +11,8 @@ public:
     Game();
     void run();
 
+    void addGameState(unique_ptr<State> state) const; // for testing purposes
+
 private:
     sf::RenderWindow window;
     unique_ptr<StateManager> state_manager;

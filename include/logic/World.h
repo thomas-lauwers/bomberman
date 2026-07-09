@@ -8,12 +8,12 @@ enum class TileType {
     D, // Destructible
 };
 
-class Arena {
+class World {
 public:
     static constexpr int HEIGHT = 13;
     static constexpr int WIDTH = 15;
 
-    Arena();
+    World();
 
     [[nodiscard]] TileType getTile(int x, int y) const;
     void setTile(int x, int y, TileType type);
