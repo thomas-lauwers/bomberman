@@ -1,9 +1,9 @@
 #ifndef BOMBERMAN_PLAYSTATE_H
 #define BOMBERMAN_PLAYSTATE_H
 
-#include "../view/WorldRenderer.h"
+#include "../../view/WorldRenderer.h"
 #include "State.h"
-#include "World.h"
+#include "../World.h"
 #include <SFML/Graphics.hpp>
 
 class PlayState : public State {

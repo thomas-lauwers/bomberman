@@ -8,16 +8,16 @@ FIND_PACKAGE(SFML REQUIRED COMPONENTS system window graphics)
 SET(SRC main.cpp
         src/view/Game.cpp
         include/view/Game.h
-        src/logic/State.cpp
-        include/logic/State.h
-        src/logic/PlayState.cpp
-        include/logic/PlayState.h
-        src/logic/TitleState.cpp
-        include/logic/TitleState.h
-        src/logic/PauseState.cpp
-        include/logic/PauseState.h
-        src/logic/StateManager.cpp
-        include/logic/StateManager.h
+        src/logic/state/State.cpp
+        include/logic/state/State.h
+        src/logic/state/PlayState.cpp
+        include/logic/state/PlayState.h
+        src/logic/state/TitleState.cpp
+        include/logic/state/TitleState.h
+        src/logic/state/PauseState.cpp
+        include/logic/state/PauseState.h
+        src/logic/state/StateManager.cpp
+        include/logic/state/StateManager.h
         src/logic/World.cpp
         include/logic/World.h
         src/view/WorldRenderer.cpp

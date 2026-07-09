@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_GAME_H
 #define BOMBERMAN_GAME_H
 
-#include "../logic/StateManager.h"
+#include "../logic/state/StateManager.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 using namespace std;

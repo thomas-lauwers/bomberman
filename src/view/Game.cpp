@@ -1,6 +1,6 @@
 #include "../../include/view/Game.h"
 
-#include "../../include/logic/PlayState.h"
+#include "../../include/logic/state/PlayState.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),

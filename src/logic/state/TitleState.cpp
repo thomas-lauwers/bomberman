@@ -1,4 +1,4 @@
-#include "../../include/logic/TitleState.h"
+#include "../../../include/logic/state/TitleState.h"
 
 void TitleState::handleInput() {}
 void TitleState::update() {}

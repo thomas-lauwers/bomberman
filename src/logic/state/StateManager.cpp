@@ -1,4 +1,4 @@
-#include "../../include/logic/StateManager.h"
+#include "../../../include/logic/state/StateManager.h"
 
 void StateManager::pushState(unique_ptr<State> state) {
     states.push(std::move(state));

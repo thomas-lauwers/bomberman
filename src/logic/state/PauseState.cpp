@@ -1,4 +1,4 @@
-#include "../../include/logic/PauseState.h"
+#include "../../../include/logic/state/PauseState.h"
 
 void PauseState::handleInput() {}
 void PauseState::update() {}
