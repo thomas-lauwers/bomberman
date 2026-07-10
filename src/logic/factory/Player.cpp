@@ -1,6 +1,6 @@
 #include "../../../include/logic/factory/Player.h"
 
-Player::Player() : position{1.0f, 1.0f} {}
+Player::Player() : position{1.0f, 1.0f}, speed{0.5f} {}
 
 void Player::setPosition(const float x, const float y) {
     position.x = x;

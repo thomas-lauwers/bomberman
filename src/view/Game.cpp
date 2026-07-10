@@ -1,6 +1,8 @@
 #include "../../include/view/Game.h"
 #include "../../include/logic/state/PlayState.h"
 #include "../../include/utils/Stopwatch.h"
+#include "../../include/utils/ViewportUtility.h"
+#include "../../include/logic/World.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
@@ -9,6 +11,8 @@ Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
 }
 
 void Game::run() {
+    ViewportUtility::setViewport(window, static_cast<float>(World::WIDTH) / static_cast<float>(World::HEIGHT));
+
     while (window.isOpen())
     {
         Stopwatch::getInstance().update();
@@ -16,8 +20,17 @@ void Game::run() {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            switch (event.type) {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::Resized:
+                    ViewportUtility::setViewport(window, static_cast<float>(World::WIDTH) / static_cast<float>(World::HEIGHT));
+                    break;
+                default:
+                    break;
+            }
+
         }
 
         state_manager->handleInput();

@@ -28,9 +28,6 @@ void WorldRenderer::loadAssets() {
 }
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
-    constexpr float worldAspect = static_cast<float>(World::WIDTH) / static_cast<float>(World::HEIGHT);
-    ViewportUtility::setViewport(window, worldAspect);
-
     renderTiles(window, world);
     renderPlayer(window, world);
 }
