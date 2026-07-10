@@ -7,16 +7,16 @@ WorldRenderer::WorldRenderer() {
 }
 
 void WorldRenderer::loadAssets() {
-    wall.loadFromFile("assets/tile_sprites.png", sf::IntRect(0, 0, 16, 16));
+    wall.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(18, 15, 16, 16));
     wall_sprite.setTexture(wall);
 
-    destructible.loadFromFile("assets/tile_sprites.png", sf::IntRect(16, 0, 16, 16));
+    destructible.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(35, 15, 16, 16));
     destructible_sprite.setTexture(destructible);
 
-    empty.loadFromFile("assets/tile_sprites.png", sf::IntRect(32, 0, 16, 16));
+    empty.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(52, 15, 16, 16));
     empty_sprite.setTexture(empty);
 
-    empty_shaded.loadFromFile("assets/tile_sprites.png", sf::IntRect(48, 0, 16, 16));
+    empty_shaded.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(69, 15, 16, 16));
     empty_shaded_sprite.setTexture(empty_shaded);
 }
 
