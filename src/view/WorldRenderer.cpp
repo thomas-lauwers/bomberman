@@ -8,20 +8,20 @@ WorldRenderer::WorldRenderer() {
 }
 
 void WorldRenderer::loadAssets() {
-    wall.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(18, 15, 16, 16));
-    wall_sprite.setTexture(wall);
+    wall_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
+    wall_sprite.setTextureRect(sf::IntRect(18, 15, 16, 16));
 
-    destructible.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(35, 15, 16, 16));
-    destructible_sprite.setTexture(destructible);
+    destructible_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
+    destructible_sprite.setTextureRect(sf::IntRect(35, 15, 16, 16));
 
-    empty.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(52, 15, 16, 16));
-    empty_sprite.setTexture(empty);
+    empty_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
+    empty_sprite.setTextureRect(sf::IntRect(52, 15, 16, 16));
 
-    empty_shaded.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(69, 15, 16, 16));
-    empty_shaded_sprite.setTexture(empty_shaded);
+    empty_shaded_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
+    empty_shaded_sprite.setTextureRect(sf::IntRect(69, 15, 16, 16));
 
-    player.loadFromFile("assets/character_sprites.png", sf::IntRect(20, 47, 16, 24));
-    player_sprite.setTexture(player);
+    player_sprite.setTexture(t_manager.getTexture("character_sprites"));
+    player_sprite.setTextureRect(sf::IntRect(20, 47, 16, 24));
 
     // Set the origin to the middle of the sprite so sprite doesn't spill over into tile below
     player_sprite.setOrigin(0.0f, 12.0f);

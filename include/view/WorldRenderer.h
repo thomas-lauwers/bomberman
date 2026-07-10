@@ -2,6 +2,7 @@
 #define BOMBERMAN_WORLDRENDERER_H
 
 #include "../logic/World.h"
+#include "TextureManager.h"
 #include <SFML/Graphics.hpp>
 
 class WorldRenderer {
@@ -14,18 +15,15 @@ public:
     void renderPlayer(sf::RenderWindow& window, const World& world);
 
 private:
-    sf::Texture wall;
-    sf::Texture destructible;
-    sf::Texture empty;
-    sf::Texture empty_shaded;
+    TextureManager t_manager;
 
+    // Tile sprites
     sf::Sprite wall_sprite;
     sf::Sprite destructible_sprite;
     sf::Sprite empty_sprite;
     sf::Sprite empty_shaded_sprite;
 
-    sf::Texture player;
-
+    // Entity sprites
     sf::Sprite player_sprite;
 };
 
