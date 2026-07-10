@@ -36,6 +36,8 @@ World::World() {
 
     randomizeTiles();
 
+    player = std::make_unique<Player>();
+
 }
 
 void World::randomizeTiles() {
@@ -57,6 +59,10 @@ Tile World::getTile(const int x, const int y) const {
 
 void World::setTile(const int x, const int y, const Tile tile) {
     grid[y][x] = tile;
+}
+
+Player* World::getPlayer() const {
+    return player.get();
 }
 
 void World::setPlayer(std::unique_ptr<Player> player) {

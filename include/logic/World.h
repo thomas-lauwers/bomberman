@@ -17,6 +17,7 @@ public:
 
     [[nodiscard]] Tile getTile(int x, int y) const;
     void setTile(int x, int y, Tile tile);
+    [[nodiscard]] Player* getPlayer() const;
     void setPlayer(std::unique_ptr<Player> player);
 
 private:

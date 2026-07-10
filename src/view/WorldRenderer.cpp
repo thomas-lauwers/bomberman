@@ -1,6 +1,7 @@
 #include "../../include/view/WorldRenderer.h"
 #include "../../include/logic/Camera.h"
 #include "../../include/utils/ViewportUtility.h"
+#include "../../include/logic/factory/Player.h"
 
 WorldRenderer::WorldRenderer() {
     loadAssets();
@@ -18,12 +19,23 @@ void WorldRenderer::loadAssets() {
 
     empty_shaded.loadFromFile("assets/battle_stage_sprites.png", sf::IntRect(69, 15, 16, 16));
     empty_shaded_sprite.setTexture(empty_shaded);
+
+    player.loadFromFile("assets/character_sprites.png", sf::IntRect(20, 47, 16, 24));
+    player_sprite.setTexture(player);
+
+    // Set the origin to the middle of the sprite so sprite doesn't spill over into tile below
+    player_sprite.setOrigin(0.0f, 12.0f);
 }
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
     constexpr float worldAspect = static_cast<float>(World::WIDTH) / static_cast<float>(World::HEIGHT);
     ViewportUtility::setViewport(window, worldAspect);
 
+    renderTiles(window, world);
+    renderPlayer(window, world);
+}
+
+void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
     constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
     constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
 
@@ -57,5 +69,21 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
                 window.draw(*current_sprite);
             }
         }
+    }
+}
+
+void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
+    constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
+    constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
+
+    auto* player = world.getPlayer();
+
+    if (player) {
+        Position pos = player->getPosition();
+        NormalizedPosition normPos = Camera::gridToNormalized(pos.x, pos.y);
+
+        player_sprite.setScale(spriteScaleX, spriteScaleY);
+        player_sprite.setPosition(normPos.x, normPos.y);
+        window.draw(player_sprite);
     }
 }

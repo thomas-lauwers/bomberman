@@ -1,10 +1,20 @@
 #ifndef BOMBERMAN_PLAYER_H
 #define BOMBERMAN_PLAYER_H
 
+struct Position {
+    float x;
+    float y;
+};
 
 class Player {
 public:
-    Player() = default;
+    Player();
+
+    void setPosition(float x, float y);
+    [[nodiscard]] Position getPosition() const;
+
+private:
+    Position position;
 };
 
 

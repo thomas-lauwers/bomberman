@@ -14,6 +14,7 @@ struct PixelPosition {
 class Camera {
 public:
     static NormalizedPosition gridToNormalized(int x, int y);
+    static NormalizedPosition worldToNormalized(float x, float y);
     static PixelPosition normalizedToPixel(NormalizedPosition normPos, int winW, int winH);
 };
 
