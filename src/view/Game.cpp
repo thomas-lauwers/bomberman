@@ -1,6 +1,6 @@
 #include "../../include/view/Game.h"
-
 #include "../../include/logic/state/PlayState.h"
+#include "../../include/utils/Stopwatch.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
@@ -11,6 +11,8 @@ Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
 void Game::run() {
     while (window.isOpen())
     {
+        Stopwatch::getInstance().update();
+
         sf::Event event;
         while (window.pollEvent(event))
         {

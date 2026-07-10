@@ -1,4 +1,4 @@
-#include "../../include/logic/Random.h"
+#include "../../include/utils/Random.h"
 
 bool Random::roll(const float chance) {
     if (dist(gen) <= chance) {

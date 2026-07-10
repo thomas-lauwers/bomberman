@@ -1,5 +1,5 @@
 #include "../../include/logic/World.h"
-#include "../../include/logic/Random.h"
+#include "../../include/utils/Random.h"
 
 World::World() {
     using T = TileType;

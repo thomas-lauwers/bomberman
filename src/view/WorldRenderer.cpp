@@ -1,6 +1,6 @@
 #include "../../include/view/WorldRenderer.h"
 #include "../../include/logic/Camera.h"
-#include "../../include/util/ViewportUtility.h"
+#include "../../include/utils/ViewportUtility.h"
 
 WorldRenderer::WorldRenderer() {
     loadAssets();

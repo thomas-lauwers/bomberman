@@ -1,4 +1,4 @@
-#include "../../include/util/ViewportUtility.h"
+#include "../../include/utils/ViewportUtility.h"
 
 void ViewportUtility::setViewport(sf::RenderWindow& window, const float contentAspect) {
     sf::View view(sf::FloatRect(-1.0f, -1.0f, 2.0f, 2.0f));

@@ -22,13 +22,15 @@ SET(SRC main.cpp
         include/logic/World.h
         src/view/WorldRenderer.cpp
         include/view/WorldRenderer.h
-        src/util/ViewportUtility.cpp
-        include/util/ViewportUtility.h
+        src/utils/ViewportUtility.cpp
+        include/utils/ViewportUtility.h
         src/logic/Camera.cpp
         include/logic/Camera.h
-        src/logic/Random.cpp
-        include/logic/Random.h
+        src/utils/Random.cpp
+        include/utils/Random.h
         src/logic/Tile.cpp
+        src/utils/Stopwatch.cpp
+        include/utils/Stopwatch.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})

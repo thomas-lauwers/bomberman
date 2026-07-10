@@ -5,7 +5,6 @@
 #include <memory>
 #include <stack>
 
-// Forward declaration to avoid unnecessary SFML include in logic
 namespace sf {
     class RenderWindow;
 }
