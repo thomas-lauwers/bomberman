@@ -69,5 +69,24 @@ void World::setPlayer(std::unique_ptr<Player> player) {
     this->player = std::move(player);
 }
 
+bool World::isColliding(const Rect &entityRect) const {
+    const int minX = static_cast<int>(entityRect.x);
+    const int maxX = static_cast<int>(entityRect.x + entityRect.width);
+    const int minY = static_cast<int>(entityRect.y);
+    const int maxY = static_cast<int>(entityRect.y + entityRect.height);
+
+    for (int y = minY; y <= maxY; ++y) {
+        for (int x = minX; x <= maxX; ++x) {
+            if (getTile(x, y).getType() != TileType::E) {
+                Rect tileRect = {static_cast<float>(x), static_cast<float>(y), 1.0f, 1.0f};
+                if (entityRect.intersects(tileRect)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 World::~World() = default;
 

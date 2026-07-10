@@ -18,3 +18,7 @@ void Player::move(const float dx, const float dy) {
     position.x += dx * speed * static_cast<float>(deltaTime);
     position.y += dy * speed * static_cast<float>(deltaTime);
 }
+
+Rect Player::getCollisionRect() const {
+    return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f};
+}

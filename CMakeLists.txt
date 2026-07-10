@@ -38,6 +38,8 @@ SET(SRC main.cpp
         include/logic/factory/BattleStageFactory.h
         src/view/TextureManager.cpp
         include/view/TextureManager.h
+        src/logic/Rect.cpp
+        include/logic/Rect.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})

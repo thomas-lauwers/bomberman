@@ -4,6 +4,7 @@
 #include <array>
 #include <memory>
 
+struct Rect;
 class Player;
 
 class World {
@@ -19,6 +20,8 @@ public:
     void setTile(int x, int y, Tile tile);
     [[nodiscard]] Player* getPlayer() const;
     void setPlayer(std::unique_ptr<Player> player);
+
+    [[nodiscard]] bool isColliding(const Rect& entityRect) const;
 
 private:
     std::array<std::array<Tile, WIDTH>, HEIGHT> grid;

@@ -1,6 +1,8 @@
 #ifndef BOMBERMAN_PLAYER_H
 #define BOMBERMAN_PLAYER_H
 
+#include "../Rect.h"
+
 struct Position {
     float x;
     float y;
@@ -14,6 +16,8 @@ public:
     [[nodiscard]] Position getPosition() const;
 
     void move(float dx, float dy);
+
+    [[nodiscard]] Rect getCollisionRect() const;
 
 private:
     Position position;
