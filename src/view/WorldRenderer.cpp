@@ -77,7 +77,7 @@ void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
 
     if (player) {
         Position pos = player->getPosition();
-        NormalizedPosition normPos = Camera::gridToNormalized(pos.x, pos.y);
+        NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
 
         player_sprite.setScale(spriteScaleX, spriteScaleY);
         player_sprite.setPosition(normPos.x, normPos.y);

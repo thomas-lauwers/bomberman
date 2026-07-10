@@ -13,9 +13,11 @@ public:
     void setPosition(float x, float y);
     [[nodiscard]] Position getPosition() const;
 
+    void move(float dx, float dy);
+
 private:
     Position position;
-    float speed;
+    float speed; // units per second
 };
 
 

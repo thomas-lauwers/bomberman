@@ -1,6 +1,8 @@
 #include "../../../include/logic/factory/Player.h"
 
-Player::Player() : position{1.0f, 1.0f}, speed{0.5f} {}
+#include "../../../include/utils/Stopwatch.h"
+
+Player::Player() : position{1.0f, 1.0f}, speed{3.0f} {}
 
 void Player::setPosition(const float x, const float y) {
     position.x = x;
@@ -9,4 +11,10 @@ void Player::setPosition(const float x, const float y) {
 
 Position Player::getPosition() const {
     return position;
+}
+
+void Player::move(const float dx, const float dy) {
+    const double deltaTime = Stopwatch::getInstance().getDeltaTime();
+    position.x += dx * speed * static_cast<float>(deltaTime);
+    position.y += dy * speed * static_cast<float>(deltaTime);
 }

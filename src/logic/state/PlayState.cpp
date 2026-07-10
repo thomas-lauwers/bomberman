@@ -8,7 +8,19 @@ PlayState::PlayState(std::unique_ptr<IEntityFactory> factory) : factory(std::mov
     world.setPlayer(this->factory->createPlayer());
 }
 
-void PlayState::handleInput() {}
+void PlayState::handleInput() {
+    if (auto* player = world.getPlayer()) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left)) {
+            player->move(-1.f, 0.f);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)) {
+            player->move(1.f, 0.f);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up)) {
+            player->move(0.f, -1.f);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) {
+            player->move(0.f, 1.f);
+        }
+    }
+}
 void PlayState::update() {}
 void PlayState::render(sf::RenderWindow& window) {
     renderer.render(window, world);
