@@ -31,6 +31,11 @@ SET(SRC main.cpp
         src/logic/Tile.cpp
         src/utils/Stopwatch.cpp
         include/utils/Stopwatch.h
+        include/logic/factory/IEntityFactory.h
+        src/logic/factory/Player.cpp
+        include/logic/factory/Player.h
+        src/logic/factory/BattleStageFactory.cpp
+        include/logic/factory/BattleStageFactory.h
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})

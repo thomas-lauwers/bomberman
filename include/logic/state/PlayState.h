@@ -5,10 +5,13 @@
 #include "State.h"
 #include "../World.h"
 #include <SFML/Graphics.hpp>
+#include <memory>
+
+class IEntityFactory;
 
 class PlayState : public State {
 public:
-    PlayState();
+    explicit PlayState(std::unique_ptr<IEntityFactory> factory);
 
     void handleInput() override;
     void update() override;
@@ -17,6 +20,7 @@ public:
 private:
     World world;
     WorldRenderer renderer;
+    std::unique_ptr<IEntityFactory> factory;
 };
 
 

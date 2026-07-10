@@ -1,5 +1,6 @@
 #include "../../include/logic/World.h"
 #include "../../include/utils/Random.h"
+#include "../../include/logic/factory/Player.h"
 
 World::World() {
     using T = TileType;
@@ -57,4 +58,10 @@ Tile World::getTile(const int x, const int y) const {
 void World::setTile(const int x, const int y, const Tile tile) {
     grid[y][x] = tile;
 }
+
+void World::setPlayer(std::unique_ptr<Player> player) {
+    this->player = std::move(player);
+}
+
+World::~World() = default;
 

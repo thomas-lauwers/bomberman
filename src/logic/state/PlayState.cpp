@@ -1,6 +1,12 @@
 #include "../../../include/logic/state/PlayState.h"
 
-PlayState::PlayState() = default;
+#include "../../../include/logic/factory/IEntityFactory.h"
+#include "../../../include/logic/factory/Player.h"
+
+
+PlayState::PlayState(std::unique_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
+    world.setPlayer(this->factory->createPlayer());
+}
 
 void PlayState::handleInput() {}
 void PlayState::update() {}
