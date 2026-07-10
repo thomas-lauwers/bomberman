@@ -1,7 +1,6 @@
 #ifndef BOMBERMAN_TITLESTATE_H
 #define BOMBERMAN_TITLESTATE_H
 #include "State.h"
-#include <SFML/Graphics.hpp>
 
 class TitleState : public State {
 public:

@@ -9,19 +9,17 @@ namespace sf {
     class RenderWindow;
 }
 
-using namespace std;
-
 class StateManager {
 public:
-    void pushState(unique_ptr<State> state);
+    void pushState(std::unique_ptr<State> state);
     void popState();
 
-    void handleInput();
-    void update();
-    void render(sf::RenderWindow& window);
+    void handleInput() const;
+    void update() const;
+    void render(sf::RenderWindow& window) const;
 
 private:
-    stack<unique_ptr<State>> states{};
+    std::stack<std::unique_ptr<State>> states{};
 
 };
 

@@ -1,6 +1,6 @@
 #include "../../../include/logic/state/StateManager.h"
 
-void StateManager::pushState(unique_ptr<State> state) {
+void StateManager::pushState(std::unique_ptr<State> state) {
     states.push(std::move(state));
 }
 
@@ -10,19 +10,19 @@ void StateManager::popState() {
     }
 }
 
-void StateManager::handleInput() {
+void StateManager::handleInput() const {
     if (!states.empty()) {
         states.top()->handleInput();
     }
 }
 
-void StateManager::update() {
+void StateManager::update() const {
     if (!states.empty()) {
         states.top()->update();
     }
 }
 
-void StateManager::render(sf::RenderWindow& window) {
+void StateManager::render(sf::RenderWindow& window) const {
     if (!states.empty()) {
         states.top()->render(window);
     }
