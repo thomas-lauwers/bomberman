@@ -29,10 +29,10 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
 
     for (int y = 0; y < World::HEIGHT; ++y) {
         for (int x = 0; x < World::WIDTH; ++x) {
-            const TileType type = world.getTile(x, y);
+            const Tile tile = world.getTile(x, y);
             sf::Sprite* current_sprite = nullptr;
 
-            switch (type) {
+            switch (tile.getType()) {
                 case TileType::W:
                     current_sprite = &wall_sprite;
                     break;
@@ -40,7 +40,7 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
                     current_sprite = &destructible_sprite;
                     break;
                 case TileType::E:
-                    if (y == 0 || world.getTile(x,y-1) != TileType::E) {
+                    if (y == 0 || world.getTile(x,y-1).getType() != TileType::E) {
                         current_sprite = &empty_shaded_sprite;
                     } else {
                         current_sprite = &empty_sprite;

@@ -28,6 +28,7 @@ SET(SRC main.cpp
         include/logic/Camera.h
         src/logic/Random.cpp
         include/logic/Random.h
+        src/logic/Tile.cpp
 )
 
 ADD_EXECUTABLE(bomberman ${SRC})
