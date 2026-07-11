@@ -2,7 +2,7 @@
 #include "../../include/logic/factory/DestructibleWall.h"
 #include "../../include/utils/Random.h"
 #include "../../include/logic/factory/Player.h"
-#include <ranges>
+#include <algorithm>
 
 World::World() {
     using T = TileType;
@@ -55,7 +55,7 @@ void World::randomizeTiles() {
         for (int x = 0; x < WIDTH; ++x) {
             
             // Check if current (y, x) is in spawnTiles using std::find_if
-            const auto it = std::ranges::find_if(spawnTiles, [y, x](const std::array<int, 2>& pos) {
+            const auto it = std::find_if(spawnTiles.begin(), spawnTiles.end(), [y, x](const std::array<int, 2>& pos) {
                 return pos[0] == y && pos[1] == x;
             });
             
