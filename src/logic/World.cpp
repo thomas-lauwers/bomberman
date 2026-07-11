@@ -2,7 +2,7 @@
 #include "../../include/logic/factory/DestructibleWall.h"
 #include "../../include/utils/Random.h"
 #include "../../include/logic/factory/Player.h"
-#include <algorithm>
+#include <ranges>
 
 World::World() {
     using T = TileType;
