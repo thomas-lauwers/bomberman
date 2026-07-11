@@ -3,15 +3,17 @@
 
 #include "../logic/World.h"
 #include "TextureManager.h"
+#include "PlayerView.h"
+#include "DestructibleWallView.h"
+#include "BombView.h"
 #include <SFML/Graphics.hpp>
+
 
 class WorldRenderer {
 public:
     WorldRenderer();
 
-    void loadAssets();
     void loadTileSprites();
-    void loadPlayerSprites();
 
     void render(sf::RenderWindow& window, const World& world);
     void renderTiles(sf::RenderWindow& window, const World& world);
@@ -27,8 +29,10 @@ private:
     sf::Sprite empty_sprite;
     sf::Sprite empty_shaded_sprite;
 
-    // Entity sprites
-    sf::Sprite player_sprite;
+    // Entity views
+    PlayerView p_view;
+    DestructibleWallView d_wall_view;
+    BombView b_view;
 };
 
 

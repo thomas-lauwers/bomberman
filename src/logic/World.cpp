@@ -88,6 +88,10 @@ const std::vector<std::unique_ptr<Entity>> & World::getEntities() const {
     return entities;
 }
 
+void World::pushBackEntity(std::unique_ptr<Entity> entity) {
+    entities.push_back(std::move(entity));
+}
+
 bool World::isColliding(const Rect &entityRect, const Entity* ignoreEntity) const {
     const int minX = static_cast<int>(entityRect.x);
     const int maxX = static_cast<int>(entityRect.x + entityRect.width);
@@ -109,7 +113,7 @@ bool World::isColliding(const Rect &entityRect, const Entity* ignoreEntity) cons
         // Skip the entity that is calling this check to prevent self-collision
         if (entity.get() == ignoreEntity) continue;
 
-        if (entityRect.intersects(entity->getCollisionRect())) {
+        if (entityRect.intersects(entity->getCollisionRect()) && entity->getEntityType() != Bomb_E) {
             return true;
         }
     }

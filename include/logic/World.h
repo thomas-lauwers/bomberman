@@ -24,6 +24,8 @@ public:
     void setPlayer(std::unique_ptr<Player> player);
     [[nodiscard]] const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
+    void pushBackEntity(std::unique_ptr<Entity> entity);
+
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
 

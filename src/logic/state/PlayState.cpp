@@ -1,5 +1,5 @@
 #include "../../../include/logic/state/PlayState.h"
-
+#include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/IEntityFactory.h"
 #include "../../../include/logic/factory/Player.h"
 
@@ -12,15 +12,15 @@ void PlayState::handleInput() {
     if (auto* player = world.getPlayer()) {
         float dx = 0.f;
         float dy = 0.f;
+        Position currentPos = player->getPosition();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left)) dx -= 1.f;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)) dx += 1.f;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up)) dy -= 1.f;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) dy += 1.f;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) world.pushBackEntity(factory->createBomb(currentPos.x, currentPos.y));
 
         if (dx != 0.f || dy != 0.f) {
-            Position currentPos = player->getPosition();
-
             // Try moving in X
             player->move(dx, 0.f);
             if (world.isColliding(player->getCollisionRect(), player)) {

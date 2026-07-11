@@ -6,6 +6,7 @@
 class BattleStageFactory : public IEntityFactory {
 public:
     std::unique_ptr<Player> createPlayer() override;
+    std::unique_ptr<Bomb> createBomb(float x, float y) override;
 };
 
 

@@ -3,21 +3,13 @@
 #include "../../include/utils/ViewportUtility.h"
 #include "../../include/logic/factory/Player.h"
 
-WorldRenderer::WorldRenderer() {
-    loadAssets();
-}
-
-void WorldRenderer::loadAssets() {
+WorldRenderer::WorldRenderer() : p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager} {
     loadTileSprites();
-    loadPlayerSprites();
 }
 
 void WorldRenderer::loadTileSprites() {
     wall_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
     wall_sprite.setTextureRect(sf::IntRect(18, 15, 16, 16));
-
-    destructible_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
-    destructible_sprite.setTextureRect(sf::IntRect(35, 15, 16, 16));
 
     empty_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
     empty_sprite.setTextureRect(sf::IntRect(52, 15, 16, 16));
@@ -26,18 +18,11 @@ void WorldRenderer::loadTileSprites() {
     empty_shaded_sprite.setTextureRect(sf::IntRect(69, 15, 16, 16));
 }
 
-void WorldRenderer::loadPlayerSprites() {
-    player_sprite.setTexture(t_manager.getTexture("character_sprites"));
-    player_sprite.setTextureRect(sf::IntRect(20, 47, 16, 24));
-
-    // Set the origin to the middle of the sprite so sprite doesn't spill over into tile below
-    player_sprite.setOrigin(0.0f, 12.0f);
-}
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
     renderTiles(window, world);
-    renderPlayer(window, world);
     renderEntities(window, world);
+    renderPlayer(window, world);
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
@@ -77,38 +62,20 @@ void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
 }
 
 void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
-    constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
-    constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
-
-    if (const auto* player = world.getPlayer()) {
-        Position pos = player->getPosition();
-        NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
-
-        player_sprite.setScale(spriteScaleX, spriteScaleY);
-        player_sprite.setPosition(normPos.x, normPos.y);
-        window.draw(player_sprite);
+    if (const Player* player = world.getPlayer()) {
+        p_view.draw(window, *player);
     }
 }
 
 void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world) {
-    constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
-    constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
-
     for (const auto& entity : world.getEntities()) {
-        Position pos = entity->getPosition();
-        NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
-
         switch (entity->getEntityType()) {
             case DestructibleWall_E:
-                destructible_sprite.setScale(spriteScaleX, spriteScaleY);
-                destructible_sprite.setPosition(normPos.x, normPos.y);
-                window.draw(destructible_sprite);
+                d_wall_view.draw(window, *entity);
                 break;
 
             case Bomb_E:
-                break;
-
-            case Player_E:
+                b_view.draw(window, *entity);
                 break;
 
             default:

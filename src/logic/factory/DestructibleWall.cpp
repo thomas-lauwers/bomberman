@@ -3,7 +3,7 @@
 DestructibleWall::DestructibleWall(const float x, const float y) : position{x, y} {}
 
 EntityType DestructibleWall::getEntityType() const {
-    return EntityType::DestructibleWall_E;
+    return DestructibleWall_E;
 }
 
 Position DestructibleWall::getPosition() const {

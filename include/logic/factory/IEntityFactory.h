@@ -3,6 +3,7 @@
 
 #include <memory>
 
+class Bomb;
 class Player;
 
 class IEntityFactory {
@@ -10,6 +11,8 @@ public:
     virtual ~IEntityFactory() = default;
 
     virtual std::unique_ptr<Player> createPlayer() = 0;
+    virtual std::unique_ptr<Bomb> createBomb(float x, float y) = 0;
+
 };
 
 
