@@ -8,6 +8,11 @@ WorldRenderer::WorldRenderer() {
 }
 
 void WorldRenderer::loadAssets() {
+    loadTileSprites();
+    loadPlayerSprites();
+}
+
+void WorldRenderer::loadTileSprites() {
     wall_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
     wall_sprite.setTextureRect(sf::IntRect(18, 15, 16, 16));
 
@@ -19,7 +24,9 @@ void WorldRenderer::loadAssets() {
 
     empty_shaded_sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
     empty_shaded_sprite.setTextureRect(sf::IntRect(69, 15, 16, 16));
+}
 
+void WorldRenderer::loadPlayerSprites() {
     player_sprite.setTexture(t_manager.getTexture("character_sprites"));
     player_sprite.setTextureRect(sf::IntRect(20, 47, 16, 24));
 
@@ -30,6 +37,7 @@ void WorldRenderer::loadAssets() {
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
     renderTiles(window, world);
     renderPlayer(window, world);
+    renderEntities(window, world);
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
@@ -45,16 +53,15 @@ void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
                 case TileType::W:
                     current_sprite = &wall_sprite;
                     break;
-                case TileType::D:
-                    current_sprite = &destructible_sprite;
-                    break;
+
                 case TileType::E:
-                    if (y == 0 || world.getTile(x,y-1).getType() != TileType::E) {
+                    if (y == 0 || world.getTile(x,y-1).getType() == TileType::W || world.isDestructibleWallAt(x, y-1)) {
                         current_sprite = &empty_shaded_sprite;
                     } else {
                         current_sprite = &empty_sprite;
                     }
                     break;
+
                 default:
                     break;
             }
@@ -73,14 +80,39 @@ void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
     constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
     constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
 
-    auto* player = world.getPlayer();
-
-    if (player) {
+    if (const auto* player = world.getPlayer()) {
         Position pos = player->getPosition();
         NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
 
         player_sprite.setScale(spriteScaleX, spriteScaleY);
         player_sprite.setPosition(normPos.x, normPos.y);
         window.draw(player_sprite);
+    }
+}
+
+void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world) {
+    constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
+    constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
+
+    for (const auto& entity : world.getEntities()) {
+        Position pos = entity->getPosition();
+        NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
+
+        switch (entity->getEntityType()) {
+            case DestructibleWall_E:
+                destructible_sprite.setScale(spriteScaleX, spriteScaleY);
+                destructible_sprite.setPosition(normPos.x, normPos.y);
+                window.draw(destructible_sprite);
+                break;
+
+            case Bomb_E:
+                break;
+
+            case Player_E:
+                break;
+
+            default:
+                break;
+        }
     }
 }

@@ -10,9 +10,13 @@ public:
     WorldRenderer();
 
     void loadAssets();
+    void loadTileSprites();
+    void loadPlayerSprites();
+
     void render(sf::RenderWindow& window, const World& world);
     void renderTiles(sf::RenderWindow& window, const World& world);
     void renderPlayer(sf::RenderWindow& window, const World& world);
+    void renderEntities(sf::RenderWindow& window, const World& world);
 
 private:
     TextureManager t_manager;

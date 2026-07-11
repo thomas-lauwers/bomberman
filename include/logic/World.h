@@ -3,7 +3,9 @@
 #include "Tile.h"
 #include <array>
 #include <memory>
+#include <vector>
 
+class Entity;
 struct Rect;
 class Player;
 
@@ -20,11 +22,14 @@ public:
     void setTile(int x, int y, Tile tile);
     [[nodiscard]] Player* getPlayer() const;
     void setPlayer(std::unique_ptr<Player> player);
+    [[nodiscard]] const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
-    [[nodiscard]] bool isColliding(const Rect& entityRect) const;
+    [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity) const;
+    [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
 
 private:
     std::array<std::array<Tile, WIDTH>, HEIGHT> grid;
+    std::vector<std::unique_ptr<Entity>> entities;
     std::unique_ptr<Player> player;
 };
 

@@ -8,7 +8,7 @@ struct Rect {
     float width;
     float height;
 
-    bool intersects(const Rect& other) const;
+    [[nodiscard]] bool intersects(const Rect& other) const;
 };
 
 

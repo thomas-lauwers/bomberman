@@ -23,7 +23,7 @@ void PlayState::handleInput() {
 
             // Try moving in X
             player->move(dx, 0.f);
-            if (world.isColliding(player->getCollisionRect())) {
+            if (world.isColliding(player->getCollisionRect(), player)) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
                 currentPos.x = player->getPosition().x;
@@ -31,7 +31,7 @@ void PlayState::handleInput() {
 
             // Try moving in Y
             player->move(0.f, dy);
-            if (world.isColliding(player->getCollisionRect())) {
+            if (world.isColliding(player->getCollisionRect(), player)) {
                 player->setPosition(currentPos.x, currentPos.y);
             }
         }

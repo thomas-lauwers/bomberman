@@ -1,28 +1,20 @@
-#ifndef BOMBERMAN_PLAYER_H
-#define BOMBERMAN_PLAYER_H
-
+#ifndef BOMBERMAN_DESTRUCTIBLEWALL_H
+#define BOMBERMAN_DESTRUCTIBLEWALL_H
 #include "Entity.h"
 #include "../../utils/Position.h"
-#include "../Rect.h"
 
 
-class Player : public Entity {
+class DestructibleWall : public Entity {
 public:
-    Player();
+    DestructibleWall(float x, float y);
 
     [[nodiscard]] EntityType getEntityType() const override;
-
-    void setPosition(float x, float y);
     [[nodiscard]] Position getPosition() const override;
-
-    void move(float dx, float dy);
-
     [[nodiscard]] Rect getCollisionRect() const override;
 
 private:
     Position position;
-    float speed; // units per second
 };
 
 
-#endif //BOMBERMAN_PLAYER_H
+#endif //BOMBERMAN_DESTRUCTIBLEWALL_H

@@ -4,7 +4,6 @@
 enum class TileType {
     E, // Empty
     W, // Wall
-    D, // Destructible
 };
 
 class Tile {
