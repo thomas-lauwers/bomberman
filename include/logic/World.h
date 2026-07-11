@@ -26,7 +26,7 @@ public:
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
 
-    [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity) const;
+    [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
 
 private:
