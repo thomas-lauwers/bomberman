@@ -1,8 +1,8 @@
 #include "../../include/view/Game.h"
-#include "../../include/logic/state/PlayState.h"
 #include "../../include/utils/Stopwatch.h"
-#include "../../include/utils/ViewportUtility.h"
+#include "../../include/view/ViewportUtility.h"
 #include "../../include/logic/World.h"
+#include "../../include/logic/Input.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
@@ -33,7 +33,13 @@ void Game::run() {
 
         }
 
-        state_manager->handleInput();
+        if (auto* currentState = state_manager->getCurrentState()) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left)) currentState->handleInput(Input::MoveLeft);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)) currentState->handleInput(Input::MoveRight);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up)) currentState->handleInput(Input::MoveUp);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) currentState->handleInput(Input::MoveDown);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) currentState->handleInput(Input::PlaceBomb);
+        }
         state_manager->update();
 
         window.clear();

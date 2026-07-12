@@ -17,6 +17,7 @@ public:
     void handleInput() const;
     void update() const;
     void render(sf::RenderWindow& window) const;
+    State* getCurrentState() const;
 
 private:
     std::stack<std::unique_ptr<State>> states{};

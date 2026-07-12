@@ -10,12 +10,6 @@ void StateManager::popState() {
     }
 }
 
-void StateManager::handleInput() const {
-    if (!states.empty()) {
-        states.top()->handleInput();
-    }
-}
-
 void StateManager::update() const {
     if (!states.empty()) {
         states.top()->update();
@@ -26,4 +20,11 @@ void StateManager::render(sf::RenderWindow& window) const {
     if (!states.empty()) {
         states.top()->render(window);
     }
+}
+
+State* StateManager::getCurrentState() const {
+    if (!states.empty()) {
+        return states.top().get();
+    }
+    return nullptr;
 }

@@ -4,7 +4,7 @@
 #include "../../view/WorldRenderer.h"
 #include "State.h"
 #include "../World.h"
-#include <SFML/Graphics.hpp>
+#include "../Input.h"
 #include <memory>
 
 class IEntityFactory;
@@ -13,7 +13,8 @@ class PlayState : public State {
 public:
     explicit PlayState(std::shared_ptr<IEntityFactory> factory);
 
-    void handleInput() override;
+    void handleInput(Input input) override;
+
     void update() override;
     void render(sf::RenderWindow& window) override;
 

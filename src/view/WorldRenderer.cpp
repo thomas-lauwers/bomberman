@@ -1,6 +1,6 @@
 #include "../../include/view/WorldRenderer.h"
 #include "../../include/logic/Camera.h"
-#include "../../include/utils/ViewportUtility.h"
+#include "../../include/view/ViewportUtility.h"
 #include "../../include/logic/factory/Player.h"
 
 WorldRenderer::WorldRenderer() : p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager} {

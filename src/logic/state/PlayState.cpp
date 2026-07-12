@@ -10,20 +10,23 @@ PlayState::PlayState(std::shared_ptr<IEntityFactory> factory)
     : factory(std::move(factory)), world(this->factory) {
 }
 
-void PlayState::handleInput() {
+void PlayState::handleInput(const Input input) {
     if (auto* player = world.getPlayer()) {
         float dx = 0.f;
         float dy = 0.f;
-        Position initialPos = player->getPosition();
-        Rect initialRect = player->getCollisionRect();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left)) dx -= 1.f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)) dx += 1.f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up)) dy -= 1.f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) dy += 1.f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) world.pushBackEntity(factory->createBomb(initialPos.x, initialPos.y));
+        switch (input) {
+            case Input::MoveLeft: dx -= 1.f; break;
+            case Input::MoveRight: dx += 1.f; break;
+            case Input::MoveUp: dy -= 1.f; break;
+            case Input::MoveDown: dy += 1.f; break;
+            case Input::PlaceBomb:
+                world.pushBackEntity(factory->createBomb(player->getPosition().x, player->getPosition().y));
+                return;
+        }
 
         if (dx != 0.f || dy != 0.f) {
+            Rect initialRect = player->getCollisionRect();
             Position currentPos = player->getPosition();
             // Try moving in X
             player->move(dx, 0.f);

@@ -5,9 +5,8 @@ IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ENDIF()
 
 FIND_PACKAGE(SFML REQUIRED COMPONENTS system window graphics)
-SET(SRC main.cpp
-        src/view/Game.cpp
-        include/view/Game.h
+
+SET(LOGIC_SRC 
         src/logic/state/State.cpp
         include/logic/state/State.h
         src/logic/state/PlayState.cpp
@@ -20,15 +19,12 @@ SET(SRC main.cpp
         include/logic/state/StateManager.h
         src/logic/World.cpp
         include/logic/World.h
-        src/view/WorldRenderer.cpp
-        include/view/WorldRenderer.h
-        src/utils/ViewportUtility.cpp
-        include/utils/ViewportUtility.h
         src/logic/Camera.cpp
         include/logic/Camera.h
         src/utils/Random.cpp
         include/utils/Random.h
         src/logic/Tile.cpp
+        include/logic/Tile.h
         src/utils/Stopwatch.cpp
         include/utils/Stopwatch.h
         include/logic/factory/IEntityFactory.h
@@ -36,8 +32,6 @@ SET(SRC main.cpp
         include/logic/factory/Player.h
         src/logic/factory/BattleStageFactory.cpp
         include/logic/factory/BattleStageFactory.h
-        src/view/TextureManager.cpp
-        include/view/TextureManager.h
         src/logic/Rect.cpp
         include/logic/Rect.h
         include/logic/factory/Entity.h
@@ -46,6 +40,16 @@ SET(SRC main.cpp
         src/logic/factory/DestructibleWall.cpp
         include/logic/factory/DestructibleWall.h
         include/utils/Position.h
+)
+
+SET(VIEW_SRC 
+        main.cpp
+        src/view/Game.cpp
+        include/view/Game.h
+        src/view/WorldRenderer.cpp
+        include/view/WorldRenderer.h
+        src/view/TextureManager.cpp
+        include/view/TextureManager.h
         include/view/IEntityView.h
         src/view/PlayerView.cpp
         include/view/PlayerView.h
@@ -53,9 +57,13 @@ SET(SRC main.cpp
         include/view/DestructibleWallView.h
         src/view/BombView.cpp
         include/view/BombView.h
+        src/view/ViewportUtility.cpp
+        include/view/ViewportUtility.h
 )
 
-ADD_EXECUTABLE(bomberman ${SRC})
+ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})
 
-TARGET_LINK_LIBRARIES(bomberman sfml-graphics sfml-window sfml-system)
+ADD_EXECUTABLE(bomberman ${VIEW_SRC})
+
+TARGET_LINK_LIBRARIES(bomberman bomberman_logic sfml-graphics sfml-window sfml-system)
 INSTALL(TARGETS bomberman DESTINATION bin)
