@@ -25,6 +25,7 @@ public:
     [[nodiscard]] const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
+    void removeDestroyedEntities();
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;

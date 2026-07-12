@@ -20,8 +20,8 @@ public:
     [[nodiscard]] Rect getCollisionRect() const override;
 
 private:
-    Position position;
-    float speed; // units per second
+    Position position{1.0f, 1.0f};
+    float speed = 3.0f; // units per second
 };
 
 

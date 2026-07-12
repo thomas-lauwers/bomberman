@@ -11,8 +11,13 @@ public:
     [[nodiscard]] Position getPosition() const override;
     [[nodiscard]] Rect getCollisionRect() const override;
 
+    void update() override;
+    void tick();
+    void explode();
+
 private:
     Position position;
+    float timer = 2.0f;
 };
 
 

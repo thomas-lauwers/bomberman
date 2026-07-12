@@ -92,6 +92,11 @@ void World::pushBackEntity(std::unique_ptr<Entity> entity) {
     entities.push_back(std::move(entity));
 }
 
+void World::removeDestroyedEntities() {
+    std::erase_if(entities,
+                  [](const std::unique_ptr<Entity>& e) { return e->isDestroyed(); });
+}
+
 bool World::isColliding(const Rect &entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const {
     const int minX = static_cast<int>(entityRect.x);
     const int maxX = static_cast<int>(entityRect.x + entityRect.width);

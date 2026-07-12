@@ -16,6 +16,14 @@ public:
     [[nodiscard]] virtual EntityType getEntityType() const = 0;
     [[nodiscard]] virtual Position getPosition() const = 0;
     [[nodiscard]] virtual Rect getCollisionRect() const = 0;
+
+    [[nodiscard]] bool isDestroyed() const { return destroyed; }
+    void destroy() { destroyed = true; }
+
+    virtual void update() {}
+
+protected:
+    bool destroyed = false;
 };
 
 

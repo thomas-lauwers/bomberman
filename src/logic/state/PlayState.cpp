@@ -39,7 +39,15 @@ void PlayState::handleInput() {
         }
     }
 }
-void PlayState::update() {}
+
+void PlayState::update() {
+    for (auto& entity : world.getEntities()) {
+        entity->update();
+    }
+
+    world.removeDestroyedEntities();
+}
+
 void PlayState::render(sf::RenderWindow& window) {
     renderer.render(window, world);
 }

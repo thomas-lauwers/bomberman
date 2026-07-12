@@ -1,11 +1,10 @@
 #include "../../../include/logic/factory/Player.h"
-
 #include "../../../include/utils/Stopwatch.h"
 
-Player::Player() : position{1.0f, 1.0f}, speed{3.0f} {}
+Player::Player() = default;
 
 EntityType Player::getEntityType() const {
-    return EntityType::Player_E;
+    return Player_E;
 }
 
 void Player::setPosition(const float x, const float y) {
