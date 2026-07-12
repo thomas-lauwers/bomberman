@@ -11,7 +11,7 @@ PlayState::PlayState(std::shared_ptr<IEntityFactory> factory)
 }
 
 void PlayState::handleInput(const Input input) {
-    if (auto* player = world.getPlayer()) {
+    if (const auto player = world.getPlayer()) {
         float dx = 0.f;
         float dy = 0.f;
 
@@ -21,7 +21,12 @@ void PlayState::handleInput(const Input input) {
             case Input::MoveUp: dy -= 1.f; break;
             case Input::MoveDown: dy += 1.f; break;
             case Input::PlaceBomb:
-                world.pushBackEntity(factory->createBomb(player->getPosition().x, player->getPosition().y));
+                if (player->canPlaceBomb()) {
+                    auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
+                    player->setCanPlaceBomb(false);
+                    bomb->addObserver(player);
+                    world.pushBackEntity(std::move(bomb));
+                }
                 return;
         }
 
@@ -30,7 +35,7 @@ void PlayState::handleInput(const Input input) {
             Position currentPos = player->getPosition();
             // Try moving in X
             player->move(dx, 0.f);
-            if (world.isColliding(player->getCollisionRect(), player, initialRect)) {
+            if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
                 currentPos.x = player->getPosition().x;
@@ -38,7 +43,7 @@ void PlayState::handleInput(const Input input) {
 
             // Try moving in Y
             player->move(0.f, dy);
-            if (world.isColliding(player->getCollisionRect(), player, initialRect)) {
+            if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
                 player->setPosition(currentPos.x, currentPos.y);
             }
         }
@@ -53,6 +58,8 @@ void PlayState::update() {
     world.removeDestroyedEntities();
 }
 
-void PlayState::render(sf::RenderWindow& window) {
+void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) {
     renderer.render(window, world);
 }
+
+PlayState::~PlayState() = default;

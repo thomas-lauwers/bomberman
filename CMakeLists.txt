@@ -25,13 +25,13 @@ SET(LOGIC_SRC
         include/utils/Random.h
         src/logic/Tile.cpp
         include/logic/Tile.h
+        include/logic/Observer.h
+        include/logic/Subject.h
         src/utils/Stopwatch.cpp
         include/utils/Stopwatch.h
         include/logic/factory/IEntityFactory.h
         src/logic/factory/Player.cpp
         include/logic/factory/Player.h
-        src/logic/factory/BattleStageFactory.cpp
-        include/logic/factory/BattleStageFactory.h
         src/logic/Rect.cpp
         include/logic/Rect.h
         include/logic/factory/Entity.h
@@ -59,6 +59,8 @@ SET(VIEW_SRC
         include/view/BombView.h
         src/view/ViewportUtility.cpp
         include/view/ViewportUtility.h
+        src/view/factory/BattleStageFactory.cpp
+        include/view/factory/BattleStageFactory.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})

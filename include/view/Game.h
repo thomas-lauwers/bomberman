@@ -2,6 +2,8 @@
 #define BOMBERMAN_GAME_H
 
 #include "../logic/state/StateManager.h"
+#include "TextureManager.h"
+#include "WorldRenderer.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 using namespace std;
@@ -16,6 +18,8 @@ public:
 private:
     sf::RenderWindow window;
     unique_ptr<StateManager> state_manager;
+    TextureManager textureManager;
+    WorldRenderer worldRenderer;
 };
 
 

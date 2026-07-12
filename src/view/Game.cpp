@@ -1,13 +1,19 @@
 #include "../../include/view/Game.h"
+#include "../../include/logic/state/PlayState.h"
 #include "../../include/utils/Stopwatch.h"
 #include "../../include/view/ViewportUtility.h"
 #include "../../include/logic/World.h"
 #include "../../include/logic/Input.h"
+#include "../../include/view/factory/BattleStageFactory.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
-               state_manager(make_unique<StateManager>()) {
+               state_manager(make_unique<StateManager>()),
+               worldRenderer(textureManager) {
     window.setFramerateLimit(60);
+    textureManager.loadAssets();
+    auto factory = make_shared<BattleStageFactory>(textureManager);
+    addGameState(make_unique<PlayState>(factory));
 }
 
 void Game::run() {
@@ -43,7 +49,7 @@ void Game::run() {
         state_manager->update();
 
         window.clear();
-        state_manager->render(window);
+        state_manager->getCurrentState()->render(window, worldRenderer);
         window.display();
     }
 }

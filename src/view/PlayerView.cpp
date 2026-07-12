@@ -24,3 +24,6 @@ void PlayerView::draw(sf::RenderWindow& window, const Entity &entity) {
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
 }
+
+void PlayerView::onNotify(const Entity& entity, Event event) {
+}

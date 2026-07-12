@@ -2,14 +2,16 @@
 #define BOMBERMAN_IENTITYVIEW_H
 
 #include <SFML/Graphics.hpp>
+#include "../logic/Observer.h"
 
 class Entity;
 
-class IEntityView {
+class IEntityView : public Observer {
 public:
-    virtual ~IEntityView() = default;
+    ~IEntityView() override = default;
 
     virtual void draw(sf::RenderWindow& window, const Entity& entity) = 0;
+    void onNotify(const Entity& entity, Event event) override = 0;
 
 };
 

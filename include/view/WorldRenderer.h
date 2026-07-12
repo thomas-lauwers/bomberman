@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_WORLDRENDERER_H
 #define BOMBERMAN_WORLDRENDERER_H
 
-#include "../logic/World.h"
+#include "../logic/IWorldView.h"
 #include "TextureManager.h"
 #include "PlayerView.h"
 #include "DestructibleWallView.h"
@@ -9,19 +9,19 @@
 #include <SFML/Graphics.hpp>
 
 
-class WorldRenderer {
+class WorldRenderer : public IWorldView {
 public:
-    WorldRenderer();
+    explicit WorldRenderer(TextureManager& manager);
 
     void loadTileSprites();
 
-    void render(sf::RenderWindow& window, const World& world);
+    void render(sf::RenderWindow& window, const World& world) override;
     void renderTiles(sf::RenderWindow& window, const World& world);
     void renderPlayer(sf::RenderWindow& window, const World& world);
     void renderEntities(sf::RenderWindow& window, const World& world);
 
 private:
-    TextureManager t_manager;
+    TextureManager& t_manager;
 
     // Tile sprites
     sf::Sprite wall_sprite;

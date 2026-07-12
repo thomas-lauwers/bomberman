@@ -2,6 +2,7 @@
 #define BOMBERMAN_COLLIDABLE_H
 #include "../Rect.h"
 #include "../../utils/Position.h"
+#include "../Subject.h"
 
 enum EntityType {
     Player_E,
@@ -9,16 +10,19 @@ enum EntityType {
     Bomb_E
 };
 
-class Entity {
+class Entity : public Subject {
 public:
-    virtual ~Entity() = default;
+    ~Entity() override = default;
 
     [[nodiscard]] virtual EntityType getEntityType() const = 0;
     [[nodiscard]] virtual Position getPosition() const = 0;
     [[nodiscard]] virtual Rect getCollisionRect() const = 0;
 
     [[nodiscard]] bool isDestroyed() const { return destroyed; }
-    void destroy() { destroyed = true; }
+    void destroy() {
+        destroyed = true;
+        notify(*this, Event::EntityDestroyed);
+    }
 
     virtual void update() {}
 

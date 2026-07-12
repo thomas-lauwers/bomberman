@@ -13,7 +13,7 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
             grid[y][x] = Tile(T::E);
         }
     }
-    
+
     // Initial map layout
     const std::array<std::array<T, WIDTH>, HEIGHT> layout = {{
         {T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W, T::W},
@@ -39,7 +39,7 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
 
     randomizeTiles();
 
-    player = this->factory->createPlayer();
+    player = std::shared_ptr(this->factory->createPlayer());
 }
 
 void World::randomizeTiles() {
@@ -77,11 +77,11 @@ void World::setTile(const int x, const int y, const Tile tile) {
     grid[y][x] = tile;
 }
 
-Player* World::getPlayer() const {
-    return player.get();
+std::shared_ptr<Player> World::getPlayer() const {
+    return player;
 }
 
-void World::setPlayer(std::unique_ptr<Player> player) {
+void World::setPlayer(std::shared_ptr<Player> player) {
     this->player = std::move(player);
 }
 

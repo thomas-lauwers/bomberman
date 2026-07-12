@@ -21,8 +21,8 @@ public:
 
     [[nodiscard]] Tile getTile(int x, int y) const;
     void setTile(int x, int y, Tile tile);
-    [[nodiscard]] Player* getPlayer() const;
-    void setPlayer(std::unique_ptr<Player> player);
+    [[nodiscard]] std::shared_ptr<Player> getPlayer() const;
+    void setPlayer(std::shared_ptr<Player> player);
     [[nodiscard]] const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
@@ -34,7 +34,7 @@ public:
 private:
     std::array<std::array<Tile, WIDTH>, HEIGHT> grid;
     std::vector<std::unique_ptr<Entity>> entities;
-    std::unique_ptr<Player> player;
+    std::shared_ptr<Player> player;
     std::shared_ptr<IEntityFactory> factory;
 };
 

@@ -25,3 +25,17 @@ void Player::move(const float dx, const float dy) {
 Rect Player::getCollisionRect() const {
     return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f};
 }
+
+void Player::onNotify(const Entity& entity, const Event event) {
+    if (event == Event::EntityDestroyed && entity.getEntityType() == Bomb_E) {
+        canPlace = true;
+    }
+}
+
+bool Player::canPlaceBomb() const {
+    return canPlace;
+}
+
+void Player::setCanPlaceBomb(const bool can) {
+    canPlace = can;
+}

@@ -10,6 +10,7 @@ public:
     explicit DestructibleWallView(const TextureManager& t_manager);
 
     void draw(sf::RenderWindow& window, const Entity& entity) override;
+    void onNotify(const Entity& entity, Event event) override;
 
 private:
     sf::Sprite sprite;

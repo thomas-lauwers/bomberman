@@ -1,9 +1,9 @@
 #include "../../include/view/WorldRenderer.h"
 #include "../../include/logic/Camera.h"
-#include "../../include/view/ViewportUtility.h"
 #include "../../include/logic/factory/Player.h"
+#include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer() : p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager} {
     loadTileSprites();
 }
 
@@ -62,7 +62,7 @@ void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
 }
 
 void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
-    if (const Player* player = world.getPlayer()) {
+    if (const auto player = world.getPlayer()) {
         p_view.draw(window, *player);
     }
 }

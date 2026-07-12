@@ -5,19 +5,13 @@
 #include <memory>
 #include <stack>
 
-namespace sf {
-    class RenderWindow;
-}
-
 class StateManager {
 public:
     void pushState(std::unique_ptr<State> state);
     void popState();
 
-    void handleInput() const;
     void update() const;
-    void render(sf::RenderWindow& window) const;
-    State* getCurrentState() const;
+    [[nodiscard]] State* getCurrentState() const;
 
 private:
     std::stack<std::unique_ptr<State>> states{};

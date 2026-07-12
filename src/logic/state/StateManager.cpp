@@ -16,12 +16,6 @@ void StateManager::update() const {
     }
 }
 
-void StateManager::render(sf::RenderWindow& window) const {
-    if (!states.empty()) {
-        states.top()->render(window);
-    }
-}
-
 State* StateManager::getCurrentState() const {
     if (!states.empty()) {
         return states.top().get();

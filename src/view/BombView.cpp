@@ -21,3 +21,6 @@ void BombView::draw(sf::RenderWindow &window, const Entity &entity) {
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
 }
+
+void BombView::onNotify(const Entity& entity, Event event) {
+}
