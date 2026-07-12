@@ -11,16 +11,16 @@ class IEntityFactory;
 
 class PlayState : public State {
 public:
-    explicit PlayState(std::unique_ptr<IEntityFactory> factory);
+    explicit PlayState(std::shared_ptr<IEntityFactory> factory);
 
     void handleInput() override;
     void update() override;
     void render(sf::RenderWindow& window) override;
 
 private:
+    std::shared_ptr<IEntityFactory> factory;
     World world;
     WorldRenderer renderer;
-    std::unique_ptr<IEntityFactory> factory;
 };
 
 

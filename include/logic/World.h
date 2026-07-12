@@ -1,6 +1,7 @@
 #ifndef BOMBERMAN_ARENA_H
 #define BOMBERMAN_ARENA_H
 #include "Tile.h"
+#include "factory/IEntityFactory.h"
 #include <array>
 #include <memory>
 #include <vector>
@@ -14,7 +15,7 @@ public:
     static constexpr int HEIGHT = 13;
     static constexpr int WIDTH = 15;
 
-    World();
+    explicit World(std::shared_ptr<IEntityFactory> factory);
     ~World();
     void randomizeTiles();
 
@@ -34,6 +35,7 @@ private:
     std::array<std::array<Tile, WIDTH>, HEIGHT> grid;
     std::vector<std::unique_ptr<Entity>> entities;
     std::unique_ptr<Player> player;
+    std::shared_ptr<IEntityFactory> factory;
 };
 
 

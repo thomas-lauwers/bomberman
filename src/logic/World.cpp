@@ -3,8 +3,9 @@
 #include "../../include/utils/Random.h"
 #include "../../include/logic/factory/Player.h"
 #include <algorithm>
+#include <utility>
 
-World::World() {
+World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
     using T = TileType;
 
     for (int y = 0; y < HEIGHT; ++y) {
@@ -38,7 +39,7 @@ World::World() {
 
     randomizeTiles();
 
-    player = std::make_unique<Player>();
+    player = this->factory->createPlayer();
 }
 
 void World::randomizeTiles() {
@@ -61,7 +62,7 @@ void World::randomizeTiles() {
             
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
                 if (Random::getInstance().roll(0.80)) {
-                    entities.push_back(std::make_unique<DestructibleWall>(x, y));
+                    entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }
         }

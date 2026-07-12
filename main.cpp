@@ -7,7 +7,7 @@
 
 int main() {
     Game g;
-    g.addGameState(std::make_unique<PlayState>(std::make_unique<BattleStageFactory>()));
+    g.addGameState(std::make_unique<PlayState>(std::make_shared<BattleStageFactory>()));
     g.run();
     return 0;
 }

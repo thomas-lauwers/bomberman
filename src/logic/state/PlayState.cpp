@@ -1,11 +1,13 @@
+#include <utility>
+
 #include "../../../include/logic/state/PlayState.h"
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/IEntityFactory.h"
 #include "../../../include/logic/factory/Player.h"
 
 
-PlayState::PlayState(std::unique_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
-    world.setPlayer(this->factory->createPlayer());
+PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) 
+    : factory(std::move(factory)), world(this->factory) {
 }
 
 void PlayState::handleInput() {

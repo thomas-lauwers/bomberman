@@ -5,6 +5,7 @@
 
 class Bomb;
 class Player;
+class DestructibleWall;
 
 class IEntityFactory {
 public:
@@ -12,6 +13,7 @@ public:
 
     virtual std::unique_ptr<Player> createPlayer() = 0;
     virtual std::unique_ptr<Bomb> createBomb(float x, float y) = 0;
+    virtual std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) = 0;
 
 };
 
