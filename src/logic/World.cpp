@@ -93,8 +93,8 @@ void World::pushBackEntity(std::unique_ptr<Entity> entity) {
 }
 
 void World::removeDestroyedEntities() {
-    std::erase_if(entities,
-                  [](const std::unique_ptr<Entity>& e) { return e->isDestroyed(); });
+    std::remove_if(entities.begin(), entities.end(),
+            [](const std::unique_ptr<Entity>& e) { return e->isDestroyed(); });
 }
 
 bool World::isColliding(const Rect &entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const {
