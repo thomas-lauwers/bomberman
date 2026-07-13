@@ -1,7 +1,9 @@
 #include "../../include/logic/World.h"
 #include "../../include/logic/factory/DestructibleWall.h"
+#include "../../include/logic/factory/Explosion.h"
 #include "../../include/utils/Random.h"
 #include "../../include/logic/factory/Player.h"
+#include <cmath>
 #include <algorithm>
 #include <utility>
 
@@ -98,6 +100,37 @@ void World::removeDestroyedEntities() {
         std::remove_if(entities.begin(), entities.end(),
             [](const std::unique_ptr<Entity>& e) { return e->isDestroyed(); }),
         entities.end());
+}
+
+void World::spawnExplosion(const float x, const float y) {
+    auto spawnAt = [&](const float px, const float py, const ExplosionType type) {
+        const int ix = static_cast<int>(std::round(px));
+        const int iy = static_cast<int>(std::round(py));
+        
+        if (ix < 0 || ix >= WIDTH || iy < 0 || iy >= HEIGHT) return;
+
+        // Destroy destructible walls if in contact
+        for (const auto& entity : entities) {
+            if (entity->getEntityType() == DestructibleWall_E) {
+                Position pos = entity->getPosition();
+                if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
+                    entity->destroy();
+                    return;
+                }
+            }
+        }
+
+        // Spawn an explosion if tile is empty
+        if (getTile(ix, iy).getType() == TileType::E) {
+            entities.push_back(factory->createExplosion(px, py, type));
+        }
+    };
+
+    spawnAt(x, y, ExplosionType::Center);
+    spawnAt(x, y + 1.0f, ExplosionType::EndDown);
+    spawnAt(x, y - 1.0f, ExplosionType::EndUp);
+    spawnAt(x + 1.0f, y, ExplosionType::EndRight);
+    spawnAt(x - 1.0f, y, ExplosionType::EndLeft);
 }
 
 bool World::isColliding(const Rect &entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const {

@@ -7,7 +7,8 @@
 enum EntityType {
     Player_E,
     DestructibleWall_E,
-    Bomb_E
+    Bomb_E,
+    Explosion_E
 };
 
 class Entity : public Subject {

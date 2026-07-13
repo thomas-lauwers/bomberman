@@ -5,6 +5,7 @@
 #include "../../../include/view/PlayerView.h"
 #include "../../../include/view/BombView.h"
 #include "../../../include/view/DestructibleWallView.h"
+#include "../../../include/view/ExplosionView.h"
 
 std::unique_ptr<Player> BattleStageFactory::createPlayer() {
     auto player = std::make_unique<Player>();
@@ -22,4 +23,10 @@ std::unique_ptr<DestructibleWall> BattleStageFactory::createDestructibleWall(flo
     auto wall = std::make_unique<DestructibleWall>(x, y);
     wall->addObserver(std::make_shared<DestructibleWallView>(textureManager));
     return wall;
+}
+
+std::unique_ptr<Explosion> BattleStageFactory::createExplosion(float x, float y, ExplosionType type) {
+    auto explosion = std::make_unique<Explosion>(x, y, type);
+    explosion->addObserver(std::make_shared<ExplosionView>(textureManager));
+    return explosion;
 }

@@ -3,7 +3,7 @@
 #include "../../include/logic/factory/Player.h"
 #include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager}, e_view{t_manager} {
     loadTileSprites();
 }
 
@@ -77,6 +77,9 @@ void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world)
             case Bomb_E:
                 b_view.draw(window, *entity);
                 break;
+
+            case Explosion_E:
+                e_view.draw(window, *entity);
 
             default:
                 break;

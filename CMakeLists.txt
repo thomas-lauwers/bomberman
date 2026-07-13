@@ -61,6 +61,10 @@ SET(VIEW_SRC
         include/view/ViewportUtility.h
         src/view/factory/BattleStageFactory.cpp
         include/view/factory/BattleStageFactory.h
+        src/logic/factory/Explosion.cpp
+        src/view/ExplosionView.cpp
+        include/view/ExplosionView.h
+        src/view/ExplosionView.cpp
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})

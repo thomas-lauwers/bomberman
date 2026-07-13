@@ -29,6 +29,7 @@ void Bomb::tick() {
 }
 
 void Bomb::explode() {
+    notify(*this, Event::BombExploded);
     destroy();
 }
 

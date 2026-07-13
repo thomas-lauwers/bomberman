@@ -5,7 +5,9 @@
 #include "../World.h"
 #include "../Input.h"
 #include "../IWorldView.h"
+#include "../WorldObserver.h"
 #include <memory>
+#include <vector>
 
 class IEntityFactory;
 
@@ -23,6 +25,7 @@ public:
 private:
     std::shared_ptr<IEntityFactory> factory;
     World world;
+    std::vector<std::shared_ptr<WorldObserver>> bombObservers;
 };
 
 

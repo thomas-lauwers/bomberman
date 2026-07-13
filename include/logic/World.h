@@ -27,6 +27,7 @@ public:
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
     void removeDestroyedEntities();
+    void spawnExplosion(float x, float y);
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;

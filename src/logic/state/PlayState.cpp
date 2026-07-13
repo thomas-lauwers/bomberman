@@ -25,6 +25,11 @@ void PlayState::handleInput(const Input input) {
                     auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
                     player->setCanPlaceBomb(false);
                     bomb->addObserver(player);
+
+                    auto observer = std::make_shared<WorldObserver>(world);
+                    bomb->addObserver(observer);
+                    bombObservers.push_back(observer);
+
                     world.pushBackEntity(std::move(bomb));
                 }
                 return;

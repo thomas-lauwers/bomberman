@@ -4,7 +4,8 @@
 class Entity;
 
 enum class Event {
-    EntityDestroyed
+    EntityDestroyed,
+    BombExploded
 };
 
 class Observer {

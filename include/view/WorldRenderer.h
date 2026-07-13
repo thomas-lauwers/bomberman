@@ -6,8 +6,8 @@
 #include "PlayerView.h"
 #include "DestructibleWallView.h"
 #include "BombView.h"
+#include "ExplosionView.h"
 #include <SFML/Graphics.hpp>
-
 
 class WorldRenderer : public IWorldView {
 public:
@@ -33,6 +33,7 @@ private:
     PlayerView p_view;
     DestructibleWallView d_wall_view;
     BombView b_view;
+    ExplosionView e_view;
 };
 
 
