@@ -2,6 +2,7 @@
 #define BOMBERMAN_WORLDRENDERER_H
 
 #include "../logic/IWorldView.h"
+#include "../logic/factory/Entity.h"
 #include "TextureManager.h"
 #include "PlayerView.h"
 #include "DestructibleWallView.h"
@@ -9,6 +10,7 @@
 #include "ExplosionView.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <map>
 
 class WorldRenderer : public IWorldView {
 public:
@@ -35,7 +37,7 @@ private:
     // Entity views
     std::shared_ptr<PlayerView> p_view;
     DestructibleWallView d_wall_view;
-    BombView b_view;
+    std::map<const Entity*, std::unique_ptr<BombView>> bombViews;
     ExplosionView e_view;
 };
 

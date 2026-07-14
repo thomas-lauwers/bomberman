@@ -8,7 +8,6 @@
 
 PlayerView::PlayerView(const TextureManager& t_manager) : currentAction{AnimationState::Idle}, currentDirection{Direction::Down} {
     sprite.setTexture(t_manager.getTexture("character_sprites"));
-    sprite.setTextureRect(sf::IntRect(20, 47, 16, 24));
 
     // Set the origin to the middle of the sprite so sprite doesn't spill over into tile below
     sprite.setOrigin(0.0f, 12.0f);

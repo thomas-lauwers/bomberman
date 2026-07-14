@@ -3,7 +3,7 @@
 #include "../../include/logic/factory/Player.h"
 #include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager}, b_view{t_manager}, e_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager}, e_view{t_manager} {
     loadTileSprites();
 }
 
@@ -29,10 +29,12 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
     renderPlayer(window, world);
 }
 
-void WorldRenderer::update(float deltaTime) {
+void WorldRenderer::update(const float deltaTime) {
     p_view->update(deltaTime);
     d_wall_view.update(deltaTime);
-    b_view.update(deltaTime);
+    for (auto& pair : bombViews) {
+        pair.second->update(deltaTime);
+    }
     e_view.update(deltaTime);
 }
 
@@ -79,6 +81,15 @@ void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) c
 }
 
 void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world) {
+    // Cleanup destroyed bombs
+    for (auto it = bombViews.begin(); it != bombViews.end(); ) {
+        if (it->first->isDestroyed()) {
+            it = bombViews.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
     for (const auto& entity : world.getEntities()) {
         switch (entity->getEntityType()) {
             case DestructibleWall_E:
@@ -86,7 +97,10 @@ void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world)
                 break;
 
             case Bomb_E:
-                b_view.draw(window, *entity);
+                if (bombViews.find(entity.get()) == bombViews.end()) {
+                    bombViews[entity.get()] = std::make_unique<BombView>(t_manager);
+                }
+                bombViews[entity.get()]->draw(window, *entity);
                 break;
 
             case Explosion_E:

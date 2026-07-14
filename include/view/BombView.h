@@ -1,5 +1,6 @@
 #ifndef BOMBERMAN_BOMBVIEW_H
 #define BOMBERMAN_BOMBVIEW_H
+#include "Animation.h"
 #include "IEntityView.h"
 
 
@@ -15,6 +16,10 @@ public:
 
 private:
     sf::Sprite sprite;
+
+    Animation bombTicking;
+    float animationTimer = 0.0f;
+    int frameIndex = 0;
 
 };
 
