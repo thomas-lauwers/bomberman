@@ -25,6 +25,8 @@ public:
 
     void setCanPlaceBomb(bool can);
 
+    void triggerEvent(Event event);
+
     void update() override;
 
 private:

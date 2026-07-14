@@ -38,18 +38,15 @@ void PlayState::handleInput(const Input input) {
         if (dx != 0.f || dy != 0.f) {
             Rect initialRect = player->getCollisionRect();
             Position currentPos = player->getPosition();
-            // Try moving in X
-            player->move(dx, 0.f);
+
+            player->move(dx, dy);
             if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
-                currentPos.x = player->getPosition().x;
-            }
-
-            // Try moving in Y
-            player->move(0.f, dy);
-            if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
-                player->setPosition(currentPos.x, currentPos.y);
+                if (dx > 0) player->triggerEvent(Event::PlayerMovedRight);
+                else if (dx < 0) player->triggerEvent(Event::PlayerMovedLeft);
+                else if (dy > 0) player->triggerEvent(Event::PlayerMovedDown);
+                else if (dy < 0) player->triggerEvent(Event::PlayerMovedUp);
             }
         }
     }

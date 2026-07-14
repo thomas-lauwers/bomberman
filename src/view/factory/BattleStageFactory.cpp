@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "../../../include/view/factory/BattleStageFactory.h"
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/Bomb.h"
@@ -8,7 +10,7 @@
 #include "../../../include/view/ExplosionView.h"
 
 void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) {
-    playerView = view;
+    playerView = std::move(view);
 }
 
 std::unique_ptr<Player> BattleStageFactory::createPlayer() {

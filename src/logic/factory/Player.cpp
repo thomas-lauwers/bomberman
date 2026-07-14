@@ -24,16 +24,6 @@ void Player::move(const float dx, const float dy) {
     if (dx != 0 || dy != 0) {
         isMoving = true;
     }
-
-    if (dx > 0) {
-        notify(*this, Event::PlayerMovedRight);
-    } else if (dx < 0) {
-        notify(*this, Event::PlayerMovedLeft);
-    } else if (dy > 0) {
-        notify(*this, Event::PlayerMovedDown);
-    } else if (dy < 0) {
-        notify(*this, Event::PlayerMovedUp);
-    }
 }
 
 void Player::update() {
@@ -60,4 +50,8 @@ bool Player::canPlaceBomb() const {
 
 void Player::setCanPlaceBomb(const bool can) {
     canPlace = can;
+}
+
+void Player::triggerEvent(Event event) {
+    notify(*this, event);
 }
