@@ -10,7 +10,7 @@ public:
     void pushState(std::unique_ptr<State> state);
     void popState();
 
-    void update() const;
+    void update(float deltaTime, IWorldView& renderer) const;
     [[nodiscard]] State* getCurrentState() const;
 
 private:

@@ -5,7 +5,12 @@ class Entity;
 
 enum class Event {
     EntityDestroyed,
-    BombExploded
+    BombExploded,
+    PlayerMovedUp,
+    PlayerMovedDown,
+    PlayerMovedLeft,
+    PlayerMovedRight,
+    PlayerStopped
 };
 
 class Observer {

@@ -25,3 +25,6 @@ void DestructibleWallView::draw(sf::RenderWindow &window, const Entity &entity) 
 
 void DestructibleWallView::onNotify(const Entity& entity, Event event) {
 }
+
+void DestructibleWallView::update(float deltaTime) {
+}

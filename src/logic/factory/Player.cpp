@@ -20,6 +20,28 @@ void Player::move(const float dx, const float dy) {
     const double deltaTime = Stopwatch::getInstance().getDeltaTime();
     position.x += dx * speed * static_cast<float>(deltaTime);
     position.y += dy * speed * static_cast<float>(deltaTime);
+
+    if (dx != 0 || dy != 0) {
+        isMoving = true;
+    }
+
+    if (dx > 0) {
+        notify(*this, Event::PlayerMovedRight);
+    } else if (dx < 0) {
+        notify(*this, Event::PlayerMovedLeft);
+    } else if (dy > 0) {
+        notify(*this, Event::PlayerMovedDown);
+    } else if (dy < 0) {
+        notify(*this, Event::PlayerMovedUp);
+    }
+}
+
+void Player::update() {
+    if (!isMoving && wasMoving) {
+        notify(*this, Event::PlayerStopped);
+    }
+    wasMoving = isMoving;
+    isMoving = false;
 }
 
 Rect Player::getCollisionRect() const {

@@ -8,6 +8,7 @@ class ExplosionView : public IEntityView {
 public:
     explicit ExplosionView(const TextureManager& t_manager);
     void draw(sf::RenderWindow& window, const Entity& entity) override;
+    void update(float deltaTime) override;
     void onNotify(const Entity& entity, Event event) override;
 private:
     sf::Sprite sprite;

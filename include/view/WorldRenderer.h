@@ -8,16 +8,19 @@
 #include "BombView.h"
 #include "ExplosionView.h"
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class WorldRenderer : public IWorldView {
 public:
     explicit WorldRenderer(TextureManager& manager);
+    std::shared_ptr<PlayerView> getPlayerView() const;
 
     void loadTileSprites();
 
     void render(sf::RenderWindow& window, const World& world) override;
+    void update(float deltaTime) override;
     void renderTiles(sf::RenderWindow& window, const World& world);
-    void renderPlayer(sf::RenderWindow& window, const World& world);
+    void renderPlayer(sf::RenderWindow& window, const World& world) const;
     void renderEntities(sf::RenderWindow& window, const World& world);
 
 private:
@@ -30,7 +33,7 @@ private:
     sf::Sprite empty_shaded_sprite;
 
     // Entity views
-    PlayerView p_view;
+    std::shared_ptr<PlayerView> p_view;
     DestructibleWallView d_wall_view;
     BombView b_view;
     ExplosionView e_view;

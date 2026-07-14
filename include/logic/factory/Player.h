@@ -25,10 +25,14 @@ public:
 
     void setCanPlaceBomb(bool can);
 
+    void update() override;
+
 private:
     Position position{1.0f, 1.0f};
     float speed = 3.0f; // units per second
     bool canPlace = true;
+    bool isMoving = false;
+    bool wasMoving = false;
 };
 
 

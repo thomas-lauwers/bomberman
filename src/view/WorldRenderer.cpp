@@ -3,8 +3,12 @@
 #include "../../include/logic/factory/Player.h"
 #include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view{t_manager}, d_wall_view{t_manager}, b_view{t_manager}, e_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager}, b_view{t_manager}, e_view{t_manager} {
     loadTileSprites();
+}
+
+std::shared_ptr<PlayerView> WorldRenderer::getPlayerView() const {
+    return p_view;
 }
 
 void WorldRenderer::loadTileSprites() {
@@ -23,6 +27,13 @@ void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
     renderTiles(window, world);
     renderEntities(window, world);
     renderPlayer(window, world);
+}
+
+void WorldRenderer::update(float deltaTime) {
+    p_view->update(deltaTime);
+    d_wall_view.update(deltaTime);
+    b_view.update(deltaTime);
+    e_view.update(deltaTime);
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
@@ -61,9 +72,9 @@ void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
     }
 }
 
-void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) {
+void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) const {
     if (const auto player = world.getPlayer()) {
-        p_view.draw(window, *player);
+        p_view->draw(window, *player);
     }
 }
 

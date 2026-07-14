@@ -26,7 +26,7 @@ void PlayState::handleInput(const Input input) {
                     player->setCanPlaceBomb(false);
                     bomb->addObserver(player);
 
-                    auto observer = std::make_shared<WorldObserver>(world);
+                    const auto observer = std::make_shared<WorldObserver>(world);
                     bomb->addObserver(observer);
                     bombObservers.push_back(observer);
 
@@ -55,7 +55,11 @@ void PlayState::handleInput(const Input input) {
     }
 }
 
-void PlayState::update() {
+void PlayState::update(const float deltaTime, IWorldView& renderer) {
+    renderer.update(deltaTime);
+    if (const auto player = world.getPlayer()) {
+        player->update();
+    }
     for (auto& entity : world.getEntities()) {
         entity->update();
     }

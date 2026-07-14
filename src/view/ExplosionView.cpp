@@ -39,3 +39,6 @@ void ExplosionView::draw(sf::RenderWindow &window, const Entity &entity) {
 
 void ExplosionView::onNotify(const Entity& entity, Event event) {
 }
+
+void ExplosionView::update(float deltaTime) {
+}

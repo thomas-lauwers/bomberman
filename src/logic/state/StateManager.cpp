@@ -10,9 +10,9 @@ void StateManager::popState() {
     }
 }
 
-void StateManager::update() const {
+void StateManager::update(float deltaTime, IWorldView& renderer) const {
     if (!states.empty()) {
-        states.top()->update();
+        states.top()->update(deltaTime, renderer);
     }
 }
 

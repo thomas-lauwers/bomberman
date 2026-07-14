@@ -24,3 +24,6 @@ void BombView::draw(sf::RenderWindow &window, const Entity &entity) {
 
 void BombView::onNotify(const Entity& entity, Event event) {
 }
+
+void BombView::update(float deltaTime) {
+}

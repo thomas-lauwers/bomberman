@@ -7,9 +7,15 @@
 #include "../../../include/view/DestructibleWallView.h"
 #include "../../../include/view/ExplosionView.h"
 
+void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) {
+    playerView = view;
+}
+
 std::unique_ptr<Player> BattleStageFactory::createPlayer() {
     auto player = std::make_unique<Player>();
-    player->addObserver(std::make_shared<PlayerView>(textureManager));
+    if (playerView) {
+        player->addObserver(playerView);
+    }
     return player;
 }
 

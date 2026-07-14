@@ -15,7 +15,7 @@ public:
     virtual ~State() = default;
 
     virtual void handleInput(Input input) {}
-    virtual void update() = 0;
+    virtual void update(float deltaTime, IWorldView& renderer) = 0;
     virtual void render(sf::RenderWindow& window, IWorldView& renderer) = 0;
 };
 

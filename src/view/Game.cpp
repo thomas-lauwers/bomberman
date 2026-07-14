@@ -13,6 +13,7 @@ Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),
     window.setFramerateLimit(60);
     textureManager.loadAssets();
     auto factory = make_shared<BattleStageFactory>(textureManager);
+    factory->setPlayerView(worldRenderer.getPlayerView());
     addGameState(make_unique<PlayState>(factory));
 }
 
@@ -22,6 +23,7 @@ void Game::run() {
     while (window.isOpen())
     {
         Stopwatch::getInstance().update();
+        const auto deltaTime = static_cast<float>(Stopwatch::getInstance().getDeltaTime());
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -46,8 +48,8 @@ void Game::run() {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) currentState->handleInput(Input::MoveDown);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) currentState->handleInput(Input::PlaceBomb);
         }
-        state_manager->update();
-
+        state_manager->update(deltaTime, worldRenderer);
+        
         window.clear();
         state_manager->getCurrentState()->render(window, worldRenderer);
         window.display();

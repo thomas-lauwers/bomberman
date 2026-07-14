@@ -4,7 +4,7 @@
 
 class PauseState : public State {
 public:
-    void update() override;
+    void update(float deltaTime, IWorldView& renderer) override;
     void render(sf::RenderWindow& window, IWorldView& renderer) override;
 };
 
