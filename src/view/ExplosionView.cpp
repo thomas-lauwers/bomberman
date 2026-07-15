@@ -57,7 +57,7 @@ namespace {
 ExplosionView::ExplosionView(const TextureManager &t_manager, const ExplosionType type) : type(type) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
 
-    animation.duration = 0.05f;
+    animation.duration = 0.05555555555f;
     animation.loop = false;
     animation.frames = getFrames(type);
 }
