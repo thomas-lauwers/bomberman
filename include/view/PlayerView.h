@@ -17,6 +17,7 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 private:
+    void setupAnimations();
     sf::Sprite sprite;
 
     BomberAnimationConfig animationConfig;
@@ -25,7 +26,7 @@ private:
     Direction currentDirection;
 
     float animationTimer = 0.0f;
-    int frameIndex = 0;
+    size_t frameIndex = 0;
 };
 
 

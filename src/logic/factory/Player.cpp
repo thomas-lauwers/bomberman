@@ -26,7 +26,7 @@ void Player::move(const float dx, const float dy) {
     }
 }
 
-void Player::update() {
+void Player::update(float deltaTime) {
     if (!isMoving && wasMoving) {
         notify(*this, Event::PlayerStopped);
     }

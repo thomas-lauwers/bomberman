@@ -55,10 +55,10 @@ void PlayState::handleInput(const Input input) {
 void PlayState::update(const float deltaTime, IWorldView& renderer) {
     renderer.update(deltaTime);
     if (const auto player = world.getPlayer()) {
-        player->update();
+        player->update(deltaTime);
     }
     for (auto& entity : world.getEntities()) {
-        entity->update();
+        entity->update(deltaTime);
     }
 
     world.removeDestroyedEntities();

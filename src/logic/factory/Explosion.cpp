@@ -21,9 +21,8 @@ ExplosionType Explosion::getType() const {
     return type;
 }
 
-void Explosion::update() {
-    const double deltaTime = Stopwatch::getInstance().getDeltaTime();
-    lifetime -= static_cast<float>(deltaTime);
+void Explosion::update(const float deltaTime) {
+    lifetime -= deltaTime;
 
     if (lifetime <= 0) {
         destroy();

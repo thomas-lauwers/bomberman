@@ -25,6 +25,8 @@ public:
     void renderPlayer(sf::RenderWindow& window, const World& world) const;
     void renderEntities(sf::RenderWindow& window, const World& world);
 
+    void removeDestroyedEntities(const World& world);
+
 private:
     TextureManager& t_manager;
 
@@ -38,7 +40,7 @@ private:
     std::shared_ptr<PlayerView> p_view;
     DestructibleWallView d_wall_view;
     std::map<const Entity*, std::unique_ptr<BombView>> bombViews;
-    ExplosionView e_view;
+    std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
 };
 
 
