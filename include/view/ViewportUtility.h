@@ -8,4 +8,4 @@ public:
     static void setViewport(sf::RenderWindow& window, float contentAspect);
 };
 
-#endif //BOMBERMAN_VIEWPORT_UTILITY_H
+#endif // BOMBERMAN_VIEWPORT_UTILITY_H

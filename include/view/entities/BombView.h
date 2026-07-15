@@ -3,10 +3,9 @@
 #include "../Animation.h"
 #include "IEntityView.h"
 
-
 class TextureManager;
 
-class BombView : public IEntityView  {
+class BombView : public IEntityView {
 public:
     explicit BombView(const TextureManager& t_manager);
 
@@ -20,8 +19,6 @@ private:
     Animation animation;
     float animationTimer = 0.0f;
     size_t frameIndex = 0;
-
 };
 
-
-#endif //BOMBERMAN_BOMBVIEW_H
+#endif // BOMBERMAN_BOMBVIEW_H

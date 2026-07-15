@@ -18,4 +18,4 @@ private:
     TileType type;
 };
 
-#endif //BOMBERMAN_TILE_H
+#endif // BOMBERMAN_TILE_H

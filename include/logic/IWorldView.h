@@ -2,7 +2,7 @@
 #define BOMBERMAN_IWORLDVIEW_H
 
 namespace sf {
-    class RenderWindow;
+class RenderWindow;
 }
 
 class World;
@@ -14,4 +14,4 @@ public:
     virtual void update(float deltaTime) = 0;
 };
 
-#endif //BOMBERMAN_IWORLDVIEW_H
+#endif // BOMBERMAN_IWORLDVIEW_H

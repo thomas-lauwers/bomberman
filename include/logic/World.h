@@ -29,7 +29,8 @@ public:
     void removeDestroyedEntities();
     void spawnExplosion(float x, float y);
 
-    [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect &currentEntityRect) const;
+    [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
+                                   const Rect& currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
 
 private:
@@ -39,5 +40,4 @@ private:
     std::shared_ptr<IEntityFactory> factory;
 };
 
-
-#endif //BOMBERMAN_ARENA_H
+#endif // BOMBERMAN_ARENA_H

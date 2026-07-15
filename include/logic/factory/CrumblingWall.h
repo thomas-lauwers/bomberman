@@ -17,5 +17,4 @@ private:
     float lifetime = 0.75f;
 };
 
-
-#endif //BOMBERMAN_CRUMBLINGWALL_H
+#endif // BOMBERMAN_CRUMBLINGWALL_H

@@ -1,7 +1,6 @@
 #ifndef BOMBERMAN_RECT_H
 #define BOMBERMAN_RECT_H
 
-
 struct Rect {
     float x;
     float y;
@@ -11,5 +10,4 @@ struct Rect {
     [[nodiscard]] bool intersects(const Rect& other) const;
 };
 
-
-#endif //BOMBERMAN_RECT_H
+#endif // BOMBERMAN_RECT_H

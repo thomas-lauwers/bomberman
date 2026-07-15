@@ -1,8 +1,7 @@
 #ifndef BOMBERMAN_DESTRUCTIBLEWALL_H
 #define BOMBERMAN_DESTRUCTIBLEWALL_H
-#include "Entity.h"
 #include "../../utils/Position.h"
-
+#include "Entity.h"
 
 class DestructibleWall : public Entity {
 public:
@@ -16,5 +15,4 @@ private:
     Position position;
 };
 
-
-#endif //BOMBERMAN_DESTRUCTIBLEWALL_H
+#endif // BOMBERMAN_DESTRUCTIBLEWALL_H

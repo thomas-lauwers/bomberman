@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_DESTRUCTIBLEWALLVIEW_H
 #define BOMBERMAN_DESTRUCTIBLEWALLVIEW_H
-#include "IEntityView.h"
 #include "../Animation.h"
+#include "IEntityView.h"
 
 class TextureManager;
 
@@ -17,5 +17,4 @@ private:
     sf::Sprite sprite;
 };
 
-
-#endif //BOMBERMAN_DESTRUCTIBLEWALLVIEW_H
+#endif // BOMBERMAN_DESTRUCTIBLEWALLVIEW_H

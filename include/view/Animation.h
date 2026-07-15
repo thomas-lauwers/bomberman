@@ -10,4 +10,4 @@ struct Animation {
     bool loop;
 };
 
-#endif //BOMBERMAN_ANIMATION_H
+#endif // BOMBERMAN_ANIMATION_H

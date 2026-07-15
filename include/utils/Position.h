@@ -6,4 +6,4 @@ struct Position {
     float y;
 };
 
-#endif //BOMBERMAN_POSITION_H
+#endif // BOMBERMAN_POSITION_H

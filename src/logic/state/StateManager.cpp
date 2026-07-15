@@ -1,8 +1,6 @@
 #include "../../../include/logic/state/StateManager.h"
 
-void StateManager::pushState(std::unique_ptr<State> state) {
-    states.push(std::move(state));
-}
+void StateManager::pushState(std::unique_ptr<State> state) { states.push(std::move(state)); }
 
 void StateManager::popState() {
     if (!states.empty()) {

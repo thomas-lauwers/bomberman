@@ -8,5 +8,4 @@ public:
     void render(sf::RenderWindow& window, IWorldView& renderer) override;
 };
 
-
-#endif //BOMBERMAN_PAUSESTATE_H
+#endif // BOMBERMAN_PAUSESTATE_H

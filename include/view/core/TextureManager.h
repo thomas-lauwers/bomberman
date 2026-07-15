@@ -15,5 +15,4 @@ private:
     std::map<std::string, sf::Texture> textures;
 };
 
-
-#endif //BOMBERMAN_TEXTUREMANAGER_H
+#endif // BOMBERMAN_TEXTUREMANAGER_H

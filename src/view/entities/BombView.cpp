@@ -1,12 +1,12 @@
 #include "../../../include/view/entities/BombView.h"
-#include "../../../include/logic/World.h"
-#include "../../../include/view/core/TextureManager.h"
 #include "../../../include/logic/Camera.h"
-#include "../../../include/utils/Position.h"
+#include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
+#include "../../../include/utils/Position.h"
 #include "../../../include/view/Animation.h"
+#include "../../../include/view/core/TextureManager.h"
 
-BombView::BombView(const TextureManager &t_manager) {
+BombView::BombView(const TextureManager& t_manager) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
     sprite.setTextureRect(sf::IntRect(120, 117, 16, 16));
 
@@ -20,7 +20,7 @@ BombView::BombView(const TextureManager &t_manager) {
     animation.loop = true;
 }
 
-void BombView::draw(sf::RenderWindow &window, const Entity &entity) {
+void BombView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setTextureRect(animation.frames[frameIndex]);
 
     constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
@@ -34,8 +34,7 @@ void BombView::draw(sf::RenderWindow &window, const Entity &entity) {
     window.draw(sprite);
 }
 
-void BombView::onNotify(const Entity& entity, Event event) {
-}
+void BombView::onNotify(const Entity& entity, Event event) {}
 
 void BombView::update(const float deltaTime) {
     animationTimer += deltaTime;

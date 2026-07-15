@@ -6,4 +6,4 @@ enum class AnimationState {
     Moving,
 };
 
-#endif //BOMBERMAN_ANIMATIONSTATE_H
+#endif // BOMBERMAN_ANIMATIONSTATE_H

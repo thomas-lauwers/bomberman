@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_CRUMBLINGWALLVIEW_H
 #define BOMBERMAN_CRUMBLINGWALLVIEW_H
-#include "IEntityView.h"
 #include "../Animation.h"
+#include "IEntityView.h"
 
 class TextureManager;
 
@@ -21,5 +21,4 @@ private:
     size_t frameIndex = 0;
 };
 
-
-#endif //BOMBERMAN_CRUMBLINGWALLVIEW_H
+#endif // BOMBERMAN_CRUMBLINGWALLVIEW_H

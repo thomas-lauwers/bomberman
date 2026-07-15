@@ -5,8 +5,8 @@
 
 class Random {
 public:
-    Random(const Random &) = delete;
-    Random& operator=(const Random &) = delete;
+    Random(const Random&) = delete;
+    Random& operator=(const Random&) = delete;
 
     static Random& getInstance() {
         static Random instance;
@@ -22,5 +22,4 @@ private:
     std::uniform_real_distribution<> dist{0, 1};
 };
 
-
-#endif //BOMBERMAN_RANDOM_H
+#endif // BOMBERMAN_RANDOM_H

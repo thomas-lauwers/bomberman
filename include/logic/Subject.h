@@ -2,20 +2,18 @@
 #define BOMBERMAN_SUBJECT_H
 
 #include "Observer.h"
-#include <vector>
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 class Entity;
 
 class Subject {
 public:
     virtual ~Subject() = default;
-    
-    void addObserver(const std::weak_ptr<Observer>& observer) {
-        observers.push_back(observer);
-    }
-    
+
+    void addObserver(const std::weak_ptr<Observer>& observer) { observers.push_back(observer); }
+
 protected:
     void notify(const Entity& entity, const Event event) {
         for (auto it = observers.begin(); it != observers.end();) {

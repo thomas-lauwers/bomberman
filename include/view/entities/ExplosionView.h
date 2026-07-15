@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_EXPLOSIONVIEW_H
 #define BOMBERMAN_EXPLOSIONVIEW_H
+#include "../../logic/factory/Explosion.h"
 #include "../Animation.h"
 #include "IEntityView.h"
-#include "../../logic/factory/Explosion.h"
 
 class TextureManager;
 
@@ -23,4 +23,4 @@ private:
     size_t frameIndex = 0;
 };
 
-#endif //BOMBERMAN_EXPLOSIONVIEW_H
+#endif // BOMBERMAN_EXPLOSIONVIEW_H

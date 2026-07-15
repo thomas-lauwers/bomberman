@@ -1,8 +1,6 @@
 #include "../../../include/view/core/TextureManager.h"
 
-TextureManager::TextureManager() {
-    loadAssets();
-}
+TextureManager::TextureManager() { loadAssets(); }
 
 void TextureManager::loadAssets() {
     if (sf::Texture battleTexture; battleTexture.loadFromFile("assets/battle_stage_sprites.png")) {
@@ -18,6 +16,4 @@ void TextureManager::loadAssets() {
     }
 }
 
-const sf::Texture & TextureManager::getTexture(const std::string &name) const {
-    return textures.at(name);
-}
+const sf::Texture& TextureManager::getTexture(const std::string& name) const { return textures.at(name); }

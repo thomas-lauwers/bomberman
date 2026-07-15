@@ -2,7 +2,6 @@
 #define BOMBERMAN_BOMB_H
 #include "Entity.h"
 
-
 class Bomb : public Entity {
 public:
     Bomb(float x, float y);
@@ -19,5 +18,4 @@ private:
     float timer = 2.0f;
 };
 
-
-#endif //BOMBERMAN_BOMB_H
+#endif // BOMBERMAN_BOMB_H

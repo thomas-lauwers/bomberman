@@ -18,5 +18,4 @@ public:
     static PixelPosition normalizedToPixel(NormalizedPosition normPos, int winW, int winH);
 };
 
-
-#endif //BOMBERMAN_CAMERA_H
+#endif // BOMBERMAN_CAMERA_H

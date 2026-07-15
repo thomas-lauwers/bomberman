@@ -22,5 +22,4 @@ private:
     WorldRenderer worldRenderer;
 };
 
-
-#endif //BOMBERMAN_GAME_H
+#endif // BOMBERMAN_GAME_H

@@ -1,10 +1,10 @@
 #ifndef BOMBERMAN_PLAYER_H
 #define BOMBERMAN_PLAYER_H
 
-#include "Entity.h"
-#include "../Observer.h"
 #include "../../utils/Position.h"
+#include "../Observer.h"
 #include "../Rect.h"
+#include "Entity.h"
 
 class Player : public Entity, public Observer {
 public:
@@ -20,7 +20,7 @@ public:
     [[nodiscard]] Rect getCollisionRect() const override;
 
     void onNotify(const Entity& entity, Event event) override;
-    
+
     [[nodiscard]] bool canPlaceBomb() const;
 
     void setCanPlaceBomb(bool can);
@@ -37,5 +37,4 @@ private:
     bool wasMoving = false;
 };
 
-
-#endif //BOMBERMAN_PLAYER_H
+#endif // BOMBERMAN_PLAYER_H

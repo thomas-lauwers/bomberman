@@ -15,8 +15,6 @@ public:
 
 private:
     std::stack<std::unique_ptr<State>> states{};
-
 };
 
-
-#endif //BOMBERMAN_STATEMANAGER_H
+#endif // BOMBERMAN_STATEMANAGER_H

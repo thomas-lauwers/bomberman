@@ -2,15 +2,7 @@
 #define BOMBERMAN_EXPLOSION_H
 #include "Entity.h"
 
-enum class ExplosionType {
-    Center,
-    Horizontal,
-    Vertical,
-    EndUp,
-    EndDown,
-    EndLeft,
-    EndRight
-};
+enum class ExplosionType { Center, Horizontal, Vertical, EndUp, EndDown, EndLeft, EndRight };
 
 class Explosion : public Entity {
 public:
@@ -29,5 +21,4 @@ private:
     float lifetime = 0.6f;
 };
 
-
-#endif //BOMBERMAN_EXPLOSION_H
+#endif // BOMBERMAN_EXPLOSION_H

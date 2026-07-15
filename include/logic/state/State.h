@@ -5,7 +5,7 @@
 #include "../Input.h"
 
 namespace sf {
-    class RenderWindow;
+class RenderWindow;
 }
 
 class IWorldView;
@@ -19,4 +19,4 @@ public:
     virtual void render(sf::RenderWindow& window, IWorldView& renderer) = 0;
 };
 
-#endif //BOMBERMAN_STATE_H
+#endif // BOMBERMAN_STATE_H

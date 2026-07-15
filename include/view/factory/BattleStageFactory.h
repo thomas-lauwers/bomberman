@@ -22,5 +22,4 @@ private:
     std::shared_ptr<PlayerView> playerView;
 };
 
-
-#endif //BOMBERMAN_BATTLESTAGEFACTORY_H
+#endif // BOMBERMAN_BATTLESTAGEFACTORY_H

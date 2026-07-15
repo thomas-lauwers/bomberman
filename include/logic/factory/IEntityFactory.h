@@ -21,5 +21,4 @@ public:
     virtual std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) = 0;
 };
 
-
-#endif //BOMBERMAN_IENTITYFACTORY_H
+#endif // BOMBERMAN_IENTITYFACTORY_H

@@ -3,18 +3,14 @@
 
 Player::Player() = default;
 
-EntityType Player::getEntityType() const {
-    return Player_E;
-}
+EntityType Player::getEntityType() const { return Player_E; }
 
 void Player::setPosition(const float x, const float y) {
     position.x = x;
     position.y = y;
 }
 
-Position Player::getPosition() const {
-    return position;
-}
+Position Player::getPosition() const { return position; }
 
 void Player::move(const float dx, const float dy) {
     const double deltaTime = Stopwatch::getInstance().getDeltaTime();
@@ -34,9 +30,7 @@ void Player::update(float deltaTime) {
     isMoving = false;
 }
 
-Rect Player::getCollisionRect() const {
-    return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f};
-}
+Rect Player::getCollisionRect() const { return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f}; }
 
 void Player::onNotify(const Entity& entity, const Event event) {
     if (event == Event::EntityDestroyed && entity.getEntityType() == Bomb_E) {
@@ -44,14 +38,8 @@ void Player::onNotify(const Entity& entity, const Event event) {
     }
 }
 
-bool Player::canPlaceBomb() const {
-    return canPlace;
-}
+bool Player::canPlaceBomb() const { return canPlace; }
 
-void Player::setCanPlaceBomb(const bool can) {
-    canPlace = can;
-}
+void Player::setCanPlaceBomb(const bool can) { canPlace = can; }
 
-void Player::triggerEvent(Event event) {
-    notify(*this, event);
-}
+void Player::triggerEvent(Event event) { notify(*this, event); }

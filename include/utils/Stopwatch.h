@@ -5,8 +5,8 @@
 
 class Stopwatch {
 public:
-    Stopwatch(const Stopwatch &) = delete;
-    Stopwatch& operator=(const Stopwatch &) = delete;
+    Stopwatch(const Stopwatch&) = delete;
+    Stopwatch& operator=(const Stopwatch&) = delete;
 
     static Stopwatch& getInstance() {
         static Stopwatch instance;
@@ -21,8 +21,6 @@ private:
 
     std::chrono::steady_clock::time_point lastTick;
     double deltaTime;
-
 };
 
-
-#endif //BOMBERMAN_STOPWATCH_H
+#endif // BOMBERMAN_STOPWATCH_H

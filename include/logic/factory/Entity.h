@@ -1,16 +1,10 @@
 #ifndef BOMBERMAN_COLLIDABLE_H
 #define BOMBERMAN_COLLIDABLE_H
-#include "../Rect.h"
 #include "../../utils/Position.h"
+#include "../Rect.h"
 #include "../Subject.h"
 
-enum EntityType {
-    Player_E,
-    DestructibleWall_E,
-    CrumblingWall_E,
-    Bomb_E,
-    Explosion_E
-};
+enum EntityType { Player_E, DestructibleWall_E, CrumblingWall_E, Bomb_E, Explosion_E };
 
 class Entity : public Subject {
 public:
@@ -32,5 +26,4 @@ protected:
     bool destroyed = false;
 };
 
-
-#endif //BOMBERMAN_COLLIDABLE_H
+#endif // BOMBERMAN_COLLIDABLE_H

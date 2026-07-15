@@ -4,15 +4,14 @@
 #include "../../logic/IWorldView.h"
 #include "../../logic/factory/Entity.h"
 #include "../core/TextureManager.h"
-#include "../entities/PlayerView.h"
-#include "../entities/DestructibleWallView.h"
 #include "../entities/BombView.h"
-#include "../entities/ExplosionView.h"
 #include "../entities/CrumblingWallView.h"
+#include "../entities/DestructibleWallView.h"
+#include "../entities/ExplosionView.h"
+#include "../entities/PlayerView.h"
 #include <SFML/Graphics.hpp>
-#include <memory>
 #include <map>
-
+#include <memory>
 
 class WorldRenderer : public IWorldView {
 public:
@@ -46,5 +45,4 @@ private:
     std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
 };
 
-
-#endif //BOMBERMAN_WORLDRENDERER_H
+#endif // BOMBERMAN_WORLDRENDERER_H

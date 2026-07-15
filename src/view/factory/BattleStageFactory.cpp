@@ -1,16 +1,14 @@
 #include <utility>
 
-#include "../../../include/view/factory/BattleStageFactory.h"
-#include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/CrumblingWall.h"
 #include "../../../include/logic/factory/DestructibleWall.h"
-#include "../../../include/view/entities/PlayerView.h"
 #include "../../../include/logic/factory/Explosion.h"
+#include "../../../include/logic/factory/Player.h"
+#include "../../../include/view/entities/PlayerView.h"
+#include "../../../include/view/factory/BattleStageFactory.h"
 
-void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) {
-    playerView = std::move(view);
-}
+void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) { playerView = std::move(view); }
 
 std::unique_ptr<Player> BattleStageFactory::createPlayer() {
     auto player = std::make_unique<Player>();

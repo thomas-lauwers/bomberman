@@ -1,11 +1,11 @@
 #ifndef BOMBERMAN_PLAYSTATE_H
 #define BOMBERMAN_PLAYSTATE_H
 
-#include "State.h"
-#include "../World.h"
-#include "../Input.h"
 #include "../IWorldView.h"
+#include "../Input.h"
+#include "../World.h"
 #include "../WorldObserver.h"
+#include "State.h"
 #include <memory>
 #include <vector>
 
@@ -28,5 +28,4 @@ private:
     std::vector<std::shared_ptr<WorldObserver>> bombObservers;
 };
 
-
-#endif //BOMBERMAN_PLAYSTATE_H
+#endif // BOMBERMAN_PLAYSTATE_H

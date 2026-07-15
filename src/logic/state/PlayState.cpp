@@ -1,14 +1,11 @@
 #include <utility>
 
-#include "../../../include/logic/state/PlayState.h"
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/IEntityFactory.h"
 #include "../../../include/logic/factory/Player.h"
+#include "../../../include/logic/state/PlayState.h"
 
-
-PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) 
-    : factory(std::move(factory)), world(this->factory) {
-}
+PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(this->factory) {}
 
 void PlayState::handleInput(const Input input) {
     if (const auto player = world.getPlayer()) {
@@ -16,23 +13,31 @@ void PlayState::handleInput(const Input input) {
         float dy = 0.f;
 
         switch (input) {
-            case Input::MoveLeft: dx -= 1.f; break;
-            case Input::MoveRight: dx += 1.f; break;
-            case Input::MoveUp: dy -= 1.f; break;
-            case Input::MoveDown: dy += 1.f; break;
-            case Input::PlaceBomb:
-                if (player->canPlaceBomb()) {
-                    auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
-                    player->setCanPlaceBomb(false);
-                    bomb->addObserver(player);
+        case Input::MoveLeft:
+            dx -= 1.f;
+            break;
+        case Input::MoveRight:
+            dx += 1.f;
+            break;
+        case Input::MoveUp:
+            dy -= 1.f;
+            break;
+        case Input::MoveDown:
+            dy += 1.f;
+            break;
+        case Input::PlaceBomb:
+            if (player->canPlaceBomb()) {
+                auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
+                player->setCanPlaceBomb(false);
+                bomb->addObserver(player);
 
-                    const auto observer = std::make_shared<WorldObserver>(world);
-                    bomb->addObserver(observer);
-                    bombObservers.push_back(observer);
+                const auto observer = std::make_shared<WorldObserver>(world);
+                bomb->addObserver(observer);
+                bombObservers.push_back(observer);
 
-                    world.pushBackEntity(std::move(bomb));
-                }
-                return;
+                world.pushBackEntity(std::move(bomb));
+            }
+            return;
         }
 
         if (dx != 0.f || dy != 0.f) {
@@ -43,10 +48,14 @@ void PlayState::handleInput(const Input input) {
             if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
-                if (dx > 0) player->triggerEvent(Event::PlayerMovedRight);
-                else if (dx < 0) player->triggerEvent(Event::PlayerMovedLeft);
-                else if (dy > 0) player->triggerEvent(Event::PlayerMovedDown);
-                else if (dy < 0) player->triggerEvent(Event::PlayerMovedUp);
+                if (dx > 0)
+                    player->triggerEvent(Event::PlayerMovedRight);
+                else if (dx < 0)
+                    player->triggerEvent(Event::PlayerMovedLeft);
+                else if (dy > 0)
+                    player->triggerEvent(Event::PlayerMovedDown);
+                else if (dy < 0)
+                    player->triggerEvent(Event::PlayerMovedUp);
             }
         }
     }
@@ -64,8 +73,6 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world.removeDestroyedEntities();
 }
 
-void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) {
-    renderer.render(window, world);
-}
+void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) { renderer.render(window, world); }
 
 PlayState::~PlayState() = default;

@@ -29,5 +29,4 @@ private:
     size_t frameIndex = 0;
 };
 
-
-#endif //BOMBERMAN_PLAYERVIEW_H
+#endif // BOMBERMAN_PLAYERVIEW_H

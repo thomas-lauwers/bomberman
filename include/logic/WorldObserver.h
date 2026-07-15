@@ -6,6 +6,7 @@
 
 class WorldObserver : public Observer {
     World& world;
+
 public:
     explicit WorldObserver(World& w) : world(w) {}
     void onNotify(const Entity& entity, const Event event) override {
@@ -14,4 +15,4 @@ public:
         }
     }
 };
-#endif //BOMBERMAN_WORLDOBSERVER_H
+#endif // BOMBERMAN_WORLDOBSERVER_H
