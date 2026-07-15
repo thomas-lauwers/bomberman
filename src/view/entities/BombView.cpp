@@ -1,10 +1,10 @@
-#include "../../include/view/BombView.h"
-#include "../../include/logic/World.h"
-#include "../../include/view/TextureManager.h"
-#include "../../include/logic/Camera.h"
-#include "../../include/utils/Position.h"
-#include "../../include/logic/factory/Entity.h"
-#include "../../include/view/Animation.h"
+#include "../../../include/view/entities/BombView.h"
+#include "../../../include/logic/World.h"
+#include "../../../include/view/core/TextureManager.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/utils/Position.h"
+#include "../../../include/logic/factory/Entity.h"
+#include "../../../include/view/Animation.h"
 
 BombView::BombView(const TextureManager &t_manager) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));

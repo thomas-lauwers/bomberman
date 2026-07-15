@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_PLAYERVIEW_H
 #define BOMBERMAN_PLAYERVIEW_H
-#include "AnimationState.h"
-#include "BomberAnimationConfig.h"
+#include "../AnimationState.h"
+#include "../BomberAnimationConfig.h"
 #include "IEntityView.h"
 
 enum class Direction;

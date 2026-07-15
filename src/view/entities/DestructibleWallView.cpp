@@ -1,9 +1,9 @@
-#include "../../include/view/DestructibleWallView.h"
-#include "../../include/view/TextureManager.h"
-#include "../../include/logic/World.h"
-#include "../../include/utils/Position.h"
-#include "../../include/logic/Camera.h"
-#include "../../include/logic/factory/Entity.h"
+#include "../../../include/view/entities/DestructibleWallView.h"
+#include "../../../include/view/core/TextureManager.h"
+#include "../../../include/logic/World.h"
+#include "../../../include/utils/Position.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/logic/factory/Entity.h"
 
 
 DestructibleWallView::DestructibleWallView(const TextureManager &t_manager) {

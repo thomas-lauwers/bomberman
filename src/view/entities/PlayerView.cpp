@@ -1,10 +1,10 @@
-#include "../../include/view/PlayerView.h"
-#include "../../include/logic/World.h"
-#include "../../include/view/TextureManager.h"
-#include "../../include/logic/Camera.h"
-#include "../../include/utils/Position.h"
-#include "../../include/logic/factory/Entity.h"
-#include "../../include/view/Direction.h"
+#include "../../../include/view/entities/PlayerView.h"
+#include "../../../include/logic/World.h"
+#include "../../../include/view/core/TextureManager.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/utils/Position.h"
+#include "../../../include/logic/factory/Entity.h"
+#include "../../../include/view/Direction.h"
 
 PlayerView::PlayerView(const TextureManager& t_manager) : currentAction{AnimationState::Idle}, currentDirection{Direction::Down} {
     sprite.setTexture(t_manager.getTexture("character_sprites"));

@@ -1,14 +1,14 @@
 #ifndef BOMBERMAN_WORLDRENDERER_H
 #define BOMBERMAN_WORLDRENDERER_H
 
-#include "../logic/IWorldView.h"
-#include "../logic/factory/Entity.h"
-#include "TextureManager.h"
-#include "PlayerView.h"
-#include "DestructibleWallView.h"
-#include "BombView.h"
-#include "ExplosionView.h"
-#include "CrumblingWallView.h"
+#include "../../logic/IWorldView.h"
+#include "../../logic/factory/Entity.h"
+#include "../core/TextureManager.h"
+#include "../entities/PlayerView.h"
+#include "../entities/DestructibleWallView.h"
+#include "../entities/BombView.h"
+#include "../entities/ExplosionView.h"
+#include "../entities/CrumblingWallView.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <map>

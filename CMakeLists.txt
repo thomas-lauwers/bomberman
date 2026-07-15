@@ -44,35 +44,35 @@ SET(LOGIC_SRC
 
 SET(VIEW_SRC 
         main.cpp
-        src/view/Game.cpp
-        include/view/Game.h
-        src/view/WorldRenderer.cpp
-        include/view/WorldRenderer.h
-        src/view/TextureManager.cpp
-        include/view/TextureManager.h
-        include/view/IEntityView.h
-        src/view/PlayerView.cpp
-        include/view/PlayerView.h
-        src/view/DestructibleWallView.cpp
-        include/view/DestructibleWallView.h
-        src/view/BombView.cpp
-        include/view/BombView.h
+        src/view/core/Game.cpp
+        include/view/core/Game.h
+        src/view/core/WorldRenderer.cpp
+        include/view/core/WorldRenderer.h
+        src/view/core/TextureManager.cpp
+        include/view/core/TextureManager.h
+        include/view/entities/IEntityView.h
+        src/view/entities/PlayerView.cpp
+        include/view/entities/PlayerView.h
+        src/view/entities/DestructibleWallView.cpp
+        include/view/entities/DestructibleWallView.h
+        src/view/entities/BombView.cpp
+        include/view/entities/BombView.h
         src/view/ViewportUtility.cpp
         include/view/ViewportUtility.h
         src/view/factory/BattleStageFactory.cpp
         include/view/factory/BattleStageFactory.h
         src/logic/factory/Explosion.cpp
-        src/view/ExplosionView.cpp
-        include/view/ExplosionView.h
-        src/view/ExplosionView.cpp
+        src/view/entities/ExplosionView.cpp
+        include/view/entities/ExplosionView.h
+        src/view/entities/ExplosionView.cpp
         include/view/Direction.h
         include/view/AnimationState.h
         include/view/BomberAnimationConfig.h
         src/view/BomberAnimationConfig.cpp
         include/view/BomberAnimationConfig.h
         include/view/Animation.h
-        src/view/CrumblingWallView.cpp
-        include/view/CrumblingWallView.h
+        src/view/entities/CrumblingWallView.cpp
+        include/view/entities/CrumblingWallView.h
         src/logic/factory/CrumblingWall.cpp
         include/logic/factory/CrumblingWall.h
 )

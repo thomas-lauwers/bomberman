@@ -1,4 +1,4 @@
-#include "../../include/view/TextureManager.h"
+#include "../../../include/view/core/TextureManager.h"
 
 TextureManager::TextureManager() {
     loadAssets();

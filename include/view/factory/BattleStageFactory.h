@@ -2,8 +2,8 @@
 #define BOMBERMAN_BATTLESTAGEFACTORY_H
 
 #include "../../logic/factory/IEntityFactory.h"
-#include "../TextureManager.h"
-#include "../PlayerView.h"
+#include "../core/TextureManager.h"
+#include "../entities/PlayerView.h"
 #include <memory>
 
 class BattleStageFactory : public IEntityFactory {

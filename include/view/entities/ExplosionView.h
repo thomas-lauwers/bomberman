@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_EXPLOSIONVIEW_H
 #define BOMBERMAN_EXPLOSIONVIEW_H
-#include "Animation.h"
+#include "../Animation.h"
 #include "IEntityView.h"
-#include "../logic/factory/Explosion.h"
+#include "../../logic/factory/Explosion.h"
 
 class TextureManager;
 

@@ -2,7 +2,7 @@
 #define BOMBERMAN_IENTITYVIEW_H
 
 #include <SFML/Graphics.hpp>
-#include "../logic/Observer.h"
+#include "../../logic/Observer.h"
 
 class Entity;
 

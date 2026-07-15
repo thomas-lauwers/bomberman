@@ -5,7 +5,7 @@
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/CrumblingWall.h"
 #include "../../../include/logic/factory/DestructibleWall.h"
-#include "../../../include/view/PlayerView.h"
+#include "../../../include/view/entities/PlayerView.h"
 #include "../../../include/logic/factory/Explosion.h"
 
 void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) {

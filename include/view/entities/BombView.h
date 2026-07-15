@@ -1,13 +1,14 @@
-#ifndef BOMBERMAN_CRUMBLINGWALLVIEW_H
-#define BOMBERMAN_CRUMBLINGWALLVIEW_H
+#ifndef BOMBERMAN_BOMBVIEW_H
+#define BOMBERMAN_BOMBVIEW_H
+#include "../Animation.h"
 #include "IEntityView.h"
-#include "Animation.h"
+
 
 class TextureManager;
 
-class CrumblingWallView : public IEntityView {
+class BombView : public IEntityView  {
 public:
-    explicit CrumblingWallView(const TextureManager& t_manager);
+    explicit BombView(const TextureManager& t_manager);
 
     void draw(sf::RenderWindow& window, const Entity& entity) override;
     void update(float deltaTime) override;
@@ -19,7 +20,8 @@ private:
     Animation animation;
     float animationTimer = 0.0f;
     size_t frameIndex = 0;
+
 };
 
 
-#endif //BOMBERMAN_CRUMBLINGWALLVIEW_H
+#endif //BOMBERMAN_BOMBVIEW_H

@@ -1,10 +1,10 @@
-#include "../../include/view/Game.h"
-#include "../../include/logic/state/PlayState.h"
-#include "../../include/utils/Stopwatch.h"
-#include "../../include/view/ViewportUtility.h"
-#include "../../include/logic/World.h"
-#include "../../include/logic/Input.h"
-#include "../../include/view/factory/BattleStageFactory.h"
+#include "../../../include/view/core/Game.h"
+#include "../../../include/logic/state/PlayState.h"
+#include "../../../include/utils/Stopwatch.h"
+#include "../../../include/view/ViewportUtility.h"
+#include "../../../include/logic/World.h"
+#include "../../../include/logic/Input.h"
+#include "../../../include/view/factory/BattleStageFactory.h"
 using namespace std;
 
 Game::Game() : window(sf::VideoMode({720, 624}), "Bomberman"),

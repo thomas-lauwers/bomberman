@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_GAME_H
 #define BOMBERMAN_GAME_H
 
-#include "../logic/state/StateManager.h"
+#include "../../logic/state/StateManager.h"
 #include "TextureManager.h"
 #include "WorldRenderer.h"
 #include <SFML/Graphics.hpp>

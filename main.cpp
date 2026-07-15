@@ -1,4 +1,4 @@
-#include "include/view/Game.h"
+#include "include/view/core/Game.h"
 #include <memory>
 
 int main() {

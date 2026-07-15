@@ -1,9 +1,9 @@
-#include "../../include/view/ExplosionView.h"
-#include "../../include/logic/factory/Explosion.h"
-#include "../../include/view/TextureManager.h"
-#include "../../include/logic/Camera.h"
-#include "../../include/utils/Position.h"
-#include "../../include/logic/World.h"
+#include "../../../include/view/entities/ExplosionView.h"
+#include "../../../include/logic/factory/Explosion.h"
+#include "../../../include/view/core/TextureManager.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/utils/Position.h"
+#include "../../../include/logic/World.h"
 
 namespace {
     std::vector<sf::IntRect> getFrames(const ExplosionType type) {

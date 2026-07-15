@@ -1,8 +1,8 @@
-#include "../../include/view/WorldRenderer.h"
+#include "../../../include/view/core/WorldRenderer.h"
 #include <unordered_set>
-#include "../../include/logic/Camera.h"
-#include "../../include/logic/factory/Player.h"
-#include "../../include/logic/World.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/logic/factory/Player.h"
+#include "../../../include/logic/World.h"
 
 WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();

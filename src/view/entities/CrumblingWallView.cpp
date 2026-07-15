@@ -1,9 +1,9 @@
-#include "../../include/view/CrumblingWallView.h"
-#include "../../include/view/TextureManager.h"
-#include "../../include/logic/World.h"
-#include "../../include/utils/Position.h"
-#include "../../include/logic/Camera.h"
-#include "../../include/logic/factory/Entity.h"
+#include "../../../include/view/entities/CrumblingWallView.h"
+#include "../../../include/view/core/TextureManager.h"
+#include "../../../include/logic/World.h"
+#include "../../../include/utils/Position.h"
+#include "../../../include/logic/Camera.h"
+#include "../../../include/logic/factory/Entity.h"
 
 CrumblingWallView::CrumblingWallView(const TextureManager &t_manager) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
