@@ -2,6 +2,7 @@
 #define BOMBERMAN_WORLDOBSERVER_H
 #include "Observer.h"
 #include "World.h"
+#include "factory/Entity.h"
 
 class WorldObserver : public Observer {
     World& world;

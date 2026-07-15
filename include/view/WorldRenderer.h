@@ -8,9 +8,11 @@
 #include "DestructibleWallView.h"
 #include "BombView.h"
 #include "ExplosionView.h"
+#include "CrumblingWallView.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <map>
+
 
 class WorldRenderer : public IWorldView {
 public:
@@ -39,6 +41,7 @@ private:
     // Entity views
     std::shared_ptr<PlayerView> p_view;
     DestructibleWallView d_wall_view;
+    std::map<const Entity*, std::unique_ptr<CrumblingWallView>> c_wallViews;
     std::map<const Entity*, std::unique_ptr<BombView>> bombViews;
     std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
 };

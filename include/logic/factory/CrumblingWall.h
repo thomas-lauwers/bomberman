@@ -1,23 +1,21 @@
-#ifndef BOMBERMAN_BOMB_H
-#define BOMBERMAN_BOMB_H
+#ifndef BOMBERMAN_CRUMBLINGWALL_H
+#define BOMBERMAN_CRUMBLINGWALL_H
 #include "Entity.h"
 
-
-class Bomb : public Entity {
+class CrumblingWall : public Entity {
 public:
-    Bomb(float x, float y);
+    CrumblingWall(float x, float y);
 
     [[nodiscard]] EntityType getEntityType() const override;
     [[nodiscard]] Position getPosition() const override;
     [[nodiscard]] Rect getCollisionRect() const override;
 
     void update(float deltaTime) override;
-    void explode();
 
 private:
     Position position;
-    float timer = 2.0f;
+    float lifetime = 0.75f;
 };
 
 
-#endif //BOMBERMAN_BOMB_H
+#endif //BOMBERMAN_CRUMBLINGWALL_H

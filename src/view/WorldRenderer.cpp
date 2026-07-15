@@ -4,7 +4,7 @@
 #include "../../include/logic/factory/Player.h"
 #include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();
 }
 
@@ -39,6 +39,9 @@ void WorldRenderer::update(const float deltaTime) {
         pair.second->update(deltaTime);
     }
     for (auto& pair : explosionViews) {
+        pair.second->update(deltaTime);
+    }
+    for (auto& pair : c_wallViews) {
         pair.second->update(deltaTime);
     }
 }
@@ -107,6 +110,13 @@ void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world)
                 explosionViews[entity.get()]->draw(window, *entity);
                 break;
 
+            case CrumblingWall_E:
+                if (c_wallViews.find(entity.get()) == c_wallViews.end()) {
+                    c_wallViews[entity.get()] = std::make_unique<CrumblingWallView>(t_manager);
+                }
+                c_wallViews[entity.get()]->draw(window, *entity);
+                break;
+
             default:
                 break;
         }
@@ -119,19 +129,20 @@ void WorldRenderer::removeDestroyedEntities(const World& world) {
         activeEntities.insert(entity.get());
     }
 
-    for (auto it = bombViews.begin(); it != bombViews.end(); ) {
-        if (activeEntities.find(it->first) == activeEntities.end() || it->first->isDestroyed()) {
-            it = bombViews.erase(it);
-        } else {
-            ++it;
+    // Lambda to encapsulate the cleanup logic
+    auto cleanup = [&](auto& viewMap) {
+        for (auto it = viewMap.begin(); it != viewMap.end(); ) {
+            // Check if entity is no longer in the world (activeEntities) or destroyed
+            if (activeEntities.find(it->first) == activeEntities.end() || it->first->isDestroyed()) {
+                it = viewMap.erase(it);
+               } else {
+                   ++it;
+               }
         }
-    }
+    };
 
-    for (auto it = explosionViews.begin(); it != explosionViews.end(); ) {
-        if (activeEntities.find(it->first) == activeEntities.end() || it->first->isDestroyed()) {
-            it = explosionViews.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    // Apply the cleanup to all view containers
+    cleanup(bombViews);
+    cleanup(explosionViews);
+    cleanup(c_wallViews);
 }

@@ -2,8 +2,10 @@
 #define BOMBERMAN_IENTITYFACTORY_H
 
 #include <memory>
-#include "Explosion.h"
 
+enum class ExplosionType;
+class Explosion;
+class CrumblingWall;
 class Bomb;
 class Player;
 class DestructibleWall;
@@ -16,6 +18,7 @@ public:
     virtual std::unique_ptr<Bomb> createBomb(float x, float y) = 0;
     virtual std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) = 0;
     virtual std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) = 0;
+    virtual std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) = 0;
 };
 
 

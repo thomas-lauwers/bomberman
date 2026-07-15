@@ -7,6 +7,7 @@
 enum EntityType {
     Player_E,
     DestructibleWall_E,
+    CrumblingWall_E,
     Bomb_E,
     Explosion_E
 };

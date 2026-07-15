@@ -2,6 +2,7 @@
 #include "../../include/logic/factory/DestructibleWall.h"
 #include "../../include/logic/factory/Explosion.h"
 #include "../../include/utils/Random.h"
+#include "../../include/logic/factory/CrumblingWall.h"
 #include "../../include/logic/factory/Player.h"
 #include <cmath>
 #include <algorithm>
@@ -114,6 +115,7 @@ void World::spawnExplosion(const float x, const float y) {
             if (entity->getEntityType() == DestructibleWall_E) {
                 Position pos = entity->getPosition();
                 if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
+                    entities.push_back(factory->createCrumblingWall(px, py));
                     entity->destroy();
                     return;
                 }

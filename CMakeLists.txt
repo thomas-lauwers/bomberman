@@ -71,6 +71,10 @@ SET(VIEW_SRC
         src/view/BomberAnimationConfig.cpp
         include/view/BomberAnimationConfig.h
         include/view/Animation.h
+        src/view/CrumblingWallView.cpp
+        include/view/CrumblingWallView.h
+        src/logic/factory/CrumblingWall.cpp
+        include/logic/factory/CrumblingWall.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})

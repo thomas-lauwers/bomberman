@@ -23,8 +23,8 @@ void DestructibleWallView::draw(sf::RenderWindow &window, const Entity &entity) 
     window.draw(sprite);
 }
 
-void DestructibleWallView::onNotify(const Entity& entity, Event event) {
+void DestructibleWallView::update(float deltaTime) {
 }
 
-void DestructibleWallView::update(float deltaTime) {
+void DestructibleWallView::onNotify(const Entity& entity, const Event event) {
 }

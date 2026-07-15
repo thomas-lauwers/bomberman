@@ -3,6 +3,7 @@
 #include "../../../include/view/factory/BattleStageFactory.h"
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/Bomb.h"
+#include "../../../include/logic/factory/CrumblingWall.h"
 #include "../../../include/logic/factory/DestructibleWall.h"
 #include "../../../include/view/PlayerView.h"
 #include "../../../include/logic/factory/Explosion.h"
@@ -32,4 +33,9 @@ std::unique_ptr<DestructibleWall> BattleStageFactory::createDestructibleWall(flo
 std::unique_ptr<Explosion> BattleStageFactory::createExplosion(float x, float y, ExplosionType type) {
     auto explosion = std::make_unique<Explosion>(x, y, type);
     return explosion;
+}
+
+std::unique_ptr<CrumblingWall> BattleStageFactory::createCrumblingWall(float x, float y) {
+    auto crumblingwall = std::make_unique<CrumblingWall>(x, y);
+    return crumblingwall;
 }
