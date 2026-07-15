@@ -28,3 +28,23 @@ jobs:
 
       - name: Build with Clang
         run: cmake --build build-clang --target bomberman
+
+  test:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsfml-dev cmake g++ clang
+
+      - name: Configure with G++
+        run: cmake -B build-gcc -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++
+
+      - name: Build tests
+        run: cmake --build build-gcc --target test_logic
+
+      - name: Run tests
+        run: ./build-gcc/test_logic

@@ -6,6 +6,17 @@ ENDIF()
 
 FIND_PACKAGE(SFML REQUIRED COMPONENTS system window graphics)
 
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
+)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
 SET(LOGIC_SRC 
         src/logic/state/State.cpp
         include/logic/state/State.h
@@ -39,6 +50,9 @@ SET(LOGIC_SRC
         include/logic/factory/Bomb.h
         src/logic/factory/DestructibleWall.cpp
         include/logic/factory/DestructibleWall.h
+        src/logic/factory/Explosion.cpp
+        src/logic/factory/CrumblingWall.cpp
+        include/logic/factory/CrumblingWall.h
         include/utils/Position.h
 )
 
@@ -61,7 +75,6 @@ SET(VIEW_SRC
         include/view/ViewportUtility.h
         src/view/factory/BattleStageFactory.cpp
         include/view/factory/BattleStageFactory.h
-        src/logic/factory/Explosion.cpp
         src/view/entities/ExplosionView.cpp
         include/view/entities/ExplosionView.h
         src/view/entities/ExplosionView.cpp
@@ -73,8 +86,6 @@ SET(VIEW_SRC
         include/view/Animation.h
         src/view/entities/CrumblingWallView.cpp
         include/view/entities/CrumblingWallView.h
-        src/logic/factory/CrumblingWall.cpp
-        include/logic/factory/CrumblingWall.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})
@@ -83,3 +94,9 @@ ADD_EXECUTABLE(bomberman ${VIEW_SRC})
 
 TARGET_LINK_LIBRARIES(bomberman bomberman_logic sfml-graphics sfml-window sfml-system)
 INSTALL(TARGETS bomberman DESTINATION bin)
+
+ADD_EXECUTABLE(test_logic tests/test_logic.cpp
+        tests/TestEntityFactory.h)
+TARGET_LINK_LIBRARIES(test_logic PRIVATE bomberman_logic GTest::gtest_main)
+include(GoogleTest)
+gtest_discover_tests(test_logic)
