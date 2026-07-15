@@ -1,9 +1,10 @@
 #include "../../include/view/WorldRenderer.h"
+#include <unordered_set>
 #include "../../include/logic/Camera.h"
 #include "../../include/logic/factory/Player.h"
 #include "../../include/logic/World.h"
 
-WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager}, e_view{t_manager} {
+WorldRenderer::WorldRenderer(TextureManager& manager) : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view{t_manager} {
     loadTileSprites();
 }
 
@@ -24,6 +25,8 @@ void WorldRenderer::loadTileSprites() {
 
 
 void WorldRenderer::render(sf::RenderWindow &window, const World& world) {
+    removeDestroyedEntities(world);
+
     renderTiles(window, world);
     renderEntities(window, world);
     renderPlayer(window, world);
@@ -35,7 +38,9 @@ void WorldRenderer::update(const float deltaTime) {
     for (auto& pair : bombViews) {
         pair.second->update(deltaTime);
     }
-    e_view.update(deltaTime);
+    for (auto& pair : explosionViews) {
+        pair.second->update(deltaTime);
+    }
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow &window, const World &world) {
@@ -81,15 +86,6 @@ void WorldRenderer::renderPlayer(sf::RenderWindow &window, const World &world) c
 }
 
 void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world) {
-    // Cleanup destroyed bombs
-    for (auto it = bombViews.begin(); it != bombViews.end(); ) {
-        if (it->first->isDestroyed()) {
-            it = bombViews.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
     for (const auto& entity : world.getEntities()) {
         switch (entity->getEntityType()) {
             case DestructibleWall_E:
@@ -104,10 +100,38 @@ void WorldRenderer::renderEntities(sf::RenderWindow &window, const World &world)
                 break;
 
             case Explosion_E:
-                e_view.draw(window, *entity);
+                if (explosionViews.find(entity.get()) == explosionViews.end()) {
+                    auto explosion = static_cast<const Explosion*>(entity.get());
+                    explosionViews[entity.get()] = std::make_unique<ExplosionView>(t_manager, explosion->getType());
+                }
+                explosionViews[entity.get()]->draw(window, *entity);
+                break;
 
             default:
                 break;
+        }
+    }
+}
+
+void WorldRenderer::removeDestroyedEntities(const World& world) {
+    std::unordered_set<const Entity*> activeEntities;
+    for (const auto& entity : world.getEntities()) {
+        activeEntities.insert(entity.get());
+    }
+
+    for (auto it = bombViews.begin(); it != bombViews.end(); ) {
+        if (activeEntities.find(it->first) == activeEntities.end() || it->first->isDestroyed()) {
+            it = bombViews.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    for (auto it = explosionViews.begin(); it != explosionViews.end(); ) {
+        if (activeEntities.find(it->first) == activeEntities.end() || it->first->isDestroyed()) {
+            it = explosionViews.erase(it);
+        } else {
+            ++it;
         }
     }
 }

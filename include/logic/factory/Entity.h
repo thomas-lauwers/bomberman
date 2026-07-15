@@ -25,7 +25,7 @@ public:
         notify(*this, Event::EntityDestroyed);
     }
 
-    virtual void update() {}
+    virtual void update(float deltaTime) {}
 
 protected:
     bool destroyed = false;

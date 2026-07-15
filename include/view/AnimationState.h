@@ -4,7 +4,6 @@
 enum class AnimationState {
     Idle,
     Moving,
-    Kicking
 };
 
 #endif //BOMBERMAN_ANIMATIONSTATE_H

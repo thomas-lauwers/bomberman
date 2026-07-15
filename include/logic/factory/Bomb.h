@@ -11,7 +11,7 @@ public:
     [[nodiscard]] Position getPosition() const override;
     [[nodiscard]] Rect getCollisionRect() const override;
 
-    void update() override;
+    void update(float deltaTime) override;
     void tick();
     void explode();
 

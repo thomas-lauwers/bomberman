@@ -17,9 +17,9 @@ public:
 private:
     sf::Sprite sprite;
 
-    Animation bombTicking;
+    Animation animation;
     float animationTimer = 0.0f;
-    int frameIndex = 0;
+    size_t frameIndex = 0;
 
 };
 

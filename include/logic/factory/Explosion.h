@@ -21,12 +21,12 @@ public:
     [[nodiscard]] Rect getCollisionRect() const override;
     [[nodiscard]] ExplosionType getType() const;
 
-    void update() override;
+    void update(float deltaTime) override;
 
 private:
     Position position;
     ExplosionType type;
-    float lifetime = 0.5f;
+    float lifetime = 0.6f;
 };
 
 

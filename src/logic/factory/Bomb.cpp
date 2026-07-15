@@ -16,16 +16,11 @@ Rect Bomb::getCollisionRect() const {
     return {position.x, position.y, 1.0f, 1.0f};
 }
 
-void Bomb::update() {
-    tick();
+void Bomb::update(float deltaTime) {
+    timer -= deltaTime;
     if (timer <= 0) {
         explode();
     }
-}
-
-void Bomb::tick() {
-    const double deltaTime = Stopwatch::getInstance().getDeltaTime();
-    timer -= static_cast<float>(deltaTime);
 }
 
 void Bomb::explode() {
