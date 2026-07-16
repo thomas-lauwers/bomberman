@@ -89,6 +89,11 @@ void World::removeDestroyedEntities() {
 }
 
 void World::spawnExplosion(const float x, const float y, const int blast_radius) {
+    const bool is_top_level = !is_processing_explosions;
+    if (is_top_level) {
+        is_processing_explosions = true;
+    }
+
     auto spawnAt = [&](const float px, const float py, const ExplosionType type) -> bool {
         const int ix = static_cast<int>(std::round(px));
         const int iy = static_cast<int>(std::round(py));
@@ -131,15 +136,18 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
                     return false;
                 }
                 break;
-            case Player_E:
-                break;
-            case CrumblingWall_E:
-                break;
+
             case Bomb_E:
+                if (type != ExplosionType::Center) {
+                    if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
+                        if (std::find(bombs_to_explode.begin(), bombs_to_explode.end(), entity.get()) == bombs_to_explode.end()) {
+                            bombs_to_explode.push_back(static_cast<Bomb*>(entity.get()));
+                        }
+                        return false;
+                    }
+                }
                 break;
-            case Explosion_E:
-                break;
-            case KnockedOutBomber_E:
+            default:
                 break;
             }
         }
@@ -165,6 +173,14 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
     }
     for (int i = 1; i <= blast_radius; ++i) {
         if (!spawnAt(x, y - i, i == blast_radius ? ExplosionType::EndUp : ExplosionType::Vertical)) break;
+    }
+
+    if (is_top_level) {
+        for (Bomb* bomb : bombs_to_explode) {
+            bomb->explode();
+        }
+        is_processing_explosions = false;
+        bombs_to_explode.clear();
     }
 }
 

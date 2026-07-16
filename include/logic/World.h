@@ -49,6 +49,10 @@ private:
     std::vector<std::unique_ptr<Entity>> entities;
     std::shared_ptr<Player> player;
     std::shared_ptr<IEntityFactory> factory;
+    std::vector<Bomb*> bombs_to_explode;
+    std::vector<Entity*> entities_to_destroy;
+    std::vector<std::unique_ptr<Entity>> new_entities_to_add;
+    bool is_processing_explosions = false;
 };
 
 #endif // BOMBERMAN_ARENA_H
