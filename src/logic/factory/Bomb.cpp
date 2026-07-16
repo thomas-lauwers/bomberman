@@ -10,7 +10,7 @@ Position Bomb::getPosition() const { return position; }
 
 Rect Bomb::getCollisionRect() const { return {position.x, position.y, 1.0f, 1.0f}; }
 
-void Bomb::update(float deltaTime) {
+void Bomb::update(const float deltaTime) {
     timer -= deltaTime;
     if (timer <= 0) {
         explode();

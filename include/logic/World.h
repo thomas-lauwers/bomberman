@@ -1,5 +1,6 @@
 #ifndef BOMBERMAN_ARENA_H
 #define BOMBERMAN_ARENA_H
+#include "Observer.h"
 #include "Tile.h"
 #include "factory/IEntityFactory.h"
 #include <array>
@@ -10,13 +11,16 @@ class Entity;
 struct Rect;
 class Player;
 
-class World {
+class World : public Observer, public std::enable_shared_from_this<World> {
 public:
     static constexpr int HEIGHT = 13;
     static constexpr int WIDTH = 15;
 
     explicit World(std::shared_ptr<IEntityFactory> factory);
-    ~World();
+    ~World() override;
+    
+    void onNotify(const Entity& entity, Event event) override;
+
     void randomizeTiles();
 
     [[nodiscard]] Tile getTile(int x, int y) const;
@@ -28,6 +32,7 @@ public:
     void pushBackEntity(std::unique_ptr<Entity> entity);
     void removeDestroyedEntities();
     void spawnExplosion(float x, float y);
+    void spawnPowerUp(float x, float y);
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
                                    const Rect& currentEntityRect) const;

@@ -5,10 +5,10 @@
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/state/PlayState.h"
 
-PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(this->factory) {}
+PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {}
 
 void PlayState::handleInput(const Input input) {
-    if (const auto player = world.getPlayer()) {
+    if (const auto player = world->getPlayer()) {
         float dx = 0.f;
         float dy = 0.f;
 
@@ -30,12 +30,9 @@ void PlayState::handleInput(const Input input) {
                 auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
                 player->setCanPlaceBomb(false);
                 bomb->addObserver(player);
+                bomb->addObserver(world);
 
-                const auto observer = std::make_shared<WorldObserver>(world);
-                bomb->addObserver(observer);
-                bombObservers.push_back(observer);
-
-                world.pushBackEntity(std::move(bomb));
+                world->pushBackEntity(std::move(bomb));
             }
             return;
         }
@@ -45,7 +42,7 @@ void PlayState::handleInput(const Input input) {
             Position currentPos = player->getPosition();
 
             player->move(dx, dy);
-            if (world.isColliding(player->getCollisionRect(), player.get(), initialRect)) {
+            if (world->isColliding(player->getCollisionRect(), player.get(), initialRect)) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
                 if (dx > 0)
@@ -63,16 +60,16 @@ void PlayState::handleInput(const Input input) {
 
 void PlayState::update(const float deltaTime, IWorldView& renderer) {
     renderer.update(deltaTime);
-    if (const auto player = world.getPlayer()) {
+    if (const auto player = world->getPlayer()) {
         player->update(deltaTime);
     }
-    for (auto& entity : world.getEntities()) {
+    for (auto& entity : world->getEntities()) {
         entity->update(deltaTime);
     }
 
-    world.removeDestroyedEntities();
+    world->removeDestroyedEntities();
 }
 
-void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) { renderer.render(window, world); }
+void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) { renderer.render(window, *world); }
 
 PlayState::~PlayState() = default;

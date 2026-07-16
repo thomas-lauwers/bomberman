@@ -1,6 +1,5 @@
 #ifndef BOMBERMAN_DESTRUCTIBLEWALLVIEW_H
 #define BOMBERMAN_DESTRUCTIBLEWALLVIEW_H
-#include "../Animation.h"
 #include "IEntityView.h"
 
 class TextureManager;

@@ -13,7 +13,8 @@ public:
         return instance;
     }
 
-    bool roll(float chance); // chance in [0, 1]
+    bool roll(float chance);
+    int getInt(int min, int max);
 
 private:
     Random() = default;

@@ -9,6 +9,8 @@
 #include "../entities/DestructibleWallView.h"
 #include "../entities/ExplosionView.h"
 #include "../entities/PlayerView.h"
+#include "../entities/PowerUpView.h"
+
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <memory>
@@ -43,6 +45,7 @@ private:
     std::map<const Entity*, std::unique_ptr<CrumblingWallView>> c_wallViews;
     std::map<const Entity*, std::unique_ptr<BombView>> bombViews;
     std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
+    std::map<const Entity*, std::unique_ptr<PowerUpView>> powerupViews;
 };
 
 #endif // BOMBERMAN_WORLDRENDERER_H

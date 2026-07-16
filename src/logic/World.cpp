@@ -4,6 +4,7 @@
 #include "../../include/logic/factory/Explosion.h"
 #include "../../include/logic/factory/Player.h"
 #include "../../include/utils/Random.h"
+#include "../../include/logic/factory/PowerUp.h"
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -96,7 +97,9 @@ void World::spawnExplosion(const float x, const float y) {
             if (entity->getEntityType() == DestructibleWall_E) {
                 Position pos = entity->getPosition();
                 if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
-                    entities.push_back(factory->createCrumblingWall(px, py));
+                    auto wall = factory->createCrumblingWall(px, py);
+                    wall->addObserver(shared_from_this());
+                    entities.push_back(std::move(wall));
                     entity->destroy();
                     return;
                 }
@@ -114,6 +117,10 @@ void World::spawnExplosion(const float x, const float y) {
     spawnAt(x, y - 1.0f, ExplosionType::EndUp);
     spawnAt(x + 1.0f, y, ExplosionType::EndRight);
     spawnAt(x - 1.0f, y, ExplosionType::EndLeft);
+}
+
+void World::spawnPowerUp(const float x, const float y) {
+    entities.push_back(factory->createPowerUp(x, y));
 }
 
 bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect& currentEntityRect) const {
@@ -158,6 +165,14 @@ bool World::isDestructibleWallAt(const int x, const int y) const {
         }
     }
     return false;
+}
+
+void World::onNotify(const Entity& entity, const Event event) {
+    if (event == Event::BombExploded) {
+        spawnExplosion(entity.getPosition().x, entity.getPosition().y);
+    } else if (event == Event::EntityDestroyed && entity.getEntityType() == CrumblingWall_E) {
+        spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
+    }
 }
 
 World::~World() = default;

@@ -42,6 +42,9 @@ void WorldRenderer::update(const float deltaTime) {
     for (auto& pair : c_wallViews) {
         pair.second->update(deltaTime);
     }
+    for (auto& pair : powerupViews) {
+        pair.second->update(deltaTime);
+    }
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow& window, const World& world) {
@@ -116,6 +119,14 @@ void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world)
             c_wallViews[entity.get()]->draw(window, *entity);
             break;
 
+        case PowerUp_E:
+            if (powerupViews.find(entity.get()) == powerupViews.end()) {
+                auto powerup = static_cast<const PowerUp*>(entity.get());
+                powerupViews[entity.get()] = std::make_unique<PowerUpView>(t_manager, powerup->getType());
+            }
+            powerupViews[entity.get()]->draw(window, *entity);
+            break;
+
         default:
             break;
         }
@@ -144,4 +155,5 @@ void WorldRenderer::removeDestroyedEntities(const World& world) {
     cleanup(bombViews);
     cleanup(explosionViews);
     cleanup(c_wallViews);
+    cleanup(powerupViews);
 }

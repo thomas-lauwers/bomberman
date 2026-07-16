@@ -12,6 +12,7 @@ void CrumblingWall::update(const float deltaTime) {
     lifetime -= deltaTime;
 
     if (lifetime <= 0) {
+        notify(*this, Event::EntityDestroyed);
         destroy();
     }
 }

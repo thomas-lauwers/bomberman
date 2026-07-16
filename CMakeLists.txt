@@ -54,6 +54,8 @@ SET(LOGIC_SRC
         src/logic/factory/CrumblingWall.cpp
         include/logic/factory/CrumblingWall.h
         include/utils/Position.h
+        src/logic/factory/PowerUp.cpp
+        include/logic/factory/PowerUp.h
 )
 
 SET(VIEW_SRC 
@@ -86,6 +88,8 @@ SET(VIEW_SRC
         include/view/Animation.h
         src/view/entities/CrumblingWallView.cpp
         include/view/entities/CrumblingWallView.h
+        src/view/entities/PowerUpView.cpp
+        include/view/entities/PowerUpView.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})

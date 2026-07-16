@@ -4,7 +4,6 @@
 #include "../IWorldView.h"
 #include "../Input.h"
 #include "../World.h"
-#include "../WorldObserver.h"
 #include "State.h"
 #include <memory>
 #include <vector>
@@ -20,12 +19,11 @@ public:
 
     void update(float deltaTime, IWorldView& renderer) override;
     void render(sf::RenderWindow& window, IWorldView& renderer) override;
-    [[nodiscard]] const World& getWorld() const { return world; }
+    [[nodiscard]] const World& getWorld() const { return *world; }
 
 private:
     std::shared_ptr<IEntityFactory> factory;
-    World world;
-    std::vector<std::shared_ptr<WorldObserver>> bombObservers;
+    std::shared_ptr<World> world;
 };
 
 #endif // BOMBERMAN_PLAYSTATE_H

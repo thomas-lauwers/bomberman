@@ -3,6 +3,7 @@
 
 #include <memory>
 
+class PowerUp;
 enum class ExplosionType;
 class Explosion;
 class CrumblingWall;
@@ -19,6 +20,7 @@ public:
     virtual std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) = 0;
     virtual std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) = 0;
     virtual std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) = 0;
+    virtual std::unique_ptr<PowerUp> createPowerUp(float x, float y) = 0;
 };
 
 #endif // BOMBERMAN_IENTITYFACTORY_H

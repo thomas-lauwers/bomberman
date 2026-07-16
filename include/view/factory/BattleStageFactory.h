@@ -16,6 +16,8 @@ public:
     std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) override;
     std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) override;
     std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) override;
+    std::unique_ptr<PowerUp> createPowerUp(float x, float y) override;
+
 
 private:
     const TextureManager& textureManager;

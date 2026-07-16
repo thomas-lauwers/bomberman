@@ -50,41 +50,41 @@ TEST(PlayerTest, CanPlaceBomb) {
 
 TEST(WorldTest, Collision) {
     const auto factory = std::make_shared<TestEntityFactory>();
-    World world(factory);
+    auto world = std::make_shared<World>(factory);
     
     // Player at (1.2, 1.0)
     const auto player = std::make_shared<Player>();
     player->setPosition(1.2f, 1.0f);
-    world.setPlayer(player);
+    world->setPlayer(player);
     
     // Wall at (2.0, 1.0)
-    world.pushBackEntity(factory->createDestructibleWall(2.0f, 1.0f));
+    world->pushBackEntity(factory->createDestructibleWall(2.0f, 1.0f));
     
     // Collision should be detected
-    EXPECT_TRUE(world.isColliding(player->getCollisionRect(), nullptr, player->getCollisionRect()));
+    EXPECT_TRUE(world->isColliding(player->getCollisionRect(), nullptr, player->getCollisionRect()));
 }
 
 TEST(WorldTest, ExplosionDestroysWall) {
     const auto factory = std::make_shared<TestEntityFactory>();
-    World world(factory);
+    auto world = std::make_shared<World>(factory);
     
     // Manually place a destructible wall
     const int wx = 1;
     const int wy = 2;
-    world.pushBackEntity(factory->createDestructibleWall(static_cast<float>(wx), static_cast<float>(wy)));
+    world->pushBackEntity(factory->createDestructibleWall(static_cast<float>(wx), static_cast<float>(wy)));
     
-    EXPECT_TRUE(world.isDestructibleWallAt(wx, wy));
+    EXPECT_TRUE(world->isDestructibleWallAt(wx, wy));
     
     // Place a bomb and trigger explosion
-    world.pushBackEntity(factory->createBomb(static_cast<float>(wx), static_cast<float>(wy)));
+    world->pushBackEntity(factory->createBomb(static_cast<float>(wx), static_cast<float>(wy)));
     
     // Spawn explosion on the wall
-    world.spawnExplosion(static_cast<float>(wx), static_cast<float>(wy));
+    world->spawnExplosion(static_cast<float>(wx), static_cast<float>(wy));
     
     // Check if the entity is destroyed
-    world.removeDestroyedEntities();
+    world->removeDestroyedEntities();
     
-    EXPECT_FALSE(world.isDestructibleWallAt(wx, wy));
+    EXPECT_FALSE(world->isDestructibleWallAt(wx, wy));
 }
 
 TEST(PlayerTest, Position) {
@@ -111,10 +111,10 @@ TEST(BombTest, Explode) {
 
 TEST(WorldTest, AddEntities) {
     const auto factory = std::make_shared<TestEntityFactory>();
-    World world(factory);
-    const size_t initialSize = world.getEntities().size();
-    world.pushBackEntity(factory->createBomb(1.0f, 1.0f));
-    EXPECT_EQ(world.getEntities().size(), initialSize + 1);
+    auto world = std::make_shared<World>(factory);
+    const size_t initialSize = world->getEntities().size();
+    world->pushBackEntity(factory->createBomb(1.0f, 1.0f));
+    EXPECT_EQ(world->getEntities().size(), initialSize + 1);
 }
 
 TEST(CrumblingWallTest, Destruction) {
