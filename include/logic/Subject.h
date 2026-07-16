@@ -16,14 +16,15 @@ public:
 
 protected:
     void notify(const Entity& entity, const Event event) {
-        for (auto it = observers.begin(); it != observers.end();) {
-            if (const auto observer = it->lock()) {
+        std::vector<std::weak_ptr<Observer>> observers_copy = observers;
+        for (auto& weak_observer : observers_copy) {
+            if (const auto observer = weak_observer.lock()) {
                 observer->onNotify(entity, event);
-                ++it;
-            } else {
-                it = observers.erase(it);
             }
         }
+        observers.erase(std::remove_if(observers.begin(), observers.end(), [](const std::weak_ptr<Observer>& weak_observer) {
+            return weak_observer.expired();
+        }), observers.end());
     }
 
 private:
