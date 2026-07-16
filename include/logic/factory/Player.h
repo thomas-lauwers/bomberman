@@ -26,6 +26,8 @@ public:
 
     void placeBomb();
 
+    [[nodiscard]] int getBlastRadius() const;
+
     void gainPowerUp(PowerUpType type);
 
     void triggerEvent(Event event);
@@ -41,6 +43,8 @@ private:
     int number_of_bombs = 1;
     float bomb_cooldown_timer = 0.0f;
     const float BOMB_COOLDOWN = 0.2f;
+
+    int blast_radius = 1;
 };
 
 #endif // BOMBERMAN_PLAYER_H

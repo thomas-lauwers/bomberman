@@ -31,7 +31,7 @@ void PlayState::handleInput(const Input input) {
             break;
         case Input::PlaceBomb:
             if (player->canPlaceBomb() && !world->isBombAt(player->getPosition().x, player->getPosition().y)) {
-                auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
+                auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y, player->getBlastRadius());
                 player->placeBomb();
                 bomb->addObserver(player);
                 bomb->addObserver(world);

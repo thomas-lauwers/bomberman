@@ -13,7 +13,7 @@
 class TestEntityFactory : public IEntityFactory {
 public:
     std::unique_ptr<Player> createPlayer() override { return std::make_unique<Player>(); }
-    std::unique_ptr<Bomb> createBomb(float x, float y) override { return std::make_unique<Bomb>(x, y); }
+    std::unique_ptr<Bomb> createBomb(float x, float y, int blast_radius) override { return std::make_unique<Bomb>(x, y, blast_radius); }
     std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) override { return std::make_unique<DestructibleWall>(x, y); }
     std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) override { return std::make_unique<Explosion>(x, y, type); }
     std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) override { return std::make_unique<CrumblingWall>(x, y); }

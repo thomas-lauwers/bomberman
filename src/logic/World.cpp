@@ -1,4 +1,5 @@
 #include "../../include/logic/World.h"
+#include "../../include/logic/factory/Bomb.h"
 #include "../../include/logic/factory/CrumblingWall.h"
 #include "../../include/logic/factory/DestructibleWall.h"
 #include "../../include/logic/factory/Explosion.h"
@@ -87,13 +88,18 @@ void World::removeDestroyedEntities() {
                    entities.end());
 }
 
-void World::spawnExplosion(const float x, const float y) {
-    auto spawnAt = [&](const float px, const float py, const ExplosionType type) {
+void World::spawnExplosion(const float x, const float y, const int blast_radius) {
+    auto spawnAt = [&](const float px, const float py, const ExplosionType type) -> bool {
         const int ix = static_cast<int>(std::round(px));
         const int iy = static_cast<int>(std::round(py));
 
         if (ix < 0 || ix >= WIDTH || iy < 0 || iy >= HEIGHT)
-            return;
+            return false;
+
+        // Check for wall
+        if (getTile(ix, iy).getType() == TileType::W) {
+            return false;
+        }
 
         // Check for collision with player
         if (player) {
@@ -115,14 +121,14 @@ void World::spawnExplosion(const float x, const float y) {
                     wall->addObserver(shared_from_this());
                     entities.push_back(std::move(wall));
                     entity->destroy();
-                    return;
+                    return false;
                 }
                 break;
 
             case PowerUp_E:
                 if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
                     entity->destroy();
-                    return;
+                    return false;
                 }
                 break;
             case Player_E:
@@ -141,14 +147,25 @@ void World::spawnExplosion(const float x, const float y) {
         // Spawn an explosion if tile is empty
         if (getTile(ix, iy).getType() == TileType::E) {
             entities.push_back(factory->createExplosion(px, py, type));
+            return true;
         }
+        return false;
     };
 
     spawnAt(x, y, ExplosionType::Center);
-    spawnAt(x, y + 1.0f, ExplosionType::EndDown);
-    spawnAt(x, y - 1.0f, ExplosionType::EndUp);
-    spawnAt(x + 1.0f, y, ExplosionType::EndRight);
-    spawnAt(x - 1.0f, y, ExplosionType::EndLeft);
+
+    for (int i = 1; i <= blast_radius; ++i) {
+        if (!spawnAt(x + i, y, i == blast_radius ? ExplosionType::EndRight : ExplosionType::Horizontal)) break;
+    }
+    for (int i = 1; i <= blast_radius; ++i) {
+        if (!spawnAt(x - i, y, i == blast_radius ? ExplosionType::EndLeft : ExplosionType::Horizontal)) break;
+    }
+    for (int i = 1; i <= blast_radius; ++i) {
+        if (!spawnAt(x, y + i, i == blast_radius ? ExplosionType::EndDown : ExplosionType::Vertical)) break;
+    }
+    for (int i = 1; i <= blast_radius; ++i) {
+        if (!spawnAt(x, y - i, i == blast_radius ? ExplosionType::EndUp : ExplosionType::Vertical)) break;
+    }
 }
 
 void World::spawnPowerUp(const float x, const float y) {
@@ -258,7 +275,8 @@ void World::removePlayer() {
 
 void World::onNotify(const Entity& entity, const Event event) {
     if (event == Event::BombExploded) {
-        spawnExplosion(entity.getPosition().x, entity.getPosition().y);
+        const auto& bomb = static_cast<const Bomb&>(entity);
+        spawnExplosion(entity.getPosition().x, entity.getPosition().y, bomb.getBlastRadius());
     } else if (event == Event::EntityDestroyed && entity.getEntityType() == CrumblingWall_E) {
         if (Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);

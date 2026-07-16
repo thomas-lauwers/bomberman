@@ -55,9 +55,12 @@ void Player::placeBomb() {
     bomb_cooldown_timer = BOMB_COOLDOWN;
 }
 
+int Player::getBlastRadius() const { return blast_radius; }
+
 void Player::gainPowerUp(const PowerUpType type) {
     switch (type) {
     case Fire:
+        blast_radius += 1;
         break;
     case ExtraBomb:
         number_of_bombs += 1;

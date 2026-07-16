@@ -28,6 +28,14 @@ std::vector<sf::IntRect> getFrames(const ExplosionType type) {
         return {sf::IntRect(52, 83, 16, 16),  sf::IntRect(52, 66, 16, 16), sf::IntRect(18, 100, 16, 16),
                 sf::IntRect(18, 83, 16, 16),  sf::IntRect(18, 66, 16, 16), sf::IntRect(18, 83, 16, 16),
                 sf::IntRect(18, 100, 16, 16), sf::IntRect(52, 66, 16, 16), sf::IntRect(52, 83, 16, 16)};
+    case ExplosionType::Horizontal:
+        return {sf::IntRect(35, 83, 16, 16),  sf::IntRect(35, 66, 16, 16), sf::IntRect(1, 100, 16, 16),
+                sf::IntRect(1, 83, 16, 16),  sf::IntRect(1, 66, 16, 16), sf::IntRect(1, 83, 16, 16),
+                sf::IntRect(1, 100, 16, 16), sf::IntRect(35, 66, 16, 16), sf::IntRect(35, 83, 16, 16)};
+    case ExplosionType::Vertical:
+        return {sf::IntRect(52, 100, 16, 16),  sf::IntRect(35, 100, 16, 16), sf::IntRect(120, 83, 16, 16),
+                sf::IntRect(103, 83, 16, 16),  sf::IntRect(86, 83, 16, 16), sf::IntRect(103, 83, 16, 16),
+                sf::IntRect(120, 83, 16, 16), sf::IntRect(35, 100, 16, 16), sf::IntRect(52, 100, 16, 16)};
     default:
         return {};
     }

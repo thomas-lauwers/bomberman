@@ -31,7 +31,7 @@ public:
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
     void removeDestroyedEntities();
-    void spawnExplosion(float x, float y);
+    void spawnExplosion(float x, float y, int blast_radius);
     void spawnPowerUp(float x, float y);
     void spawnKnockedOutBomber(float x, float y);
 

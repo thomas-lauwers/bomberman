@@ -76,10 +76,10 @@ TEST(WorldTest, ExplosionDestroysWall) {
     EXPECT_TRUE(world->isDestructibleWallAt(wx, wy));
     
     // Place a bomb and trigger explosion
-    world->pushBackEntity(factory->createBomb(static_cast<float>(wx), static_cast<float>(wy)));
+    world->pushBackEntity(factory->createBomb(static_cast<float>(wx), static_cast<float>(wy), 1));
     
     // Spawn explosion on the wall
-    world->spawnExplosion(static_cast<float>(wx), static_cast<float>(wy));
+    world->spawnExplosion(static_cast<float>(wx), static_cast<float>(wy), 1);
     
     // Check if the entity is destroyed
     world->removeDestroyedEntities();
@@ -103,7 +103,7 @@ TEST(EntityTest, DestroyedState) {
 }
 
 TEST(BombTest, Explode) {
-    Bomb b(1.0f, 1.0f);
+    Bomb b(1.0f, 1.0f, 1);
     EXPECT_FALSE(b.isDestroyed());
     b.explode();
     EXPECT_TRUE(b.isDestroyed());
@@ -113,7 +113,7 @@ TEST(WorldTest, AddEntities) {
     const auto factory = std::make_shared<TestEntityFactory>();
     auto world = std::make_shared<World>(factory);
     const size_t initialSize = world->getEntities().size();
-    world->pushBackEntity(factory->createBomb(1.0f, 1.0f));
+    world->pushBackEntity(factory->createBomb(1.0f, 1.0f, 1));
     EXPECT_EQ(world->getEntities().size(), initialSize + 1);
 }
 
