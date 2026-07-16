@@ -90,6 +90,10 @@ SET(VIEW_SRC
         include/view/entities/CrumblingWallView.h
         src/view/entities/PowerUpView.cpp
         include/view/entities/PowerUpView.h
+        src/logic/factory/KnockedOutBomber.cpp
+        include/logic/factory/KnockedOutBomber.h
+        src/view/entities/KnockedOutBomberView.cpp
+        include/view/entities/KnockedOutBomberView.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})

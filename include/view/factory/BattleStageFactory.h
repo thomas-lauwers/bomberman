@@ -2,7 +2,6 @@
 #define BOMBERMAN_BATTLESTAGEFACTORY_H
 
 #include "../../logic/factory/IEntityFactory.h"
-#include "../core/TextureManager.h"
 #include "../entities/PlayerView.h"
 #include <memory>
 
@@ -17,6 +16,7 @@ public:
     std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) override;
     std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) override;
     std::unique_ptr<PowerUp> createPowerUp(float x, float y) override;
+    std::unique_ptr<KnockedOutBomber> createKnockedOutBomber(float x, float y) override;
 
 
 private:

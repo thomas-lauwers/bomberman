@@ -45,6 +45,9 @@ void WorldRenderer::update(const float deltaTime) {
     for (auto& pair : powerupViews) {
         pair.second->update(deltaTime);
     }
+    for (auto& pair : knockedoutbomberViews) {
+        pair.second->update(deltaTime);
+    }
 }
 
 void WorldRenderer::renderTiles(sf::RenderWindow& window, const World& world) {
@@ -106,7 +109,7 @@ void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world)
 
         case Explosion_E:
             if (explosionViews.find(entity.get()) == explosionViews.end()) {
-                auto explosion = static_cast<const Explosion*>(entity.get());
+                const auto explosion = static_cast<const Explosion*>(entity.get());
                 explosionViews[entity.get()] = std::make_unique<ExplosionView>(t_manager, explosion->getType());
             }
             explosionViews[entity.get()]->draw(window, *entity);
@@ -121,10 +124,17 @@ void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world)
 
         case PowerUp_E:
             if (powerupViews.find(entity.get()) == powerupViews.end()) {
-                auto powerup = static_cast<const PowerUp*>(entity.get());
+                const auto powerup = static_cast<const PowerUp*>(entity.get());
                 powerupViews[entity.get()] = std::make_unique<PowerUpView>(t_manager, powerup->getType());
             }
             powerupViews[entity.get()]->draw(window, *entity);
+            break;
+
+        case KnockedOutBomber_E:
+            if (knockedoutbomberViews.find(entity.get()) == knockedoutbomberViews.end()) {
+                knockedoutbomberViews[entity.get()] = std::make_unique<KnockedOutBomberView>(t_manager);
+            }
+            knockedoutbomberViews[entity.get()]->draw(window, *entity);
             break;
 
         default:
@@ -156,4 +166,5 @@ void WorldRenderer::removeDestroyedEntities(const World& world) {
     cleanup(explosionViews);
     cleanup(c_wallViews);
     cleanup(powerupViews);
+    cleanup(knockedoutbomberViews);
 }

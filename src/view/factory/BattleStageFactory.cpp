@@ -7,6 +7,7 @@
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/view/entities/PlayerView.h"
 #include "../../../include/view/factory/BattleStageFactory.h"
+#include "../../../include/logic/factory/KnockedOutBomber.h"
 #include "../../../include/logic/factory/PowerUp.h"
 
 void BattleStageFactory::setPlayerView(std::shared_ptr<PlayerView> view) { playerView = std::move(view); }
@@ -42,4 +43,9 @@ std::unique_ptr<CrumblingWall> BattleStageFactory::createCrumblingWall(float x, 
 std::unique_ptr<PowerUp> BattleStageFactory::createPowerUp(float x, float y) {
     auto powerup = std::make_unique<PowerUp>(x, y);
     return powerup;
+}
+
+std::unique_ptr<KnockedOutBomber> BattleStageFactory::createKnockedOutBomber(float x, float y) {
+    auto knockedoutbomber = std::make_unique<KnockedOutBomber>(x, y);
+    return knockedoutbomber;
 }

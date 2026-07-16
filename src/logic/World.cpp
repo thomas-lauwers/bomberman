@@ -5,6 +5,7 @@
 #include "../../include/logic/factory/Player.h"
 #include "../../include/utils/Random.h"
 #include "../../include/logic/factory/PowerUp.h"
+#include "../../include/logic/factory/KnockedOutBomber.h"
 #include <algorithm>
 #include <cmath>
 #include <utility>
@@ -42,7 +43,7 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
 
     randomizeTiles();
 
-    player = std::shared_ptr(this->factory->createPlayer());
+    setPlayer(std::shared_ptr(this->factory->createPlayer()));
 }
 
 void World::randomizeTiles() {
@@ -72,7 +73,9 @@ void World::setTile(const int x, const int y, const Tile tile) { grid[y][x] = ti
 
 std::shared_ptr<Player> World::getPlayer() const { return player; }
 
-void World::setPlayer(std::shared_ptr<Player> player) { this->player = std::move(player); }
+void World::setPlayer(std::shared_ptr<Player> player) {
+    this->player = std::move(player);
+}
 
 const std::vector<std::unique_ptr<Entity>>& World::getEntities() const { return entities; }
 
@@ -130,7 +133,8 @@ void World::spawnExplosion(const float x, const float y) {
                 break;
             case Explosion_E:
                 break;
-
+            case KnockedOutBomber_E:
+                break;
             }
         }
 
@@ -149,6 +153,10 @@ void World::spawnExplosion(const float x, const float y) {
 
 void World::spawnPowerUp(const float x, const float y) {
     entities.push_back(factory->createPowerUp(x, y));
+}
+
+void World::spawnKnockedOutBomber(const float x, const float y) {
+    entities.push_back(factory->createKnockedOutBomber(x, y));
 }
 
 bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect& currentEntityRect) const {
@@ -210,8 +218,10 @@ void World::checkExplosionCollision() {
 }
 
 void World::removePlayer() {
-    player->destroy();
-    player.reset();
+    if (player) {
+        player->destroy();
+        player.reset();
+    }
 }
 
 void World::onNotify(const Entity& entity, const Event event) {
@@ -221,6 +231,8 @@ void World::onNotify(const Entity& entity, const Event event) {
         if (Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
         }
+    } else if (event == Event::EntityDestroyed && entity.getEntityType() == Player_E) {
+        spawnKnockedOutBomber(entity.getPosition().x, entity.getPosition().y);
     }
 }
 

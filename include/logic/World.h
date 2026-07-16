@@ -33,6 +33,7 @@ public:
     void removeDestroyedEntities();
     void spawnExplosion(float x, float y);
     void spawnPowerUp(float x, float y);
+    void spawnKnockedOutBomber(float x, float y);
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
                                    const Rect& currentEntityRect) const;

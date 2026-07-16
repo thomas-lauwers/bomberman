@@ -7,7 +7,6 @@
 
 CrumblingWallView::CrumblingWallView(const TextureManager& t_manager) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));
-    sprite.setTextureRect(sf::IntRect(35, 15, 16, 16));
 
     animation.frames = {sf::IntRect(1, 117, 16, 16),  sf::IntRect(18, 117, 16, 16), sf::IntRect(35, 117, 16, 16),
                         sf::IntRect(52, 117, 16, 16), sf::IntRect(69, 117, 16, 16), sf::IntRect(86, 117, 16, 16)};

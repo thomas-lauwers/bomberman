@@ -5,7 +5,11 @@
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/state/PlayState.h"
 
-PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {}
+PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {
+    if (const auto player = world->getPlayer()) {
+        player->addObserver(world);
+    }
+}
 
 void PlayState::handleInput(const Input input) {
     if (const auto player = world->getPlayer()) {
