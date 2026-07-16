@@ -38,8 +38,10 @@ public:
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
                                    const Rect& currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
+    [[nodiscard]] bool isBombAt(float x, float y) const;
 
     void checkExplosionCollision();
+    void checkPowerUpsCollection() const;
     void removePlayer();
 
 private:

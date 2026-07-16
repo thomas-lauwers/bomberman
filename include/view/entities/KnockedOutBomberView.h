@@ -22,7 +22,7 @@ private:
 
     float bounceTimer = 0.0f;
     float bounceDuration = 0.3f;
-    float bounceAmplitude = 1.0f;
+    float bounceAmplitude = 2.0f;
 };
 
 

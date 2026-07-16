@@ -181,10 +181,11 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
         if (entity.get() == ignoreEntity)
             continue;
         if (entityRect.intersects(entity->getCollisionRect())) {
-            if (entity->getEntityType() == Explosion_E) {
+            EntityType type = entity->getEntityType();
+            if (type == Explosion_E || type == PowerUp_E) {
                 return false;
             }
-            if (!(entity->getEntityType() == Bomb_E && currentEntityRect.intersects(entity->getCollisionRect()))) {
+            if (!(type == Bomb_E && currentEntityRect.intersects(entity->getCollisionRect()))) {
                 return true;
             }
         }
@@ -205,12 +206,43 @@ bool World::isDestructibleWallAt(const int x, const int y) const {
     return false;
 }
 
+bool World::isBombAt(const float x, const float y) const {
+    const int bx = static_cast<int>(std::round(x));
+    const int by = static_cast<int>(std::round(y));
+
+    for (const auto& entity : entities) {
+        if (entity->getEntityType() == Bomb_E) {
+            const int ex = static_cast<int>(entity->getPosition().x);
+            const int ey = static_cast<int>(entity->getPosition().y);
+            if (ex == bx && ey == by) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void World::checkExplosionCollision() {
     if (player) {
         for (const auto& entity : entities) {
             if (entity->getEntityType() == Explosion_E) {
                 if (player && player->getCollisionRect().intersects(entity->getCollisionRect())) {
                     removePlayer();
+                }
+            }
+        }
+    }
+}
+
+void World::checkPowerUpsCollection() const {
+    if (player) {
+        for (auto & entity : entities) {
+            if (entity->getEntityType() == PowerUp_E) {
+                if (player->getCollisionRect().intersects(entity->getCollisionRect())) {
+                    auto* powerUp = static_cast<PowerUp*>(entity.get());
+                    player->gainPowerUp(powerUp->getType());
+                    powerUp->destroy();
+                    return;
                 }
             }
         }

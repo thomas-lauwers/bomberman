@@ -30,9 +30,9 @@ void PlayState::handleInput(const Input input) {
             dy += 1.f;
             break;
         case Input::PlaceBomb:
-            if (player->canPlaceBomb()) {
+            if (player->canPlaceBomb() && !world->isBombAt(player->getPosition().x, player->getPosition().y)) {
                 auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y);
-                player->setCanPlaceBomb(false);
+                player->placeBomb();
                 bomb->addObserver(player);
                 bomb->addObserver(world);
 
@@ -72,6 +72,7 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     }
 
     world->checkExplosionCollision();
+    world->checkPowerUpsCollection();
     world->removeDestroyedEntities();
 }
 

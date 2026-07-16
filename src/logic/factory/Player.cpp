@@ -1,4 +1,5 @@
 #include "../../../include/logic/factory/Player.h"
+#include "../../../include/logic/factory/PowerUp.h"
 #include "../../../include/utils/Stopwatch.h"
 
 Player::Player() = default;
@@ -33,13 +34,33 @@ void Player::update(float deltaTime) {
 Rect Player::getCollisionRect() const { return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f}; }
 
 void Player::onNotify(const Entity& entity, const Event event) {
-    if (event == Event::EntityDestroyed && entity.getEntityType() == Bomb_E) {
-        canPlace = true;
+    if (event == Event::BombExploded) {
+        number_of_bombs += 1;
     }
 }
 
-bool Player::canPlaceBomb() const { return canPlace; }
+bool Player::canPlaceBomb() const {
+    if (number_of_bombs > 0) {
+        return true;
+    }
+    return false;
+}
 
-void Player::setCanPlaceBomb(const bool can) { canPlace = can; }
+void Player::placeBomb() {
+    number_of_bombs -= 1;
+}
+
+void Player::gainPowerUp(const PowerUpType type) {
+    switch (type) {
+    case Fire:
+        break;
+    case ExtraBomb:
+        number_of_bombs += 1;
+        break;
+    case Skates:
+        speed += 1;
+        break;
+    }
+}
 
 void Player::triggerEvent(Event event) { notify(*this, event); }

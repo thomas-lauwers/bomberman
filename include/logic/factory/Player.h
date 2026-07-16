@@ -5,6 +5,7 @@
 #include "../Observer.h"
 #include "../Rect.h"
 #include "Entity.h"
+#include "PowerUp.h"
 
 class Player : public Entity, public Observer {
 public:
@@ -23,7 +24,9 @@ public:
 
     [[nodiscard]] bool canPlaceBomb() const;
 
-    void setCanPlaceBomb(bool can);
+    void placeBomb();
+
+    void gainPowerUp(PowerUpType type);
 
     void triggerEvent(Event event);
 
@@ -32,7 +35,7 @@ public:
 private:
     Position position{1.0f, 1.0f};
     float speed = 4.0f; // units per second
-    bool canPlace = true;
+    int number_of_bombs = 1;
     bool isMoving = false;
     bool wasMoving = false;
 };
