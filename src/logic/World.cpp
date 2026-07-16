@@ -94,15 +94,35 @@ void World::spawnExplosion(const float x, const float y) {
 
         // Destroy destructible walls if in contact
         for (const auto& entity : entities) {
-            if (entity->getEntityType() == DestructibleWall_E) {
-                Position pos = entity->getPosition();
+            Position pos = entity->getPosition();
+
+            switch (entity->getEntityType()) {
+            case DestructibleWall_E:
                 if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
                     auto wall = factory->createCrumblingWall(px, py);
+                    // Observe the wall to spawn powerup once crumbling animation is complete
                     wall->addObserver(shared_from_this());
                     entities.push_back(std::move(wall));
                     entity->destroy();
                     return;
                 }
+                break;
+
+            case PowerUp_E:
+                if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
+                    entity->destroy();
+                    return;
+                }
+                break;
+            case Player_E:
+                break;
+            case CrumblingWall_E:
+                break;
+            case Bomb_E:
+                break;
+            case Explosion_E:
+                break;
+
             }
         }
 

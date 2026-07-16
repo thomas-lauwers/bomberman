@@ -24,7 +24,7 @@ std::vector<sf::IntRect> getFrames(const PowerUpType type) {
 PowerUpView::PowerUpView(const TextureManager& t_manager, const PowerUpType type) : type(type) {
     sprite.setTexture(t_manager.getTexture("powerup_sprites"));
 
-    animation.duration = 0.5f;
+    animation.duration = 0.3f;
     animation.loop = true;
     animation.frames = getFrames(type);
 }
