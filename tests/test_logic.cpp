@@ -44,7 +44,7 @@ TEST(TileTest, Type) {
 TEST(PlayerTest, CanPlaceBomb) {
     Player p;
     EXPECT_TRUE(p.canPlaceBomb());
-    p.setCanPlaceBomb(false);
+    p.placeBomb();
     EXPECT_FALSE(p.canPlaceBomb());
 }
 
