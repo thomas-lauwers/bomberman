@@ -23,12 +23,16 @@ void Player::move(const float dx, const float dy) {
     }
 }
 
-void Player::update(float deltaTime) {
+void Player::update(const float deltaTime) {
     if (!isMoving && wasMoving) {
         notify(*this, Event::PlayerStopped);
     }
     wasMoving = isMoving;
     isMoving = false;
+
+    if (bomb_cooldown_timer > 0.0f) {
+        bomb_cooldown_timer -= deltaTime;
+    }
 }
 
 Rect Player::getCollisionRect() const { return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f}; }
@@ -40,7 +44,7 @@ void Player::onNotify(const Entity& entity, const Event event) {
 }
 
 bool Player::canPlaceBomb() const {
-    if (number_of_bombs > 0) {
+    if (number_of_bombs > 0 && bomb_cooldown_timer <= 0.0f) {
         return true;
     }
     return false;
@@ -48,6 +52,7 @@ bool Player::canPlaceBomb() const {
 
 void Player::placeBomb() {
     number_of_bombs -= 1;
+    bomb_cooldown_timer = BOMB_COOLDOWN;
 }
 
 void Player::gainPowerUp(const PowerUpType type) {

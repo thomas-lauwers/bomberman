@@ -35,9 +35,12 @@ public:
 private:
     Position position{1.0f, 1.0f};
     float speed = 4.0f; // units per second
-    int number_of_bombs = 1;
     bool isMoving = false;
     bool wasMoving = false;
+
+    int number_of_bombs = 1;
+    float bomb_cooldown_timer = 0.0f;
+    const float BOMB_COOLDOWN = 0.2f;
 };
 
 #endif // BOMBERMAN_PLAYER_H
