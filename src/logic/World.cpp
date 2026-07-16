@@ -92,13 +92,21 @@ void World::spawnExplosion(const float x, const float y) {
         if (ix < 0 || ix >= WIDTH || iy < 0 || iy >= HEIGHT)
             return;
 
-        // Destroy destructible walls if in contact
+        // Check for collision with player
+        if (player) {
+            Position player_pos = player->getPosition();
+            if (static_cast<int>(std::round(player_pos.x)) == ix && static_cast<int>(std::round(player_pos.y)) == iy) {
+                removePlayer();
+            }
+        }
+
+        // Check for collisions with entities
         for (const auto& entity : entities) {
             Position pos = entity->getPosition();
 
             switch (entity->getEntityType()) {
             case DestructibleWall_E:
-                if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
+                if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
                     auto wall = factory->createCrumblingWall(px, py);
                     // Observe the wall to spawn powerup once crumbling animation is complete
                     wall->addObserver(shared_from_this());
@@ -109,7 +117,7 @@ void World::spawnExplosion(const float x, const float y) {
                 break;
 
             case PowerUp_E:
-                if (static_cast<int>(pos.x) == ix && static_cast<int>(pos.y) == iy) {
+                if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
                     entity->destroy();
                     return;
                 }
@@ -164,8 +172,10 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
         // Skip the entity that is calling this check to prevent self-collision
         if (entity.get() == ignoreEntity)
             continue;
-
         if (entityRect.intersects(entity->getCollisionRect())) {
+            if (entity->getEntityType() == Explosion_E) {
+                return false;
+            }
             if (!(entity->getEntityType() == Bomb_E && currentEntityRect.intersects(entity->getCollisionRect()))) {
                 return true;
             }
@@ -187,11 +197,30 @@ bool World::isDestructibleWallAt(const int x, const int y) const {
     return false;
 }
 
+void World::checkExplosionCollision() {
+    if (player) {
+        for (const auto& entity : entities) {
+            if (entity->getEntityType() == Explosion_E) {
+                if (player && player->getCollisionRect().intersects(entity->getCollisionRect())) {
+                    removePlayer();
+                }
+            }
+        }
+    }
+}
+
+void World::removePlayer() {
+    player->destroy();
+    player.reset();
+}
+
 void World::onNotify(const Entity& entity, const Event event) {
     if (event == Event::BombExploded) {
         spawnExplosion(entity.getPosition().x, entity.getPosition().y);
     } else if (event == Event::EntityDestroyed && entity.getEntityType() == CrumblingWall_E) {
-        spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
+        if (Random::getInstance().roll(0.25)) {
+            spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
+        }
     }
 }
 

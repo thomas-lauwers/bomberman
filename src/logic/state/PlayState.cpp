@@ -67,6 +67,7 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
         entity->update(deltaTime);
     }
 
+    world->checkExplosionCollision();
     world->removeDestroyedEntities();
 }
 

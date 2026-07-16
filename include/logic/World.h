@@ -38,6 +38,9 @@ public:
                                    const Rect& currentEntityRect) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
 
+    void checkExplosionCollision();
+    void removePlayer();
+
 private:
     std::array<std::array<Tile, WIDTH>, HEIGHT> grid;
     std::vector<std::unique_ptr<Entity>> entities;
