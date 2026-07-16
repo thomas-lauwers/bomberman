@@ -123,3 +123,41 @@ TEST(CrumblingWallTest, Destruction) {
     w.destroy();
     EXPECT_TRUE(w.isDestroyed());
 }
+
+TEST(BombTest, BlastRadius) {
+    Bomb b(1.0f, 1.0f, 5);
+    EXPECT_EQ(b.getBlastRadius(), 5);
+}
+
+TEST(PlayerTest, InitialPosition) {
+    Player p;
+    Position pos = p.getPosition();
+    EXPECT_FLOAT_EQ(pos.x, 1.0f);
+    EXPECT_FLOAT_EQ(pos.y, 1.0f);
+}
+
+TEST(WorldTest, RemoveEntity) {
+    const auto factory = std::make_shared<TestEntityFactory>();
+    auto world = std::make_shared<World>(factory);
+    auto wall = factory->createDestructibleWall(1.0f, 1.0f);
+    auto* raw_wall = wall.get();
+    world->pushBackEntity(std::move(wall));
+    size_t sizeAfterAdd = world->getEntities().size();
+    raw_wall->destroy();
+    world->removeDestroyedEntities();
+    EXPECT_EQ(world->getEntities().size(), sizeAfterAdd - 1);
+}
+
+TEST(EntityTest, NewEntityNotDestroyed) {
+    DestructibleWall w(2.0f, 2.0f);
+    EXPECT_FALSE(w.isDestroyed());
+}
+
+TEST(WorldTest, CollisionWithNewWall) {
+    const auto factory = std::make_shared<TestEntityFactory>();
+    auto world = std::make_shared<World>(factory);
+    auto wall = factory->createDestructibleWall(5.0f, 5.0f);
+    world->pushBackEntity(std::move(wall));
+    Rect r{5.0f, 5.0f, 1.0f, 1.0f};
+    EXPECT_TRUE(world->isColliding(r, nullptr, r));
+}
