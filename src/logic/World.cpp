@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
+#include <iostream>
 
 World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
     using T = TileType;
@@ -176,7 +177,10 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
     }
 
     if (is_top_level) {
-        for (Bomb* bomb : bombs_to_explode) {
+        size_t i = 0;
+        while (i < bombs_to_explode.size()) {
+            Bomb* bomb = bombs_to_explode[i];
+            i++;
             bomb->explode();
         }
         is_processing_explosions = false;

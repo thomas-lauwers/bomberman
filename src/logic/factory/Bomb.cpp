@@ -1,6 +1,7 @@
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/utils/Stopwatch.h"
 #include <cmath>
+#include <iostream>
 
 Bomb::Bomb(const float x, const float y, const int blast_radius) : position{std::round(x), std::round(y)}, blast_radius(blast_radius) {}
 

@@ -40,7 +40,7 @@ private:
     bool isMoving = false;
     bool wasMoving = false;
 
-    int number_of_bombs = 1;
+    int number_of_bombs = 3;
     float bomb_cooldown_timer = 0.0f;
     const float BOMB_COOLDOWN = 0.2f;
 
