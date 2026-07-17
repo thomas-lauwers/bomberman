@@ -43,6 +43,10 @@ SET(LOGIC_SRC
         include/logic/factory/IEntityFactory.h
         src/logic/factory/Player.cpp
         include/logic/factory/Player.h
+        src/logic/factory/AIBomber.cpp
+        include/logic/factory/AIBomber.h
+        src/logic/factory/Bomber.cpp
+        include/logic/factory/Bomber.h
         src/logic/Rect.cpp
         include/logic/Rect.h
         include/logic/factory/Entity.h
@@ -71,6 +75,10 @@ SET(VIEW_SRC
         include/view/entities/IEntityView.h
         src/view/entities/PlayerView.cpp
         include/view/entities/PlayerView.h
+        src/view/entities/AIBomberView.cpp
+        include/view/entities/AIBomberView.h
+        src/view/entities/BomberView.cpp
+        include/view/entities/BomberView.h
         src/view/entities/DestructibleWallView.cpp
         include/view/entities/DestructibleWallView.h
         src/view/entities/BombView.cpp

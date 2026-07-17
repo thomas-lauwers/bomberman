@@ -50,13 +50,13 @@ void PlayState::handleInput(const Input input) {
                 player->setPosition(currentPos.x, currentPos.y);
             } else {
                 if (dx > 0)
-                    player->triggerEvent(Event::PlayerMovedRight);
+                    player->triggerEvent(Event::BomberMovedRight);
                 else if (dx < 0)
-                    player->triggerEvent(Event::PlayerMovedLeft);
+                    player->triggerEvent(Event::BomberMovedLeft);
                 else if (dy > 0)
-                    player->triggerEvent(Event::PlayerMovedDown);
+                    player->triggerEvent(Event::BomberMovedDown);
                 else if (dy < 0)
-                    player->triggerEvent(Event::PlayerMovedUp);
+                    player->triggerEvent(Event::BomberMovedUp);
             }
         }
     }

@@ -4,7 +4,7 @@
 #include "../Rect.h"
 #include "../Subject.h"
 
-enum EntityType { Player_E, DestructibleWall_E, CrumblingWall_E, Bomb_E, Explosion_E, PowerUp_E, KnockedOutBomber_E };
+enum EntityType { Player_E, AIBomber_E, DestructibleWall_E, CrumblingWall_E, Bomb_E, Explosion_E, PowerUp_E, KnockedOutBomber_E };
 
 class Entity : public Subject {
 public:

@@ -1,32 +1,13 @@
 #ifndef BOMBERMAN_PLAYERVIEW_H
 #define BOMBERMAN_PLAYERVIEW_H
-#include "../AnimationState.h"
-#include "../BomberAnimationConfig.h"
-#include "IEntityView.h"
+#include "BomberView.h"
 
-enum class Direction;
-enum class AnimationState;
-class TextureManager;
-
-class PlayerView : public IEntityView {
+class PlayerView : public BomberView {
 public:
     explicit PlayerView(const TextureManager& t_manager);
 
-    void draw(sf::RenderWindow& window, const Entity& entity) override;
-    void update(float deltaTime) override;
-    void onNotify(const Entity& entity, Event event) override;
-
 private:
-    void setupAnimations();
-    sf::Sprite sprite;
-
-    BomberAnimationConfig animationConfig;
-
-    AnimationState currentAction;
-    Direction currentDirection;
-
-    float animationTimer = 0.0f;
-    size_t frameIndex = 0;
+    void setupAnimations() override;
 };
 
 #endif // BOMBERMAN_PLAYERVIEW_H

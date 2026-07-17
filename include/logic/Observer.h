@@ -6,11 +6,11 @@ class Entity;
 enum class Event {
     EntityDestroyed,
     BombExploded,
-    PlayerMovedUp,
-    PlayerMovedDown,
-    PlayerMovedLeft,
-    PlayerMovedRight,
-    PlayerStopped
+    BomberMovedUp,
+    BomberMovedDown,
+    BomberMovedLeft,
+    BomberMovedRight,
+    BomberStopped
 };
 
 class Observer {
