@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <cmath>
 #include <utility>
-#include <iostream>
 
 World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
     using T = TileType;
@@ -46,9 +45,9 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
     randomizeTiles();
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
-    entities.push_back(this->factory->createAIBomber(1.0f, 11.0f, AIBomberType::Variant1));
-    entities.push_back(this->factory->createAIBomber(13.0f, 1.0f, AIBomberType::Variant2));
-    entities.push_back(this->factory->createAIBomber(13.0f, 11.0f, AIBomberType::Variant3));
+    entities.push_back(this->factory->createAIBomber(1.0f, 11.0f, BomberType::Variant1));
+    entities.push_back(this->factory->createAIBomber(13.0f, 1.0f, BomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.0f, 11.0f, BomberType::Variant3));
 }
 
 void World::randomizeTiles() {
@@ -92,6 +91,13 @@ void World::removeDestroyedEntities() {
                    entities.end());
 }
 
+void World::processNewEntities() {
+    for (auto& entity : new_entities_to_add) {
+        entities.push_back(std::move(entity));
+    }
+    new_entities_to_add.clear();
+}
+
 void World::spawnExplosion(const float x, const float y, const int blast_radius) {
     const bool is_top_level = !is_processing_explosions;
     if (is_top_level) {
@@ -123,12 +129,18 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
             Position pos = entity->getPosition();
 
             switch (entity->getEntityType()) {
+            case AIBomber_E:
+                if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
+                    entity->destroy();
+                }
+                break;
+
             case DestructibleWall_E:
                 if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
                     auto wall = factory->createCrumblingWall(px, py);
                     // Observe the wall to spawn powerup once crumbling animation is complete
                     wall->addObserver(shared_from_this());
-                    entities.push_back(std::move(wall));
+                    new_entities_to_add.push_back(std::move(wall));
                     entity->destroy();
                     return false;
                 }
@@ -158,7 +170,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
 
         // Spawn an explosion if tile is empty
         if (getTile(ix, iy).getType() == TileType::E) {
-            entities.push_back(factory->createExplosion(px, py, type));
+            new_entities_to_add.push_back(factory->createExplosion(px, py, type));
             return true;
         }
         return false;
@@ -192,11 +204,11 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
 }
 
 void World::spawnPowerUp(const float x, const float y) {
-    entities.push_back(factory->createPowerUp(x, y));
+    new_entities_to_add.push_back(factory->createPowerUp(x, y));
 }
 
-void World::spawnKnockedOutBomber(const float x, const float y) {
-    entities.push_back(factory->createKnockedOutBomber(x, y));
+void World::spawnKnockedOutBomber(const float x, const float y, const BomberType type) {
+    new_entities_to_add.push_back(factory->createKnockedOutBomber(x, y, type));
 }
 
 bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, const Rect& currentEntityRect) const {
@@ -222,7 +234,7 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
             continue;
         if (entityRect.intersects(entity->getCollisionRect())) {
             EntityType type = entity->getEntityType();
-            if (type == Explosion_E || type == PowerUp_E) {
+            if (type == Explosion_E || type == PowerUp_E || type == AIBomber_E || type == Player_E) {
                 return false;
             }
             if (!(type == Bomb_E && currentEntityRect.intersects(entity->getCollisionRect()))) {
@@ -304,8 +316,9 @@ void World::onNotify(const Entity& entity, const Event event) {
         if (Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
         }
-    } else if (event == Event::EntityDestroyed && entity.getEntityType() == Player_E) {
-        spawnKnockedOutBomber(entity.getPosition().x, entity.getPosition().y);
+    } else if (event == Event::EntityDestroyed && (entity.getEntityType() == Player_E || entity.getEntityType() == AIBomber_E)) {
+        const auto& bomber = static_cast<const Bomber&>(entity);
+        spawnKnockedOutBomber(entity.getPosition().x, entity.getPosition().y, bomber.getBomberType());
     }
 }
 

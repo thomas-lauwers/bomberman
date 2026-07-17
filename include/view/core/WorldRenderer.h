@@ -27,8 +27,8 @@ public:
     void render(sf::RenderWindow& window, const World& world) override;
     void update(float deltaTime) override;
     void renderTiles(sf::RenderWindow& window, const World& world);
-    void renderPlayer(sf::RenderWindow& window, const World& world) const;
-    void renderEntities(sf::RenderWindow& window, const World& world);
+    void renderNonBomberEntities(sf::RenderWindow& window, const World& world);
+    void renderBombersSorted(sf::RenderWindow& window, const World& world);
 
     void removeDestroyedEntities(const World& world);
 

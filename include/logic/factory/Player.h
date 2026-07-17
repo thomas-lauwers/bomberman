@@ -8,6 +8,7 @@ public:
     Player();
 
     [[nodiscard]] EntityType getEntityType() const override;
+    [[nodiscard]] BomberType getBomberType() const override;
 
 private:
 };

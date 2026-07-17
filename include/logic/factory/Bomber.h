@@ -6,12 +6,15 @@
 #include "../Rect.h"
 #include "Entity.h"
 #include "PowerUp.h"
+#include "BomberType.h"
 
 class Bomber : public Entity, public Observer {
 public:
     Bomber() = default;
 
     virtual ~Bomber() = default;
+
+    virtual BomberType getBomberType() const = 0;
 
     void setPosition(float x, float y);
     [[nodiscard]] Position getPosition() const override;

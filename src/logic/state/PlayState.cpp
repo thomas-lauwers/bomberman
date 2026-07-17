@@ -9,6 +9,11 @@ PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::mov
     if (const auto player = world->getPlayer()) {
         player->addObserver(world);
     }
+    for (const auto& entity : world->getEntities()) {
+        if (entity->getEntityType() == AIBomber_E) {
+            entity->addObserver(world);
+        }
+    }
 }
 
 void PlayState::handleInput(const Input input) {
@@ -74,6 +79,7 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world->checkExplosionCollision();
     world->checkPowerUpsCollection();
     world->removeDestroyedEntities();
+    world->processNewEntities();
 }
 
 void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) { renderer.render(window, *world); }

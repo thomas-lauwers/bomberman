@@ -2,20 +2,20 @@
 #define BOMBERMAN_AIBOMBER_H
 
 #include "Bomber.h"
-
-enum class AIBomberType { Variant1, Variant2, Variant3 };
+#include "BomberType.h"
 
 class AIBomber : public Bomber {
 public:
-    explicit AIBomber(AIBomberType type);
+    explicit AIBomber(BomberType type);
 
     [[nodiscard]] EntityType getEntityType() const override;
-    [[nodiscard]] AIBomberType getType() const { return type; }
+    [[nodiscard]] BomberType getBomberType() const override;
+    [[nodiscard]] BomberType getType() const { return type; }
 
     void update(float deltaTime) override;
 
 private:
-    AIBomberType type;
+    BomberType type;
 };
 
 #endif // BOMBERMAN_AIBOMBER_H

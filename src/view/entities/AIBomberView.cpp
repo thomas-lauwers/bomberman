@@ -2,7 +2,7 @@
 #include "../../../include/view/core/TextureManager.h"
 #include "../../../include/view/Direction.h"
 
-AIBomberView::AIBomberView(const TextureManager& t_manager, const AIBomberType type)
+AIBomberView::AIBomberView(const TextureManager& t_manager, const BomberType type)
     : BomberView(t_manager), type{type} {
     configureAnimations();
 }
@@ -12,17 +12,19 @@ void AIBomberView::configureAnimations() {
     int yOffset = 0;
 
     switch (type) {
-        case AIBomberType::Variant1:
+        case BomberType::Variant1:
             xOffset = 193;
             yOffset = 0;
             break;
-        case AIBomberType::Variant2:
+        case BomberType::Variant2:
             xOffset = 0;
             yOffset = 258;
             break;
-        case AIBomberType::Variant3:
+        case BomberType::Variant3:
             xOffset = 193;
             yOffset = 258;
+            break;
+        case BomberType::Player:
             break;
     }
 

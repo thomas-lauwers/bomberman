@@ -30,10 +30,11 @@ public:
     [[nodiscard]] const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
     void pushBackEntity(std::unique_ptr<Entity> entity);
+    void processNewEntities();
     void removeDestroyedEntities();
     void spawnExplosion(float x, float y, int blast_radius);
     void spawnPowerUp(float x, float y);
-    void spawnKnockedOutBomber(float x, float y);
+    void spawnKnockedOutBomber(float x, float y, BomberType type);
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
                                    const Rect& currentEntityRect) const;

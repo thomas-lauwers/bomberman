@@ -3,7 +3,12 @@
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/AIBomber.h"
+#include "../../../include/logic/factory/KnockedOutBomber.h"
+#include "../../../include/logic/factory/Explosion.h"
+#include "../../../include/logic/factory/PowerUp.h"
 #include <unordered_set>
+#include <vector>
+#include <algorithm>
 
 WorldRenderer::WorldRenderer(TextureManager& manager)
     : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
@@ -27,8 +32,8 @@ void WorldRenderer::render(sf::RenderWindow& window, const World& world) {
     removeDestroyedEntities(world);
 
     renderTiles(window, world);
-    renderEntities(window, world);
-    renderPlayer(window, world);
+    renderNonBomberEntities(window, world);
+    renderBombersSorted(window, world);
 }
 
 void WorldRenderer::update(const float deltaTime) {
@@ -91,13 +96,7 @@ void WorldRenderer::renderTiles(sf::RenderWindow& window, const World& world) {
     }
 }
 
-void WorldRenderer::renderPlayer(sf::RenderWindow& window, const World& world) const {
-    if (const auto player = world.getPlayer()) {
-        p_view->draw(window, *player);
-    }
-}
-
-void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world) {
+void WorldRenderer::renderNonBomberEntities(sf::RenderWindow& window, const World& world) {
     for (const auto& entity : world.getEntities()) {
         switch (entity->getEntityType()) {
         case DestructibleWall_E:
@@ -136,22 +135,49 @@ void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world)
 
         case KnockedOutBomber_E:
             if (knockedoutbomberViews.find(entity.get()) == knockedoutbomberViews.end()) {
-                knockedoutbomberViews[entity.get()] = std::make_unique<KnockedOutBomberView>(t_manager);
+                const auto kob = static_cast<const KnockedOutBomber*>(entity.get());
+                knockedoutbomberViews[entity.get()] = std::make_unique<KnockedOutBomberView>(t_manager, kob->getBomberType());
             }
             knockedoutbomberViews[entity.get()]->draw(window, *entity);
-            break;
-
-        case AIBomber_E:
-            if (aiBomberViews.find(entity.get()) == aiBomberViews.end()) {
-                const auto aiBomber = static_cast<const AIBomber*>(entity.get());
-                aiBomberViews[entity.get()] = std::make_unique<AIBomberView>(t_manager, aiBomber->getType());
-            }
-            aiBomberViews[entity.get()]->draw(window, *entity);
             break;
 
         default:
             break;
         }
+    }
+}
+
+void WorldRenderer::renderBombersSorted(sf::RenderWindow& window, const World& world) {
+    struct BomberViewPair {
+        const Entity* entity;
+        IEntityView* view;
+    };
+    std::vector<BomberViewPair> bombers;
+
+    // Add player
+    if (const auto player = world.getPlayer()) {
+        bombers.push_back({player.get(), p_view.get()});
+    }
+
+    // Add AI bombers
+    for (const auto& entity : world.getEntities()) {
+        if (entity->getEntityType() == AIBomber_E) {
+            if (aiBomberViews.find(entity.get()) == aiBomberViews.end()) {
+                const auto aiBomber = static_cast<const AIBomber*>(entity.get());
+                aiBomberViews[entity.get()] = std::make_unique<AIBomberView>(t_manager, aiBomber->getType());
+            }
+            bombers.push_back({entity.get(), aiBomberViews[entity.get()].get()});
+        }
+    }
+
+    // Sort by Y position
+    std::sort(bombers.begin(), bombers.end(), [](const BomberViewPair& a, const BomberViewPair& b) {
+        return a.entity->getPosition().y < b.entity->getPosition().y;
+    });
+
+    // Draw
+    for (const auto& pair : bombers) {
+        pair.view->draw(window, *pair.entity);
     }
 }
 

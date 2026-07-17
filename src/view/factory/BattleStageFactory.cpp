@@ -20,7 +20,7 @@ std::unique_ptr<Player> BattleStageFactory::createPlayer() {
     return player;
 }
 
-std::unique_ptr<AIBomber> BattleStageFactory::createAIBomber(const float x, const float y, AIBomberType type) {
+std::unique_ptr<AIBomber> BattleStageFactory::createAIBomber(const float x, const float y, BomberType type) {
     auto aiBomber = std::make_unique<AIBomber>(type);
     aiBomber->setPosition(x, y);
     return aiBomber;
@@ -51,7 +51,7 @@ std::unique_ptr<PowerUp> BattleStageFactory::createPowerUp(float x, float y) {
     return powerup;
 }
 
-std::unique_ptr<KnockedOutBomber> BattleStageFactory::createKnockedOutBomber(float x, float y) {
-    auto knockedoutbomber = std::make_unique<KnockedOutBomber>(x, y);
+std::unique_ptr<KnockedOutBomber> BattleStageFactory::createKnockedOutBomber(float x, float y, BomberType type) {
+    auto knockedoutbomber = std::make_unique<KnockedOutBomber>(x, y, type);
     return knockedoutbomber;
 }

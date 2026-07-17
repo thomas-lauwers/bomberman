@@ -5,10 +5,10 @@
 
 class AIBomberView : public BomberView {
 public:
-    AIBomberView(const TextureManager& t_manager, AIBomberType type);
+    AIBomberView(const TextureManager& t_manager, BomberType type);
 
 protected:
-    AIBomberType type;
+    BomberType type;
     void configureAnimations();
 };
 

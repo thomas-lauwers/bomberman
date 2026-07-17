@@ -14,7 +14,7 @@
 class TestEntityFactory : public IEntityFactory {
 public:
     std::unique_ptr<Player> createPlayer() override { return std::make_unique<Player>(); }
-    std::unique_ptr<AIBomber> createAIBomber(float x, float y, AIBomberType type) override {
+    std::unique_ptr<AIBomber> createAIBomber(float x, float y, BomberType type) override {
         auto ai = std::make_unique<AIBomber>(type);
         ai->setPosition(x, y);
         return ai;
@@ -24,7 +24,7 @@ public:
     std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) override { return std::make_unique<Explosion>(x, y, type); }
     std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) override { return std::make_unique<CrumblingWall>(x, y); }
     std::unique_ptr<PowerUp> createPowerUp(float x, float y) override { return std::make_unique<PowerUp>(x, y); }
-    std::unique_ptr<KnockedOutBomber> createKnockedOutBomber(float x, float y) override { return std::make_unique<KnockedOutBomber>(x, y); }
+    std::unique_ptr<KnockedOutBomber> createKnockedOutBomber(float x, float y, BomberType type) override { return std::make_unique<KnockedOutBomber>(x, y, type); }
 };
 
 #endif //BOMBERMAN_TESTENTITYFACTORY_H
