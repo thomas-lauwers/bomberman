@@ -18,7 +18,7 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 protected:
-    virtual void setupAnimations() = 0;
+    void setupAnimations(int xOffset, int yOffset);
 
     sf::Sprite sprite;
     BomberAnimationConfig animationConfig;

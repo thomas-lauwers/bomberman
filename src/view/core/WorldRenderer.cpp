@@ -2,6 +2,7 @@
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Player.h"
+#include "../../../include/logic/factory/AIBomber.h"
 #include <unordered_set>
 
 WorldRenderer::WorldRenderer(TextureManager& manager)
@@ -46,6 +47,9 @@ void WorldRenderer::update(const float deltaTime) {
         pair.second->update(deltaTime);
     }
     for (auto& pair : knockedoutbomberViews) {
+        pair.second->update(deltaTime);
+    }
+    for (auto& pair : aiBomberViews) {
         pair.second->update(deltaTime);
     }
 }
@@ -137,6 +141,14 @@ void WorldRenderer::renderEntities(sf::RenderWindow& window, const World& world)
             knockedoutbomberViews[entity.get()]->draw(window, *entity);
             break;
 
+        case AIBomber_E:
+            if (aiBomberViews.find(entity.get()) == aiBomberViews.end()) {
+                const auto aiBomber = static_cast<const AIBomber*>(entity.get());
+                aiBomberViews[entity.get()] = std::make_unique<AIBomberView>(t_manager, aiBomber->getType());
+            }
+            aiBomberViews[entity.get()]->draw(window, *entity);
+            break;
+
         default:
             break;
         }
@@ -167,4 +179,5 @@ void WorldRenderer::removeDestroyedEntities(const World& world) {
     cleanup(c_wallViews);
     cleanup(powerupViews);
     cleanup(knockedoutbomberViews);
+    cleanup(aiBomberViews);
 }

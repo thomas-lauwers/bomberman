@@ -4,6 +4,7 @@
 #include "../../logic/IWorldView.h"
 #include "../../logic/factory/Entity.h"
 #include "../core/TextureManager.h"
+#include "../entities/AIBomberView.h"
 #include "../entities/BombView.h"
 #include "../entities/CrumblingWallView.h"
 #include "../entities/DestructibleWallView.h"
@@ -48,6 +49,7 @@ private:
     std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
     std::map<const Entity*, std::unique_ptr<PowerUpView>> powerupViews;
     std::map<const Entity*, std::unique_ptr<KnockedOutBomberView>> knockedoutbomberViews;
+    std::map<const Entity*, std::unique_ptr<AIBomberView>> aiBomberViews;
 };
 
 #endif // BOMBERMAN_WORLDRENDERER_H

@@ -20,6 +20,12 @@ std::unique_ptr<Player> BattleStageFactory::createPlayer() {
     return player;
 }
 
+std::unique_ptr<AIBomber> BattleStageFactory::createAIBomber(const float x, const float y, AIBomberType type) {
+    auto aiBomber = std::make_unique<AIBomber>(type);
+    aiBomber->setPosition(x, y);
+    return aiBomber;
+}
+
 std::unique_ptr<Bomb> BattleStageFactory::createBomb(float x, float y, int blast_radius) {
     auto bomb = std::make_unique<Bomb>(x, y, blast_radius);
     return bomb;

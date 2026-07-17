@@ -7,7 +7,6 @@ public:
     explicit PlayerView(const TextureManager& t_manager);
 
 private:
-    void setupAnimations() override;
 };
 
 #endif // BOMBERMAN_PLAYERVIEW_H

@@ -3,6 +3,7 @@
 
 #include "../../logic/factory/IEntityFactory.h"
 #include "../entities/PlayerView.h"
+#include "../entities/AIBomberView.h"
 #include <memory>
 
 class BattleStageFactory : public IEntityFactory {
@@ -11,6 +12,7 @@ public:
 
     void setPlayerView(std::shared_ptr<PlayerView> view);
     std::unique_ptr<Player> createPlayer() override;
+    std::unique_ptr<AIBomber> createAIBomber(float x, float y, AIBomberType type) override;
     std::unique_ptr<Bomb> createBomb(float x, float y, int blast_radius) override;
     std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) override;
     std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) override;
@@ -22,6 +24,7 @@ public:
 private:
     const TextureManager& textureManager;
     std::shared_ptr<PlayerView> playerView;
+    std::shared_ptr<AIBomberView> aiBomberView;
 };
 
 #endif // BOMBERMAN_BATTLESTAGEFACTORY_H

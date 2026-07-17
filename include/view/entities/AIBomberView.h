@@ -9,7 +9,7 @@ public:
 
 protected:
     AIBomberType type;
-    void setupAnimations() override;
+    void configureAnimations();
 };
 
 #endif // BOMBERMAN_AIBOMBERVIEW_H

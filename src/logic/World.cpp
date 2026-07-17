@@ -46,6 +46,9 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
     randomizeTiles();
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
+    entities.push_back(this->factory->createAIBomber(1.0f, 11.0f, AIBomberType::Variant1));
+    entities.push_back(this->factory->createAIBomber(13.0f, 1.0f, AIBomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.0f, 11.0f, AIBomberType::Variant3));
 }
 
 void World::randomizeTiles() {
