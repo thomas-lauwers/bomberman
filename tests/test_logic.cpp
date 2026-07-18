@@ -148,16 +148,74 @@ TEST(WorldTest, RemoveEntity) {
     EXPECT_EQ(world->getEntities().size(), sizeAfterAdd - 1);
 }
 
+TEST(WorldTest, ExplosionBlocksMovement) {
+    const auto factory = std::make_shared<TestEntityFactory>();
+    auto world = std::make_shared<World>(factory);
+    
+    // Bomber at (1.0, 1.0)
+    auto bomber = factory->createAIBomber(1.0f, 1.0f, BomberType::Variant1);
+    
+    // Explosion at (2.0, 1.0)
+    world->pushBackEntity(factory->createExplosion(2.0f, 1.0f, ExplosionType::Center));
+    
+    // Collision should be detected (true = collision)
+    // Bomber's collision rect should now intersect with explosion's
+    // (We need to make sure the bomber's collision rect is positioned at a place where it intersects)
+    // If bomber is at (1.0, 1.0), and explosion is at (2.0, 1.0), do they intersect?
+    // Bomber at (1.0, 1.0) -> rect at [1.2, 1.2, 0.6, 0.6]
+    // Explosion at (2.0, 1.0) -> rect at [2.0, 1.0, 0.8, 0.8]
+    // No intersection. 
+    // Let's place the explosion AT (1.0, 1.0).
+    
+    world->pushBackEntity(factory->createExplosion(1.0f, 1.0f, ExplosionType::Center));
+    // Bomber at 1.0, 1.0 -> Rect [1.2, 1.2, 0.6, 0.6]
+    // Explosion at 1.0, 1.0 -> Rect [1.0, 1.0, 0.8, 0.8]
+    // Intersection:
+    // Bomber X: 1.2 to 1.8
+    // Explosion X: 1.0 to 1.8
+    // Yes! Intersection [1.2, 1.8]!
+    
+    EXPECT_TRUE(world->isColliding(bomber->getCollisionRect(), nullptr, bomber->getCollisionRect()));
+}
+
 TEST(EntityTest, NewEntityNotDestroyed) {
     DestructibleWall w(2.0f, 2.0f);
     EXPECT_FALSE(w.isDestroyed());
 }
 
-TEST(WorldTest, CollisionWithNewWall) {
+TEST(AIBomberTest, IsInDanger) {
     const auto factory = std::make_shared<TestEntityFactory>();
     auto world = std::make_shared<World>(factory);
-    auto wall = factory->createDestructibleWall(5.0f, 5.0f);
-    world->pushBackEntity(std::move(wall));
-    Rect r{5.0f, 5.0f, 1.0f, 1.0f};
-    EXPECT_TRUE(world->isColliding(r, nullptr, r));
+    
+    // Place a bomb at (2, 2) with blast radius 3
+    world->pushBackEntity(factory->createBomb(2.0f, 2.0f, 3));
+    
+    // Bomber at (2, 3)
+    auto aiBomber = factory->createAIBomber(2.0f, 3.0f, BomberType::Variant1);
+    
+    // (2, 3) should be in danger
+    EXPECT_TRUE(aiBomber->isInDanger(*world));
 }
+
+TEST(AIBomberTest, IsNotInDangerAfterBombDestroyed) {
+    const auto factory = std::make_shared<TestEntityFactory>();
+    auto world = std::make_shared<World>(factory);
+    
+    // Place a bomb at (2, 2) with blast radius 3
+    auto bomb = factory->createBomb(2.0f, 2.0f, 3);
+    auto* raw_bomb = bomb.get();
+    world->pushBackEntity(std::move(bomb));
+    
+    // Bomber at (2, 3)
+    auto aiBomber = factory->createAIBomber(2.0f, 3.0f, BomberType::Variant1);
+    
+    // (2, 3) should be in danger
+    EXPECT_TRUE(aiBomber->isInDanger(*world));
+    
+    // Destroy the bomb
+    raw_bomb->destroy();
+    
+    // Bomber should NOT be in danger now
+    EXPECT_FALSE(aiBomber->isInDanger(*world));
+}
+

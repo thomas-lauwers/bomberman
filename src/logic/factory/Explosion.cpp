@@ -9,7 +9,7 @@ EntityType Explosion::getEntityType() const { return Explosion_E; }
 
 Position Explosion::getPosition() const { return position; }
 
-Rect Explosion::getCollisionRect() const { return {position.x, position.y, 1.0f, 1.0f}; }
+Rect Explosion::getCollisionRect() const { return {position.x, position.y, 0.8f, 0.8f}; }
 
 ExplosionType Explosion::getType() const { return type; }
 

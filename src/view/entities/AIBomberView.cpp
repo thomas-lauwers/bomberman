@@ -28,5 +28,5 @@ void AIBomberView::configureAnimations() {
             break;
     }
 
-    BomberView::setupAnimations(xOffset, yOffset);
+    setupAnimations(xOffset, yOffset);
 }

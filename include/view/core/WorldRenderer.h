@@ -49,7 +49,7 @@ private:
     std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
     std::map<const Entity*, std::unique_ptr<PowerUpView>> powerupViews;
     std::map<const Entity*, std::unique_ptr<KnockedOutBomberView>> knockedoutbomberViews;
-    std::map<const Entity*, std::unique_ptr<AIBomberView>> aiBomberViews;
+    std::map<const Entity*, std::shared_ptr<AIBomberView>> aiBomberViews;
 };
 
 #endif // BOMBERMAN_WORLDRENDERER_H

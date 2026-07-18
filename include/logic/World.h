@@ -34,12 +34,15 @@ public:
     void removeDestroyedEntities();
     void spawnExplosion(float x, float y, int blast_radius);
     void spawnPowerUp(float x, float y);
+    void spawnBomb(float x, float y, int blast_radius, const std::weak_ptr<Observer>& observer = {});
     void spawnKnockedOutBomber(float x, float y, BomberType type);
 
     [[nodiscard]] bool isColliding(const Rect& entityRect, const Entity* ignoreEntity,
                                    const Rect& currentEntityRect) const;
+    [[nodiscard]] bool isWallAt(int x, int y) const;
     [[nodiscard]] bool isDestructibleWallAt(int x, int y) const;
     [[nodiscard]] bool isBombAt(float x, float y) const;
+    [[nodiscard]] bool isExplosionAt(int x, int y) const;
 
     void checkExplosionCollision();
     void checkPowerUpsCollection() const;
