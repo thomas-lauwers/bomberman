@@ -244,7 +244,7 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
             continue;
         if (entityRect.intersects(entity->getCollisionRect())) {
             EntityType type = entity->getEntityType();
-            if (type == PowerUp_E || type == AIBomber_E || type == Player_E) {
+            if (type == Explosion_E || type == PowerUp_E || type == AIBomber_E || type == Player_E) {
                 return false;
             }
             if (!(type == Bomb_E && currentEntityRect.intersects(entity->getCollisionRect()))) {

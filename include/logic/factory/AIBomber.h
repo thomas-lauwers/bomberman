@@ -16,6 +16,7 @@ public:
         Fleeing,
         PlacingBomb,
         MovingToPowerUp,
+        MovingToEnemy,
         Wandering
     };
 
@@ -27,9 +28,9 @@ public:
 
     void update(float deltaTime, World& world);
 
-    bool isTileAtRisk(int x, int y, const World& world) const;
-    bool isInDanger(const World& world) const;
-    bool attemptFlee(World &world, float deltaTime);
+    static bool isTileAtRisk(int x, int y, const World& world) ;
+    [[nodiscard]] bool isInDanger(const World& world) const;
+    bool attemptFlee(const World &world, float deltaTime);
 
 private:
     struct AIBomberObserver : Observer {
@@ -45,22 +46,25 @@ private:
     bool attemptPlaceBomb(World& world);
     bool attemptMoveToDestructibleWall(const World &world, float deltaTime);
     bool attemptMoveToPowerUp(const World &world, float deltaTime);
+    bool attemptMoveToEnemy(const World &world, float deltaTime);
     bool tryMoveTowards(const World& world, const Position& target, float deltaTime);
     bool executeMovement(const World& world, float dx, float dy);
     
     [[nodiscard]] std::vector<Position> findPathToNearestDestructibleWall(const World& world) const;
     [[nodiscard]] std::vector<Position> findPathToNearestPowerUp(const World& world) const;
+    [[nodiscard]] std::vector<Position> findPathToNearestEnemy(const World& world) const;
     std::vector<Position> computePath(const World& world,
                                      const std::function<bool(int, int, const World&)>& isTarget,
                                      const std::function<bool(int, int, const World&)>& isPassable) const;
-    bool isNearDestructibleWall(const World& world) const;
-    bool isNearPowerUp(const World& world) const;
+    [[nodiscard]] bool isNearDestructibleWall(const World& world) const;
+    [[nodiscard]] bool isAdjacentToEnemy(const World& world) const;
+    [[nodiscard]] bool isNearPowerUp(const World& world) const;
+    [[nodiscard]] bool isNearEnemy(const World& world) const;
+    [[nodiscard]] bool isPassable(int x, int y, const World& world) const;
+    static bool isHitboxFullyInTile(const Position& pos) ;
+    [[nodiscard]] bool isTileSafe(int x, int y, const World& world) const;
 
-    bool isPassable(int x, int y, const World& world) const;
-    bool isHitboxFullyInTile(const Position& pos) const;
-    bool isTileSafe(int x, int y, const World& world) const;
-
-    std::vector<Position> findPathToNearestSafeTile(const World& world) const;
+    [[nodiscard]] std::vector<Position> findPathToNearestSafeTile(const World& world) const;
 
     BomberType type;
     std::vector<Position> path;

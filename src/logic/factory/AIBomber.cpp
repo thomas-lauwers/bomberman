@@ -1,5 +1,6 @@
 #include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/factory/Bomb.h"
+#include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/World.h"
 #include <cmath>
 #include <queue>
@@ -25,21 +26,16 @@ BomberType AIBomber::getBomberType() const { return type; }
 void AIBomber::update(const float deltaTime, World& world) {
     Bomber::update(deltaTime);
 
-    std::cout << "[";
-    for (auto it : fleePath) {
-        std::cout << "(" << it.x << ", " << it.y << "), ";
-    }
-
-    std::cout << "]" << std::endl;
-
     if (isInDanger(world)) {
         state = AIState::Fleeing;
     } else {
         fleePath.clear();
         if (isNearPowerUp(world)) {
             state = AIState::MovingToPowerUp;
-        } else if (canPlaceBomb() && isNearDestructibleWall(world)) {
+        } else if (canPlaceBomb() && (isNearDestructibleWall(world) || isAdjacentToEnemy(world))) {
             state = AIState::PlacingBomb;
+        } else if (isNearEnemy(world)) {
+            state = AIState::MovingToEnemy;
         } else {
             state = AIState::Wandering;
         }
@@ -55,6 +51,9 @@ void AIBomber::update(const float deltaTime, World& world) {
         case AIState::MovingToPowerUp:
             attemptMoveToPowerUp(world, deltaTime);
             break;
+        case AIState::MovingToEnemy:
+            attemptMoveToEnemy(world, deltaTime);
+            break;
         case AIState::Wandering:
             attemptMoveToDestructibleWall(world, deltaTime);
             break;
@@ -62,11 +61,12 @@ void AIBomber::update(const float deltaTime, World& world) {
 }
 
 bool AIBomber::attemptPlaceBomb(World& world) {
-    Position pos = getPosition();
+    const Position pos = getPosition();
     auto [x, y] = toGrid(pos);
 
     if (world.isDestructibleWallAt(x + 1, y) || world.isDestructibleWallAt(x - 1, y) ||
-        world.isDestructibleWallAt(x, y + 1) || world.isDestructibleWallAt(x, y - 1)) {
+        world.isDestructibleWallAt(x, y + 1) || world.isDestructibleWallAt(x, y - 1) ||
+        isAdjacentToEnemy(world)) {
         if (canPlaceBomb() && !world.isBombAt(pos.x, pos.y)) {
             world.spawnBomb(pos.x, pos.y, getBlastRadius(), observer);
             placeBomb();
@@ -76,7 +76,7 @@ bool AIBomber::attemptPlaceBomb(World& world) {
     return false;
 }
 
-bool AIBomber::attemptMoveToDestructibleWall(const World &world, float deltaTime) {
+bool AIBomber::attemptMoveToDestructibleWall(const World &world, const float deltaTime) {
     if (path.empty() || ++pathTimer > 50) {
         pathTimer = 0;
         path = findPathToNearestDestructibleWall(world);
@@ -84,16 +84,16 @@ bool AIBomber::attemptMoveToDestructibleWall(const World &world, float deltaTime
 
     if (path.empty()) return false;
 
-    Position currentPos = getPosition();
+    const Position currentPos = getPosition();
     Position next = path.front();
 
     // Direction to the target
-    float dx = next.x - currentPos.x;
-    float dy = next.y - currentPos.y;
+    const float dx = next.x - currentPos.x;
+    const float dy = next.y - currentPos.y;
 
     // Check if we are already past the target node in the direction of movement
-    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
-    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
 
     if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
         path.erase(path.begin());
@@ -104,31 +104,31 @@ bool AIBomber::attemptMoveToDestructibleWall(const World &world, float deltaTime
     return tryMoveTowards(world, next, deltaTime);
 }
 
-bool AIBomber::tryMoveTowards(const World& world, const Position& target, float deltaTime) {
-    Position currentPos = getPosition();
-    float dx = target.x - currentPos.x;
-    float dy = target.y - currentPos.y;
-    float dist = std::sqrt(dx * dx + dy * dy);
+bool AIBomber::tryMoveTowards(const World& world, const Position& target, const float deltaTime) {
+    auto [x, y] = getPosition();
+    const float dx = target.x - x;
+    const float dy = target.y - y;
+    const float dist = std::sqrt(dx * dx + dy * dy);
 
     if (dist < 0.001f) return true; // Already there
 
-    float moveSpeed = speed; // Assuming 'speed' is a member variable
-    float step = std::min(dist, moveSpeed * deltaTime);
+    const float step = std::min(dist, speed * deltaTime);
 
-    float moveX = (dx / dist) * step;
-    float moveY = (dy / dist) * step;
+    const float moveX = (dx / dist) * step;
+    const float moveY = (dy / dist) * step;
 
     return executeMovement(world, moveX, moveY);
 }
 
 bool AIBomber::isNearDestructibleWall(const World& world) const {
-    Position pos = getPosition();
+    const Position pos = getPosition();
     auto [x, y] = toGrid(pos);
-    const int dx[] = {1, -1, 0, 0};
-    const int dy[] = {0, 0, 1, -1};
+    constexpr int dy[] = {0, 0, 1, -1};
+    constexpr int dx[] = {1, -1, 0, 0};
+
     for (int i = 0; i < 4; ++i) {
-        int nx = x + dx[i];
-        int ny = y + dy[i];
+        const int nx = x + dx[i];
+        const int ny = y + dy[i];
         if (world.isDestructibleWallAt(nx, ny) && !isTileAtRisk(nx, ny, world)) {
             return true;
         }
@@ -136,21 +136,46 @@ bool AIBomber::isNearDestructibleWall(const World& world) const {
     return false;
 }
 
+bool AIBomber::isAdjacentToEnemy(const World& world) const {
+    Position pos = getPosition();
+    auto [x, y] = toGrid(pos);
+    constexpr int dx[] = {1, -1, 0, 0};
+    constexpr int dy[] = {0, 0, 1, -1};
+
+    const auto player = world.getPlayer();
+    if (player) {
+        auto [px, py] = toGrid(player->getPosition());
+        for (int i = 0; i < 4; ++i) {
+            if (x + dx[i] == px && y + dy[i] == py) return true;
+        }
+    }
+
+    for (const auto& entities = world.getEntities(); const auto& entity : entities) {
+        if (entity.get() != this && entity->getEntityType() == AIBomber_E) {
+            auto [ex, ey] = toGrid(entity->getPosition());
+            for (int i = 0; i < 4; ++i) {
+                if (x + dx[i] == ex && y + dy[i] == ey) return true;
+            }
+        }
+    }
+    return false;
+}
+
 bool AIBomber::executeMovement(const World& world, const float dx, const float dy) {
     const Rect initialRect = getCollisionRect();
-    Position currentPos = getPosition();
+    auto [x, y] = getPosition();
 
     moveDirectly(dx, dy);
     if (world.isColliding(getCollisionRect(), this, initialRect)) {
-        setPosition(currentPos.x, currentPos.y);
+        setPosition(x, y);
         return false;
-    } else {
-        if (dx > 0) triggerEvent(Event::BomberMovedRight);
-        else if (dx < 0) triggerEvent(Event::BomberMovedLeft);
-        else if (dy > 0) triggerEvent(Event::BomberMovedDown);
-        else if (dy < 0) triggerEvent(Event::BomberMovedUp);
-        return true;
     }
+
+    if (dx > 0) triggerEvent(Event::BomberMovedRight);
+    else if (dx < 0) triggerEvent(Event::BomberMovedLeft);
+    else if (dy > 0) triggerEvent(Event::BomberMovedDown);
+    else if (dy < 0) triggerEvent(Event::BomberMovedUp);
+    return true;
 }
 
 
@@ -177,16 +202,16 @@ std::vector<Position> AIBomber::computePath(const World& world,
             break;
         }
 
-        int dx[] = {1, -1, 0, 0};
-        int dy[] = {0, 0, 1, -1};
         for (int i = 0; i < 4; ++i) {
+            constexpr int dy[] = {0, 0, 1, -1};
+            constexpr int dx[] = {1, -1, 0, 0};
             int nx = current.first + dx[i];
             int ny = current.second + dy[i];
 
             if (nx >= 0 && nx < World::WIDTH && ny >= 0 && ny < World::HEIGHT) {
                 if (isPassable(nx, ny, world) && parent.find({nx, ny}) == parent.end()) {
                     parent[{nx, ny}] = current;
-                    q.push({nx, ny});
+                    q.emplace(nx, ny);
                 }
             }
         }
@@ -205,14 +230,14 @@ std::vector<Position> AIBomber::computePath(const World& world,
 }
 
 std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& world) const {
-    auto isTarget = [this](int cx, int cy, const World& world) {
+    auto isTarget = [this](const int cx, const int cy, const World& world) {
         return (world.isDestructibleWallAt(cx + 1, cy) && !isTileAtRisk(cx + 1, cy, world)) ||
                (world.isDestructibleWallAt(cx - 1, cy) && !isTileAtRisk(cx - 1, cy, world)) ||
                (world.isDestructibleWallAt(cx, cy + 1) && !isTileAtRisk(cx, cy + 1, world)) ||
                (world.isDestructibleWallAt(cx, cy - 1) && !isTileAtRisk(cx, cy - 1, world));
     };
-    auto isPassable = [this](int nx, int ny, const World& world) {
-        Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
+    auto isPassable = [this](const int nx, const int ny, const World& world) {
+        const Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
         return !world.isColliding(rect, this, getCollisionRect()) && !isTileAtRisk(nx, ny, world);
     };
 
@@ -221,14 +246,15 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
 
 bool AIBomber::isInDanger(const World& world) const {
     Position pos = getPosition();
+
     // Assuming a 0.8x0.8 hitbox, the distance from center to edge is 0.4.
-    float halfSize = 0.46f;
+    constexpr float halfSize = 0.46f;
 
     // Calculate the range of grid tiles that the hitbox overlaps
-    int minX = static_cast<int>(std::floor(pos.x - halfSize));
-    int maxX = static_cast<int>(std::floor(pos.x + halfSize));
-    int minY = static_cast<int>(std::floor(pos.y - halfSize));
-    int maxY = static_cast<int>(std::floor(pos.y + halfSize));
+    const int minX = static_cast<int>(std::floor(pos.x - halfSize));
+    const int maxX = static_cast<int>(std::floor(pos.x + halfSize));
+    const int minY = static_cast<int>(std::floor(pos.y - halfSize));
+    const int maxY = static_cast<int>(std::floor(pos.y + halfSize));
 
     // Check if any of the tiles covered by the hitbox are in danger
     for (int x = minX; x <= maxX; ++x) {
@@ -242,14 +268,14 @@ bool AIBomber::isInDanger(const World& world) const {
     return false;
 }
 
-bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
+bool AIBomber::isTileAtRisk(const int x, const int y, const World& world) {
     if (world.isExplosionAt(x, y)) return true;
 
     // Retrieve all entities currently in the world.
     const std::vector<std::unique_ptr<Entity>>& entities = world.getEntities();
     for (const auto& entity : entities) {
         if (entity->getEntityType() == Bomb_E) {
-            const Bomb* bomb = static_cast<const Bomb*>(entity.get());
+            const auto bomb = static_cast<const Bomb*>(entity.get());
             Position bPos = bomb->getPosition();
             const int bx = static_cast<int>(bPos.x);
             const int by = static_cast<int>(bPos.y);
@@ -266,9 +292,9 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
                     int nx = bx + dx[i] * dist;
                     int ny = by + dy[i] * dist;
 
-                    if (nx == x && ny == y) return true; // Target IS at risk!
+                    if (nx == x && ny == y) return true; // Target is at risk
 
-                    if (world.isWallAt(nx, ny)) break; // Blast is blocked by this wall
+                    if (world.isWallAt(nx, ny)) break; // This wall blocks blast
                 }
             }
         }
@@ -277,65 +303,65 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
 }
 
 
-bool AIBomber::isHitboxFullyInTile(const Position& pos) const {
+bool AIBomber::isHitboxFullyInTile(const Position& pos) {
     const int gridX = static_cast<int>(std::floor(pos.x));
     const int gridY = static_cast<int>(std::floor(pos.y));
-    const float halfSize = 0.46f;
+    constexpr float halfSize = 0.46f;
     return (pos.x - halfSize >= static_cast<float>(gridX) &&
             pos.x + halfSize <= static_cast<float>(gridX) + 1.0f &&
             pos.y - halfSize >= static_cast<float>(gridY) &&
             pos.y + halfSize <= static_cast<float>(gridY) + 1.0f);
 }
 
-bool AIBomber::isPassable(int x, int y, const World& world) const {
+bool AIBomber::isPassable(const int x, const int y, const World& world) const {
     if (world.isExplosionAt(x, y)) return false;
 
-    Rect rect = {static_cast<float>(x) + 0.1f,
+    const Rect rect = {static_cast<float>(x) + 0.1f,
                  static_cast<float>(y) + 0.1f,
                  0.8f, 0.8f};
     return !world.isColliding(rect, this, getCollisionRect());
 }
 
-bool AIBomber::isTileSafe(int x, int y, const World& world) const {
+bool AIBomber::isTileSafe(const int x, const int y, const World& world) const {
     return !isTileAtRisk(x, y, world) && isPassable(x, y, world);
 }
 
 std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) const {
-    auto isTarget = [this](int cx, int cy, const World& world) {
+    auto isTarget = [this](const int cx, const int cy, const World& world) {
         return isTileSafe(cx, cy, world);
     };
-    auto isPassable = [this](int nx, int ny, const World& world) {
+    auto isPassable = [this](const int nx, const int ny, const World& world) {
         return this->isPassable(nx, ny, world);
     };
 
     return computePath(world, isTarget, isPassable);
 }
 
-bool AIBomber::attemptFlee(World &world, float deltaTime) {
-    // If we are not in danger, only stop if we have finished our flee path.
+bool AIBomber::attemptFlee(const World &world, const float deltaTime) {
+    // If not in danger, only stop if flee path completed
     if (!isInDanger(world) && fleePath.empty()) {
         return false;
     }
 
-    // Compute a flee path if we don’t have one yet.
+    // Compute a flee path if bomber doesn't have one yet
     if (fleePath.empty()) {
         fleePath = findPathToNearestSafeTile(world);
         if (fleePath.empty()) {
-            // No reachable safe tile – cannot flee.
+            // No reachable safe tile, cannot flee.
             return true;
         }
     }
 
-    Position currentPos = getPosition();
+    const Position currentPos = getPosition();
     Position next = fleePath.front();
 
     // Direction to the target
-    float dx = next.x - currentPos.x;
-    float dy = next.y - currentPos.y;
+    const float dx = next.x - currentPos.x;
+    const float dy = next.y - currentPos.y;
 
     // Check if we are already past the target node in the direction of movement
-    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
-    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
 
     if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
         fleePath.erase(fleePath.begin());
@@ -351,7 +377,7 @@ bool AIBomber::isNearPowerUp(const World& world) const {
 }
 
 std::vector<Position> AIBomber::findPathToNearestPowerUp(const World& world) const {
-    auto isTarget = [](int cx, int cy, const World& world) {
+    auto isTarget = [](const int cx, const int cy, const World& world) {
         const auto& entities = world.getEntities();
         for (const auto& entity : entities) {
             if (entity->getEntityType() == PowerUp_E) {
@@ -361,15 +387,15 @@ std::vector<Position> AIBomber::findPathToNearestPowerUp(const World& world) con
         }
         return false;
     };
-    auto isPassable = [this](int nx, int ny, const World& world) {
-        Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
+    auto isPassable = [this](const int nx, const int ny, const World& world) {
+        const Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
         return !world.isColliding(rect, this, getCollisionRect()) && !isTileAtRisk(nx, ny, world);
     };
 
     return computePath(world, isTarget, isPassable);
 }
 
-bool AIBomber::attemptMoveToPowerUp(const World &world, float deltaTime) {
+bool AIBomber::attemptMoveToPowerUp(const World &world, const float deltaTime) {
     if (path.empty() || ++pathTimer > 50) {
         pathTimer = 0;
         path = findPathToNearestPowerUp(world);
@@ -377,16 +403,76 @@ bool AIBomber::attemptMoveToPowerUp(const World &world, float deltaTime) {
 
     if (path.empty()) return false;
 
-    Position currentPos = getPosition();
+    const Position currentPos = getPosition();
     Position next = path.front();
 
     // Direction to the target
-    float dx = next.x - currentPos.x;
-    float dy = next.y - currentPos.y;
+    const float dx = next.x - currentPos.x;
+    const float dy = next.y - currentPos.y;
 
     // Check if we are already past the target node in the direction of movement
-    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
-    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+
+    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
+        path.erase(path.begin());
+        if (path.empty()) return false;
+        next = path.front();
+    }
+
+    return tryMoveTowards(world, next, deltaTime);
+}
+
+bool AIBomber::isNearEnemy(const World& world) const {
+    return !findPathToNearestEnemy(world).empty();
+}
+
+std::vector<Position> AIBomber::findPathToNearestEnemy(const World& world) const {
+    auto isTarget = [this](const int cx, const int cy, const World& world) {
+        // Check existing entities (other AI bombers)
+        const auto& entities = world.getEntities();
+        for (const auto& entity : entities) {
+            if (entity.get() != this && (entity->getEntityType() == Player_E || entity->getEntityType() == AIBomber_E)) {
+                auto [px, py] = toGrid(entity->getPosition());
+                if (px == cx && py == cy) return true;
+            }
+        }
+
+        // Check the player
+        const auto player = world.getPlayer();
+        if (player) {
+            auto [px, py] = toGrid(player->getPosition());
+            if (px == cx && py == cy) return true;
+        }
+
+        return false;
+    };
+    auto isPassable = [this](const int nx, const int ny, const World& world) {
+        const Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
+        return !world.isColliding(rect, this, getCollisionRect()) && !isTileAtRisk(nx, ny, world);
+    };
+
+    return computePath(world, isTarget, isPassable);
+}
+
+bool AIBomber::attemptMoveToEnemy(const World &world, const float deltaTime) {
+    if (path.empty() || ++pathTimer > 50) {
+        pathTimer = 0;
+        path = findPathToNearestEnemy(world);
+    }
+
+    if (path.empty()) return false;
+
+    const Position currentPos = getPosition();
+    Position next = path.front();
+
+    // Direction to the target
+    const float dx = next.x - currentPos.x;
+    const float dy = next.y - currentPos.y;
+
+    // Check if we are already past the target node in the direction of movement
+    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
 
     if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
         path.erase(path.begin());
