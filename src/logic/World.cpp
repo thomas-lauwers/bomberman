@@ -46,9 +46,9 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
     randomizeTiles();
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
-    /*entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
-    entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));*/
-    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));
+    entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
+    /*entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));*/
 }
 
 void World::randomizeTiles() {
@@ -64,7 +64,7 @@ void World::randomizeTiles() {
                                          [y, x](const std::array<int, 2>& pos) { return pos[0] == y && pos[1] == x; });
 
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
-                if (Random::getInstance().roll(0.80)) {
+                if (Random::getInstance().roll(1)) {
                     entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }
@@ -120,7 +120,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
         // Check for collision with player
         if (player) {
             Position player_pos = player->getPosition();
-            if (static_cast<int>(std::round(player_pos.x)) == ix && static_cast<int>(std::round(player_pos.y)) == iy) {
+            if (static_cast<int>(std::floor(player_pos.x)) == ix && static_cast<int>(std::floor(player_pos.y)) == iy) {
                 removePlayer();
             }
         }
@@ -131,7 +131,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
 
             switch (entity->getEntityType()) {
             case AIBomber_E:
-                if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
+                if (static_cast<int>(std::floor(pos.x)) == ix && static_cast<int>(std::floor(pos.y)) == iy) {
                     entity->destroy();
                 }
                 break;

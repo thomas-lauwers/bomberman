@@ -1,7 +1,6 @@
 #include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/World.h"
-#include <cstdlib>
 #include <cmath>
 #include <queue>
 #include <vector>
@@ -26,16 +25,23 @@ BomberType AIBomber::getBomberType() const { return type; }
 void AIBomber::update(const float deltaTime, World& world) {
     Bomber::update(deltaTime);
 
-    /*if (++stateCheckTimer >= 10) {
-        stateCheckTimer = 0;*/
-        if (isInDanger(world)) {
-            state = AIState::Fleeing;
-        } else if (canPlaceBomb() && isNearDestructibleWall(world)) {
+    std::cout << "[";
+    for (auto it : fleePath) {
+        std::cout << "(" << it.x << ", " << it.y << "), ";
+    }
+
+    std::cout << "]" << std::endl;
+
+    if (isInDanger(world)) {
+        state = AIState::Fleeing;
+    } else {
+        fleePath.clear();
+        if (canPlaceBomb() && isNearDestructibleWall(world)) {
             state = AIState::PlacingBomb;
-        } else  {
+        } else {
             state = AIState::MovingToWall;
         }
-    /*}*/
+    }
 
     switch (state) {
         case AIState::Fleeing:
@@ -107,8 +113,16 @@ bool AIBomber::tryMoveTowards(const World& world, const Position& target) {
 bool AIBomber::isNearDestructibleWall(const World& world) const {
     Position pos = getPosition();
     auto [x, y] = toGrid(pos);
-    return (world.isDestructibleWallAt(x + 1, y) || world.isDestructibleWallAt(x - 1, y) ||
-            world.isDestructibleWallAt(x, y + 1) || world.isDestructibleWallAt(x, y - 1));
+    const int dx[] = {1, -1, 0, 0};
+    const int dy[] = {0, 0, 1, -1};
+    for (int i = 0; i < 4; ++i) {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (world.isDestructibleWallAt(nx, ny) && !isTileAtRisk(nx, ny, world)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool AIBomber::executeMovement(const World& world, const float dx, const float dy) {
@@ -129,7 +143,10 @@ bool AIBomber::executeMovement(const World& world, const float dx, const float d
 }
 
 
-std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& world) const {
+
+std::vector<Position> AIBomber::computePath(const World& world,
+                                           const std::function<bool(int, int, const World&)>& isTarget,
+                                           const std::function<bool(int, int, const World&)>& isPassable) const {
     auto [startX, startY] = toGrid(getPosition());
 
     std::queue<std::pair<int, int>> q;
@@ -144,10 +161,7 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
         const std::pair<int, int> current = q.front();
         q.pop();
 
-        if (world.isDestructibleWallAt(current.first + 1, current.second) ||
-            world.isDestructibleWallAt(current.first - 1, current.second) ||
-            world.isDestructibleWallAt(current.first, current.second + 1) ||
-            world.isDestructibleWallAt(current.first, current.second - 1)) {
+        if (isTarget(current.first, current.second, world)) {
             target = current;
             break;
         }
@@ -159,10 +173,7 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
             int ny = current.second + dy[i];
 
             if (nx >= 0 && nx < World::WIDTH && ny >= 0 && ny < World::HEIGHT) {
-                Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
-                if (!world.isColliding(rect, this, getCollisionRect()) &&
-                    !isTileAtRisk(nx, ny, world) &&
-                    parent.find({nx, ny}) == parent.end()) {
+                if (isPassable(nx, ny, world) && parent.find({nx, ny}) == parent.end()) {
                     parent[{nx, ny}] = current;
                     q.push({nx, ny});
                 }
@@ -180,6 +191,21 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
         std::reverse(path.begin(), path.end());
     }
     return path;
+}
+
+std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& world) const {
+    auto isTarget = [this](int cx, int cy, const World& world) {
+        return (world.isDestructibleWallAt(cx + 1, cy) && !isTileAtRisk(cx + 1, cy, world)) ||
+               (world.isDestructibleWallAt(cx - 1, cy) && !isTileAtRisk(cx - 1, cy, world)) ||
+               (world.isDestructibleWallAt(cx, cy + 1) && !isTileAtRisk(cx, cy + 1, world)) ||
+               (world.isDestructibleWallAt(cx, cy - 1) && !isTileAtRisk(cx, cy - 1, world));
+    };
+    auto isPassable = [this](int nx, int ny, const World& world) {
+        Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
+        return !world.isColliding(rect, this, getCollisionRect()) && !isTileAtRisk(nx, ny, world);
+    };
+
+    return computePath(world, isTarget, isPassable);
 }
 
 bool AIBomber::isInDanger(const World& world) const {
@@ -239,10 +265,11 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
     return false;
 }
 
+
 bool AIBomber::isHitboxFullyInTile(const Position& pos) const {
-    int gridX = static_cast<int>(std::floor(pos.x));
-    int gridY = static_cast<int>(std::floor(pos.y));
-    float halfSize = 0.46f;
+    const int gridX = static_cast<int>(std::floor(pos.x));
+    const int gridY = static_cast<int>(std::floor(pos.y));
+    const float halfSize = 0.46f;
     return (pos.x - halfSize >= static_cast<float>(gridX) &&
             pos.x + halfSize <= static_cast<float>(gridX) + 1.0f &&
             pos.y - halfSize >= static_cast<float>(gridY) &&
@@ -263,54 +290,14 @@ bool AIBomber::isTileSafe(int x, int y, const World& world) const {
 }
 
 std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) const {
-    auto [startX, startY] = toGrid(getPosition());
+    auto isTarget = [this](int cx, int cy, const World& world) {
+        return isTileSafe(cx, cy, world);
+    };
+    auto isPassable = [this](int nx, int ny, const World& world) {
+        return this->isPassable(nx, ny, world);
+    };
 
-    std::queue<std::pair<int, int>> q;
-    q.emplace(startX, startY);
-
-    std::map<std::pair<int, int>, std::pair<int, int>> parent;
-    parent[{startX, startY}] = {-1, -1};
-
-    std::pair<int, int> target = {-1, -1};
-
-    while (!q.empty()) {
-        auto [cx, cy] = q.front();
-        q.pop();
-
-        // If the current cell is safe, we have found our destination.
-        if (isTileSafe(cx, cy, world)) {
-            target = {cx, cy};
-            break;
-        }
-
-        // Expand only into neighbours that are passable.
-        const int dx[] = {1, -1, 0, 0};
-        const int dy[] = {0, 0, 1, -1};
-        for (int i = 0; i < 4; ++i) {
-            int nx = cx + dx[i];
-            int ny = cy + dy[i];
-
-            if (nx >= 0 && nx < World::WIDTH && ny >= 0 && ny < World::HEIGHT) {
-                if (isPassable(nx, ny, world) && parent.find({nx, ny}) == parent.end()) {
-                    parent[{nx, ny}] = {cx, cy};
-                    q.emplace(nx, ny);
-                }
-            }
-        }
-    }
-
-    // Reconstruct path from start to the safe cell (target).
-    std::vector<Position> path;
-    if (target.first != -1) {
-        std::pair<int, int> current = target;
-        while (current.first != -1) {
-            path.push_back({static_cast<float>(current.first) + 0.5f,
-                            static_cast<float>(current.second) + 0.5f});
-            current = parent[current];
-        }
-        std::reverse(path.begin(), path.end());
-    }
-    return path;
+    return computePath(world, isTarget, isPassable);
 }
 
 bool AIBomber::attemptFlee(World &world) {
@@ -331,7 +318,7 @@ bool AIBomber::attemptFlee(World &world) {
     Position currentPos = getPosition();
     Position next = fleePath.front();
 
-    if (isHitboxFullyInTile(currentPos)) {
+    if ( isHitboxFullyInTile(currentPos)) {
         fleePath.erase(fleePath.begin());
         if (fleePath.empty()) return false;
         next = fleePath.front();
@@ -343,5 +330,5 @@ bool AIBomber::attemptFlee(World &world) {
 
     // Movement blocked; discard the path so we recompute next frame.
     fleePath.clear();
-    return true; // Still "fleeing" even if movement is blocked
+    return false; // Still "fleeing" even if movement is blocked
 }

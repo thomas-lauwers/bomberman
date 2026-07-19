@@ -5,6 +5,7 @@
 #include "BomberType.h"
 #include <vector>
 #include <memory>
+#include <functional>
 
 class Bomber;
 class World;
@@ -47,6 +48,9 @@ private:
     bool executeMovement(const World& world, float dx, float dy);
     
     [[nodiscard]] std::vector<Position> findPathToNearestDestructibleWall(const World& world) const;
+    std::vector<Position> computePath(const World& world,
+                                     const std::function<bool(int, int, const World&)>& isTarget,
+                                     const std::function<bool(int, int, const World&)>& isPassable) const;
     bool isNearDestructibleWall(const World& world) const;
 
     bool isPassable(int x, int y, const World& world) const;
@@ -59,7 +63,6 @@ private:
     std::vector<Position> path;
     std::vector<Position> fleePath;
     int pathTimer = 0;
-    int stateCheckTimer = 0;
     AIState state = AIState::Wandering;
 };
 
