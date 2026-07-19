@@ -10,7 +10,7 @@
 BomberView::BomberView(const TextureManager& t_manager)
     : currentAction{AnimationState::Idle}, currentDirection{Direction::Down} {
     sprite.setTexture(t_manager.getTexture("character_sprites"));
-    sprite.setOrigin(0.0f, 12.0f);
+    sprite.setOrigin(8.0f, 17.0f);
 }
 
 void BomberView::draw(sf::RenderWindow& window, const Entity& entity) {

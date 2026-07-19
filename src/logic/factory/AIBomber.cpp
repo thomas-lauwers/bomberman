@@ -12,8 +12,8 @@
 #include <utility>
 
 namespace {
-    std::pair<int, int> toGrid(Position pos) {
-        return {static_cast<int>(std::round(pos.x)), static_cast<int>(std::round(pos.y))};
+    std::pair<int, int> toGrid(const Position pos) {
+        return {static_cast<int>(std::floor(pos.x)), static_cast<int>(std::floor(pos.y))};
     }
 }
 
@@ -32,16 +32,14 @@ void AIBomber::update(const float deltaTime, World& world) {
             state = AIState::Fleeing;
         } else if (canPlaceBomb() && isNearDestructibleWall(world)) {
             state = AIState::PlacingBomb;
-        } else if (canPlaceBomb()) {
+        } else  {
             state = AIState::MovingToWall;
-        } else {
-            state = AIState::Wandering;
         }
     /*}*/
 
     switch (state) {
         case AIState::Fleeing:
-            attemptFlee(world, deltaTime);
+            attemptFlee(world);
             break;
         case AIState::PlacingBomb:
             attemptPlaceBomb(world);
@@ -80,7 +78,7 @@ bool AIBomber::attemptMoveToDestructibleWall(const World &world) {
     Position currentPos = getPosition();
     Position next = path.front();
 
-    if (std::abs(currentPos.x - next.x) < 0.1 && std::abs(currentPos.y - next.y) < 0.1) {
+    if (isHitboxFullyInTile(currentPos)) {
         path.erase(path.begin());
         if (path.empty()) return false;
         next = path.front();
@@ -161,7 +159,7 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
             int ny = current.second + dy[i];
 
             if (nx >= 0 && nx < World::WIDTH && ny >= 0 && ny < World::HEIGHT) {
-                Rect rect = {static_cast<float>(nx) + 0.1f, static_cast<float>(ny) + 0.1f, 0.8f, 0.8f};
+                Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
                 if (!world.isColliding(rect, this, getCollisionRect()) &&
                     !isTileAtRisk(nx, ny, world) &&
                     parent.find({nx, ny}) == parent.end()) {
@@ -176,7 +174,7 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
     if (target.first != -1) {
         std::pair<int, int> current = target;
         while (current.first != -1) {
-            path.push_back({static_cast<float>(current.first), static_cast<float>(current.second)});
+            path.push_back({static_cast<float>(current.first) + 0.5f, static_cast<float>(current.second) + 0.5f});
             current = parent[current];
         }
         std::reverse(path.begin(), path.end());
@@ -187,7 +185,7 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
 bool AIBomber::isInDanger(const World& world) const {
     Position pos = getPosition();
     // Assuming a 0.8x0.8 hitbox, the distance from center to edge is 0.4.
-    float halfSize = 0.4f;
+    float halfSize = 0.46f;
 
     // Calculate the range of grid tiles that the hitbox overlaps
     int minX = static_cast<int>(std::floor(pos.x - halfSize));
@@ -216,9 +214,9 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
         if (entity->getEntityType() == Bomb_E) {
             const Bomb* bomb = static_cast<const Bomb*>(entity.get());
             Position bPos = bomb->getPosition();
-            int bx = static_cast<int>(std::round(bPos.x));
-            int by = static_cast<int>(std::round(bPos.y));
-            int r   = bomb->getBlastRadius();
+            const int bx = static_cast<int>(bPos.x);
+            const int by = static_cast<int>(bPos.y);
+            const int r = bomb->getBlastRadius();
 
             if (bx == x && by == y) return true;
 
@@ -239,6 +237,16 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
         }
     }
     return false;
+}
+
+bool AIBomber::isHitboxFullyInTile(const Position& pos) const {
+    int gridX = static_cast<int>(std::floor(pos.x));
+    int gridY = static_cast<int>(std::floor(pos.y));
+    float halfSize = 0.46f;
+    return (pos.x - halfSize >= static_cast<float>(gridX) &&
+            pos.x + halfSize <= static_cast<float>(gridX) + 1.0f &&
+            pos.y - halfSize >= static_cast<float>(gridY) &&
+            pos.y + halfSize <= static_cast<float>(gridY) + 1.0f);
 }
 
 bool AIBomber::isPassable(int x, int y, const World& world) const {
@@ -296,8 +304,8 @@ std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) co
     if (target.first != -1) {
         std::pair<int, int> current = target;
         while (current.first != -1) {
-            path.push_back({static_cast<float>(current.first),
-                            static_cast<float>(current.second)});
+            path.push_back({static_cast<float>(current.first) + 0.5f,
+                            static_cast<float>(current.second) + 0.5f});
             current = parent[current];
         }
         std::reverse(path.begin(), path.end());
@@ -305,7 +313,7 @@ std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) co
     return path;
 }
 
-bool AIBomber::attemptFlee(World& world, float deltaTime) {
+bool AIBomber::attemptFlee(World &world) {
     // If we are not in danger, only stop if we have finished our flee path.
     if (!isInDanger(world) && fleePath.empty()) {
         return false;
@@ -323,8 +331,7 @@ bool AIBomber::attemptFlee(World& world, float deltaTime) {
     Position currentPos = getPosition();
     Position next = fleePath.front();
 
-    if (std::abs(currentPos.x - next.x) < 0.1 &&
-        std::abs(currentPos.y - next.y) < 0.1) {
+    if (isHitboxFullyInTile(currentPos)) {
         fleePath.erase(fleePath.begin());
         if (fleePath.empty()) return false;
         next = fleePath.front();

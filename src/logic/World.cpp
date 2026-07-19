@@ -46,9 +46,9 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
     randomizeTiles();
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
-    entities.push_back(this->factory->createAIBomber(1.0f, 11.0f, BomberType::Variant1));
-    entities.push_back(this->factory->createAIBomber(13.0f, 1.0f, BomberType::Variant2));
-    entities.push_back(this->factory->createAIBomber(13.0f, 11.0f, BomberType::Variant3));
+    /*entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
+    entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));*/
+    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));
 }
 
 void World::randomizeTiles() {
@@ -278,8 +278,8 @@ bool World::isDestructibleWallAt(const int x, const int y) const {
 }
 
 bool World::isBombAt(const float x, const float y) const {
-    const int bx = static_cast<int>(std::round(x));
-    const int by = static_cast<int>(std::round(y));
+    const int bx = static_cast<int>(std::floor(x));
+    const int by = static_cast<int>(std::floor(y));
 
     for (const auto& entity : entities) {
         if (entity->getEntityType() == Bomb_E) {
@@ -296,8 +296,8 @@ bool World::isBombAt(const float x, const float y) const {
 bool World::isExplosionAt(const int x, const int y) const {
     for (const auto& entity : entities) {
         if (entity->getEntityType() == Explosion_E && !entity->isDestroyed()) {
-            const int ex = static_cast<int>(std::round(entity->getPosition().x));
-            const int ey = static_cast<int>(std::round(entity->getPosition().y));
+            const int ex = static_cast<int>(std::floor(entity->getPosition().x));
+            const int ey = static_cast<int>(std::floor(entity->getPosition().y));
             if (ex == x && ey == y) {
                 return true;
             }

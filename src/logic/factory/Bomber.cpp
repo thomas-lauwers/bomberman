@@ -31,7 +31,7 @@ void Bomber::update(const float deltaTime) {
     }
 }
 
-Rect Bomber::getCollisionRect() const { return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f}; }
+Rect Bomber::getCollisionRect() const { return {position.x - 0.4f, position.y - 0.4f, 0.8f, 0.8f}; }
 
 void Bomber::onNotify(const Entity& entity, const Event event) {
     if (event == Event::BombExploded) {

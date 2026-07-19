@@ -28,7 +28,7 @@ public:
 
     bool isTileAtRisk(int x, int y, const World& world) const;
     bool isInDanger(const World& world) const;
-    bool attemptFlee(World& world, float deltaTime);
+    bool attemptFlee(World &world);
 
 private:
     struct AIBomberObserver : Observer {
@@ -50,6 +50,7 @@ private:
     bool isNearDestructibleWall(const World& world) const;
 
     bool isPassable(int x, int y, const World& world) const;
+    bool isHitboxFullyInTile(const Position& pos) const;
     bool isTileSafe(int x, int y, const World& world) const;
 
     std::vector<Position> findPathToNearestSafeTile(const World& world) const;

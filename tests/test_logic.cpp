@@ -132,8 +132,8 @@ TEST(BombTest, BlastRadius) {
 TEST(PlayerTest, InitialPosition) {
     Player p;
     Position pos = p.getPosition();
-    EXPECT_FLOAT_EQ(pos.x, 1.0f);
-    EXPECT_FLOAT_EQ(pos.y, 1.0f);
+    EXPECT_FLOAT_EQ(pos.x, 1.5f);
+    EXPECT_FLOAT_EQ(pos.y, 1.5f);
 }
 
 TEST(WorldTest, RemoveEntity) {
