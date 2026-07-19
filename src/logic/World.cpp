@@ -64,7 +64,7 @@ void World::randomizeTiles() {
                                          [y, x](const std::array<int, 2>& pos) { return pos[0] == y && pos[1] == x; });
 
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
-                if (Random::getInstance().roll(1)) {
+                if (Random::getInstance().roll(0.80)) {
                     entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }

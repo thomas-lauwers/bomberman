@@ -15,7 +15,7 @@ public:
     enum class AIState {
         Fleeing,
         PlacingBomb,
-        MovingToWall,
+        MovingToPowerUp,
         Wandering
     };
 
@@ -44,14 +44,17 @@ private:
 
     bool attemptPlaceBomb(World& world);
     bool attemptMoveToDestructibleWall(const World &world, float deltaTime);
+    bool attemptMoveToPowerUp(const World &world, float deltaTime);
     bool tryMoveTowards(const World& world, const Position& target, float deltaTime);
     bool executeMovement(const World& world, float dx, float dy);
     
     [[nodiscard]] std::vector<Position> findPathToNearestDestructibleWall(const World& world) const;
+    [[nodiscard]] std::vector<Position> findPathToNearestPowerUp(const World& world) const;
     std::vector<Position> computePath(const World& world,
                                      const std::function<bool(int, int, const World&)>& isTarget,
                                      const std::function<bool(int, int, const World&)>& isPassable) const;
     bool isNearDestructibleWall(const World& world) const;
+    bool isNearPowerUp(const World& world) const;
 
     bool isPassable(int x, int y, const World& world) const;
     bool isHitboxFullyInTile(const Position& pos) const;

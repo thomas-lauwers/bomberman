@@ -36,10 +36,12 @@ void AIBomber::update(const float deltaTime, World& world) {
         state = AIState::Fleeing;
     } else {
         fleePath.clear();
-        if (canPlaceBomb() && isNearDestructibleWall(world)) {
+        if (isNearPowerUp(world)) {
+            state = AIState::MovingToPowerUp;
+        } else if (canPlaceBomb() && isNearDestructibleWall(world)) {
             state = AIState::PlacingBomb;
         } else {
-            state = AIState::MovingToWall;
+            state = AIState::Wandering;
         }
     }
 
@@ -50,10 +52,11 @@ void AIBomber::update(const float deltaTime, World& world) {
         case AIState::PlacingBomb:
             attemptPlaceBomb(world);
             break;
-        case AIState::MovingToWall:
-            attemptMoveToDestructibleWall(world, deltaTime);
+        case AIState::MovingToPowerUp:
+            attemptMoveToPowerUp(world, deltaTime);
             break;
         case AIState::Wandering:
+            attemptMoveToDestructibleWall(world, deltaTime);
             break;
     }
 }
@@ -338,6 +341,57 @@ bool AIBomber::attemptFlee(World &world, float deltaTime) {
         fleePath.erase(fleePath.begin());
         if (fleePath.empty()) return false;
         next = fleePath.front();
+    }
+
+    return tryMoveTowards(world, next, deltaTime);
+}
+
+bool AIBomber::isNearPowerUp(const World& world) const {
+    return !findPathToNearestPowerUp(world).empty();
+}
+
+std::vector<Position> AIBomber::findPathToNearestPowerUp(const World& world) const {
+    auto isTarget = [](int cx, int cy, const World& world) {
+        const auto& entities = world.getEntities();
+        for (const auto& entity : entities) {
+            if (entity->getEntityType() == PowerUp_E) {
+                auto [px, py] = toGrid(entity->getPosition());
+                if (px == cx && py == cy) return true;
+            }
+        }
+        return false;
+    };
+    auto isPassable = [this](int nx, int ny, const World& world) {
+        Rect rect = {(nx + 0.1f), (ny + 0.1f), 0.8f, 0.8f};
+        return !world.isColliding(rect, this, getCollisionRect()) && !isTileAtRisk(nx, ny, world);
+    };
+
+    return computePath(world, isTarget, isPassable);
+}
+
+bool AIBomber::attemptMoveToPowerUp(const World &world, float deltaTime) {
+    if (path.empty() || ++pathTimer > 50) {
+        pathTimer = 0;
+        path = findPathToNearestPowerUp(world);
+    }
+
+    if (path.empty()) return false;
+
+    Position currentPos = getPosition();
+    Position next = path.front();
+
+    // Direction to the target
+    float dx = next.x - currentPos.x;
+    float dy = next.y - currentPos.y;
+
+    // Check if we are already past the target node in the direction of movement
+    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+
+    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
+        path.erase(path.begin());
+        if (path.empty()) return false;
+        next = path.front();
     }
 
     return tryMoveTowards(world, next, deltaTime);
