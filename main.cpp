@@ -2,7 +2,7 @@
 #include "include/view/entities/HitboxRenderer.h"
 
 int main() {
-    showHitboxes = true;
+    debugMode = true;
     Game g;
     g.run();
     return 0;

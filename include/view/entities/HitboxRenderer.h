@@ -7,10 +7,10 @@
 #include "../../logic/factory/Entity.h"
 #include "../../logic/Rect.h"
 
-extern bool showHitboxes;
+extern bool debugMode;
 
 inline void drawHitbox(sf::RenderWindow& window, const Entity& entity) {
-    if (!showHitboxes) return;
+    if (!debugMode) return;
     
     Rect collisionRect = entity.getCollisionRect();
     NormalizedPosition normPos = Camera::worldToNormalized(collisionRect.x, collisionRect.y);
@@ -22,6 +22,18 @@ inline void drawHitbox(sf::RenderWindow& window, const Entity& entity) {
     hitbox.setOutlineColor(sf::Color::Red);
     hitbox.setOutlineThickness(0.005f);
     window.draw(hitbox);
+}
+
+inline void drawPosition(sf::RenderWindow& window, const Entity& entity) {
+    if (!debugMode) return;
+    
+    Position pos = entity.getPosition();
+    NormalizedPosition normPos = Camera::worldToNormalized(pos.x, pos.y);
+    
+    sf::CircleShape positionMarker(0.01f);
+    positionMarker.setPosition(normPos.x - 0.01f, normPos.y - 0.01f);
+    positionMarker.setFillColor(sf::Color::Blue);
+    window.draw(positionMarker);
 }
 
 #endif // BOMBERMAN_HITBOXRENDERER_H

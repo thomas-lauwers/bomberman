@@ -27,6 +27,7 @@ void BomberView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
     drawHitbox(window, entity);
+    drawPosition(window, entity);
 }
 
 void BomberView::update(const float deltaTime) {
