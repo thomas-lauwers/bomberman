@@ -124,21 +124,21 @@ bool AIBomber::isNearDestructibleWall(const World& world) const {
 bool AIBomber::isAdjacentToEnemy(const World& world) const {
     Position pos = getPosition();
     auto [x, y] = toGrid(pos);
-    constexpr int dx[] = {1, -1, 0, 0};
-    constexpr int dy[] = {0, 0, 1, -1};
-
+    constexpr int dx[] = {1, -1, 0, 0, 0};
+    constexpr int dy[] = {0, 0, 1, -1, 0};
+    
     const auto player = world.getPlayer();
     if (player) {
         auto [px, py] = toGrid(player->getPosition());
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 5; ++i) {
             if (x + dx[i] == px && y + dy[i] == py) return true;
         }
     }
-
+    
     for (const auto& entities = world.getEntities(); const auto& entity : entities) {
         if (entity.get() != this && entity->getEntityType() == AIBomber_E) {
             auto [ex, ey] = toGrid(entity->getPosition());
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 5; ++i) {
                 if (x + dx[i] == ex && y + dy[i] == ey) return true;
             }
         }

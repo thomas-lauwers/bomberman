@@ -226,3 +226,25 @@ TEST(AIBomberTest, PlacesBombNearEnemy) {
     EXPECT_TRUE(world->isBombAt(1.0f, 1.0f));
 }
 
+TEST(AIBomberTest, PlacesBombOnSameTileAsEnemy) {
+    const auto factory = std::make_shared<TestEntityFactory>();
+    auto world = std::make_shared<World>(factory);
+
+    // AI Bomber at (1.0, 1.0)
+    auto aiBomber = factory->createAIBomber(1.0f, 1.0f, BomberType::Variant1);
+    
+    // Player at (1.0, 1.0) - same tile
+    auto player = std::make_shared<Player>();
+    player->setPosition(1.0f, 1.0f);
+    world->setPlayer(player);
+    
+    // Trigger update
+    for (int i = 0; i < 30; ++i) {
+        aiBomber->update(0.1f, *world);
+    }
+    world->processNewEntities();
+    
+    // Check if a bomb was placed
+    EXPECT_TRUE(world->isBombAt(1.0f, 1.0f));
+}
+
