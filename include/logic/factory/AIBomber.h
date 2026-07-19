@@ -29,7 +29,7 @@ public:
 
     bool isTileAtRisk(int x, int y, const World& world) const;
     bool isInDanger(const World& world) const;
-    bool attemptFlee(World &world);
+    bool attemptFlee(World &world, float deltaTime);
 
 private:
     struct AIBomberObserver : Observer {
@@ -43,8 +43,8 @@ private:
     std::shared_ptr<AIBomberObserver> observer;
 
     bool attemptPlaceBomb(World& world);
-    bool attemptMoveToDestructibleWall(const World &world);
-    bool tryMoveTowards(const World& world, const Position& target);
+    bool attemptMoveToDestructibleWall(const World &world, float deltaTime);
+    bool tryMoveTowards(const World& world, const Position& target, float deltaTime);
     bool executeMovement(const World& world, float dx, float dy);
     
     [[nodiscard]] std::vector<Position> findPathToNearestDestructibleWall(const World& world) const;

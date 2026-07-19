@@ -45,13 +45,13 @@ void AIBomber::update(const float deltaTime, World& world) {
 
     switch (state) {
         case AIState::Fleeing:
-            attemptFlee(world);
+            attemptFlee(world, deltaTime);
             break;
         case AIState::PlacingBomb:
             attemptPlaceBomb(world);
             break;
         case AIState::MovingToWall:
-            attemptMoveToDestructibleWall(world);
+            attemptMoveToDestructibleWall(world, deltaTime);
             break;
         case AIState::Wandering:
             break;
@@ -73,7 +73,7 @@ bool AIBomber::attemptPlaceBomb(World& world) {
     return false;
 }
 
-bool AIBomber::attemptMoveToDestructibleWall(const World &world) {
+bool AIBomber::attemptMoveToDestructibleWall(const World &world, float deltaTime) {
     if (path.empty() || ++pathTimer > 50) {
         pathTimer = 0;
         path = findPathToNearestDestructibleWall(world);
@@ -84,30 +84,38 @@ bool AIBomber::attemptMoveToDestructibleWall(const World &world) {
     Position currentPos = getPosition();
     Position next = path.front();
 
-    if (isHitboxFullyInTile(currentPos)) {
+    // Direction to the target
+    float dx = next.x - currentPos.x;
+    float dy = next.y - currentPos.y;
+
+    // Check if we are already past the target node in the direction of movement
+    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+
+    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
         path.erase(path.begin());
         if (path.empty()) return false;
         next = path.front();
     }
 
-    if (tryMoveTowards(world, next)) return true;
-
-    return false;
+    return tryMoveTowards(world, next, deltaTime);
 }
 
-bool AIBomber::tryMoveTowards(const World& world, const Position& target) {
+bool AIBomber::tryMoveTowards(const World& world, const Position& target, float deltaTime) {
     Position currentPos = getPosition();
     float dx = target.x - currentPos.x;
     float dy = target.y - currentPos.y;
+    float dist = std::sqrt(dx * dx + dy * dy);
 
-    if (std::abs(dx) > std::abs(dy)) {
-        if (executeMovement(world, dx > 0 ? 1.0f : -1.0f, 0.0f)) return true;
-        if (executeMovement(world, 0.0f, dy > 0 ? 1.0f : -1.0f)) return true;
-    } else {
-        if (executeMovement(world, 0.0f, dy > 0 ? 1.0f : -1.0f)) return true;
-        if (executeMovement(world, dx > 0 ? 1.0f : -1.0f, 0.0f)) return true;
-    }
-    return false;
+    if (dist < 0.001f) return true; // Already there
+
+    float moveSpeed = speed; // Assuming 'speed' is a member variable
+    float step = std::min(dist, moveSpeed * deltaTime);
+
+    float moveX = (dx / dist) * step;
+    float moveY = (dy / dist) * step;
+
+    return executeMovement(world, moveX, moveY);
 }
 
 bool AIBomber::isNearDestructibleWall(const World& world) const {
@@ -129,7 +137,7 @@ bool AIBomber::executeMovement(const World& world, const float dx, const float d
     const Rect initialRect = getCollisionRect();
     Position currentPos = getPosition();
 
-    move(dx, dy);
+    moveDirectly(dx, dy);
     if (world.isColliding(getCollisionRect(), this, initialRect)) {
         setPosition(currentPos.x, currentPos.y);
         return false;
@@ -300,7 +308,7 @@ std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) co
     return computePath(world, isTarget, isPassable);
 }
 
-bool AIBomber::attemptFlee(World &world) {
+bool AIBomber::attemptFlee(World &world, float deltaTime) {
     // If we are not in danger, only stop if we have finished our flee path.
     if (!isInDanger(world) && fleePath.empty()) {
         return false;
@@ -318,17 +326,19 @@ bool AIBomber::attemptFlee(World &world) {
     Position currentPos = getPosition();
     Position next = fleePath.front();
 
-    if ( isHitboxFullyInTile(currentPos)) {
+    // Direction to the target
+    float dx = next.x - currentPos.x;
+    float dy = next.y - currentPos.y;
+
+    // Check if we are already past the target node in the direction of movement
+    bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
+    bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
+
+    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
         fleePath.erase(fleePath.begin());
         if (fleePath.empty()) return false;
         next = fleePath.front();
     }
 
-    if (tryMoveTowards(world, next)) {
-        return true;
-    }
-
-    // Movement blocked; discard the path so we recompute next frame.
-    fleePath.clear();
-    return false; // Still "fleeing" even if movement is blocked
+    return tryMoveTowards(world, next, deltaTime);
 }

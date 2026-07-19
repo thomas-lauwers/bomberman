@@ -20,6 +20,7 @@ public:
     [[nodiscard]] Position getPosition() const override;
 
     void move(float dx, float dy);
+    void moveDirectly(float dx, float dy);
 
     [[nodiscard]] Rect getCollisionRect() const override;
 
