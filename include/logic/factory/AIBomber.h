@@ -47,6 +47,7 @@ private:
     bool attemptMoveToDestructibleWall(const World &world, float deltaTime);
     bool attemptMoveToPowerUp(const World &world, float deltaTime);
     bool attemptMoveToEnemy(const World &world, float deltaTime);
+    bool advanceAlongPath(const World& world, float deltaTime);
     bool tryMoveTowards(const World& world, const Position& target, float deltaTime);
     bool executeMovement(const World& world, float dx, float dy);
     
@@ -59,18 +60,21 @@ private:
     [[nodiscard]] bool isNearDestructibleWall(const World& world) const;
     [[nodiscard]] bool isAdjacentToEnemy(const World& world) const;
     [[nodiscard]] bool isNearPowerUp(const World& world) const;
-    [[nodiscard]] bool isNearEnemy(const World& world) const;
     [[nodiscard]] bool isPassable(int x, int y, const World& world) const;
     static bool isHitboxFullyInTile(const Position& pos) ;
     [[nodiscard]] bool isTileSafe(int x, int y, const World& world) const;
 
     [[nodiscard]] std::vector<Position> findPathToNearestSafeTile(const World& world) const;
 
+    static constexpr int AI_STATE_REEVALUATION_INTERVAL = 10;
     BomberType type;
     std::vector<Position> path;
     std::vector<Position> fleePath;
     int pathTimer = 0;
+    int aiStateTimer = 0;
     AIState state = AIState::Wandering;
+public:
+    [[nodiscard]] bool isNearEnemy(const World& world) const;
 };
 
 #endif // BOMBERMAN_AIBOMBER_H

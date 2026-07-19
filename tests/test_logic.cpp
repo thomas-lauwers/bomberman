@@ -217,7 +217,9 @@ TEST(AIBomberTest, PlacesBombNearEnemy) {
     world->setPlayer(player);
     
     // Trigger update
-    aiBomber->update(0.1f, *world);
+    for (int i = 0; i < 30; ++i) {
+        aiBomber->update(0.1f, *world);
+    }
     world->processNewEntities();
     
     // Check if a bomb was placed

@@ -28,16 +28,20 @@ void AIBomber::update(const float deltaTime, World& world) {
 
     if (isInDanger(world)) {
         state = AIState::Fleeing;
+        aiStateTimer = 0; // Reset when in danger
     } else {
         fleePath.clear();
-        if (isNearPowerUp(world)) {
-            state = AIState::MovingToPowerUp;
-        } else if (canPlaceBomb() && (isNearDestructibleWall(world) || isAdjacentToEnemy(world))) {
-            state = AIState::PlacingBomb;
-        } else if (isNearEnemy(world)) {
-            state = AIState::MovingToEnemy;
-        } else {
-            state = AIState::Wandering;
+        if (++aiStateTimer >= AI_STATE_REEVALUATION_INTERVAL) {
+            aiStateTimer = 0;
+            if (isNearPowerUp(world)) {
+                state = AIState::MovingToPowerUp;
+            } else if (canPlaceBomb() && (isNearDestructibleWall(world) || isAdjacentToEnemy(world))) {
+                state = AIState::PlacingBomb;
+            } else if (isNearEnemy(world)) {
+                state = AIState::MovingToEnemy;
+            } else {
+                state = AIState::Wandering;
+            }
         }
     }
 
@@ -82,26 +86,7 @@ bool AIBomber::attemptMoveToDestructibleWall(const World &world, const float del
         path = findPathToNearestDestructibleWall(world);
     }
 
-    if (path.empty()) return false;
-
-    const Position currentPos = getPosition();
-    Position next = path.front();
-
-    // Direction to the target
-    const float dx = next.x - currentPos.x;
-    const float dy = next.y - currentPos.y;
-
-    // Check if we are already past the target node in the direction of movement
-    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
-    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
-
-    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
-        path.erase(path.begin());
-        if (path.empty()) return false;
-        next = path.front();
-    }
-
-    return tryMoveTowards(world, next, deltaTime);
+    return advanceAlongPath(world, deltaTime);
 }
 
 bool AIBomber::tryMoveTowards(const World& world, const Position& target, const float deltaTime) {
@@ -401,26 +386,7 @@ bool AIBomber::attemptMoveToPowerUp(const World &world, const float deltaTime) {
         path = findPathToNearestPowerUp(world);
     }
 
-    if (path.empty()) return false;
-
-    const Position currentPos = getPosition();
-    Position next = path.front();
-
-    // Direction to the target
-    const float dx = next.x - currentPos.x;
-    const float dy = next.y - currentPos.y;
-
-    // Check if we are already past the target node in the direction of movement
-    const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
-    const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
-
-    if (pastX || pastY || isHitboxFullyInTile(currentPos)) {
-        path.erase(path.begin());
-        if (path.empty()) return false;
-        next = path.front();
-    }
-
-    return tryMoveTowards(world, next, deltaTime);
+    return advanceAlongPath(world, deltaTime);
 }
 
 bool AIBomber::isNearEnemy(const World& world) const {
@@ -461,6 +427,11 @@ bool AIBomber::attemptMoveToEnemy(const World &world, const float deltaTime) {
         path = findPathToNearestEnemy(world);
     }
 
+    return advanceAlongPath(world, deltaTime);
+}
+
+
+bool AIBomber::advanceAlongPath(const World& world, const float deltaTime) {
     if (path.empty()) return false;
 
     const Position currentPos = getPosition();
@@ -470,7 +441,7 @@ bool AIBomber::attemptMoveToEnemy(const World &world, const float deltaTime) {
     const float dx = next.x - currentPos.x;
     const float dy = next.y - currentPos.y;
 
-    // Check if we are already past the target node in the direction of movement
+    // Check if we are already past the target node
     const bool pastX = (dx > 0 && currentPos.x > next.x) || (dx < 0 && currentPos.x < next.x);
     const bool pastY = (dy > 0 && currentPos.y > next.y) || (dy < 0 && currentPos.y < next.y);
 

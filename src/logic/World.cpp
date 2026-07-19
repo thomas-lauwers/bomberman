@@ -315,9 +315,6 @@ void World::checkExplosionCollision() {
             for (const auto& bomberEntity : entities) {
                 if (bomberEntity->getEntityType() == AIBomber_E && !bomberEntity->isDestroyed()) {
                     if (bomberEntity->getCollisionRect().intersects(entity->getCollisionRect())) {
-                        std::cout << bomberEntity->getCollisionRect().x << " " << bomberEntity->getCollisionRect().y << std::endl;
-                        std::cout << entity->getCollisionRect().x << " " << entity->getCollisionRect().y << std::endl;
-
                         bomberEntity->destroy();
                     }
                 }
