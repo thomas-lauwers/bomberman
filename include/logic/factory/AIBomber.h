@@ -11,6 +11,13 @@ class World;
 
 class AIBomber : public Bomber {
 public:
+    enum class AIState {
+        Fleeing,
+        PlacingBomb,
+        MovingToWall,
+        Wandering
+    };
+
     explicit AIBomber(BomberType type);
 
     [[nodiscard]] EntityType getEntityType() const override;
@@ -35,11 +42,12 @@ private:
     std::shared_ptr<AIBomberObserver> observer;
 
     bool attemptPlaceBomb(World& world);
-    bool attemptMoveToDestructibleWall(const World& world, float deltaTime);
+    bool attemptMoveToDestructibleWall(const World &world);
     bool tryMoveTowards(const World& world, const Position& target);
     bool executeMovement(const World& world, float dx, float dy);
     
     [[nodiscard]] std::vector<Position> findPathToNearestDestructibleWall(const World& world) const;
+    bool isNearDestructibleWall(const World& world) const;
 
     bool isPassable(int x, int y, const World& world) const;
     bool isTileSafe(int x, int y, const World& world) const;
@@ -50,6 +58,8 @@ private:
     std::vector<Position> path;
     std::vector<Position> fleePath;
     int pathTimer = 0;
+    int stateCheckTimer = 0;
+    AIState state = AIState::Wandering;
 };
 
 #endif // BOMBERMAN_AIBOMBER_H

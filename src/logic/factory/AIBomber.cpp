@@ -26,9 +26,32 @@ BomberType AIBomber::getBomberType() const { return type; }
 void AIBomber::update(const float deltaTime, World& world) {
     Bomber::update(deltaTime);
 
-    if (attemptFlee(world, deltaTime)) return;
-    if (attemptPlaceBomb(world)) return;
-    if (canPlaceBomb() && attemptMoveToDestructibleWall(world, deltaTime)) return;
+    /*if (++stateCheckTimer >= 10) {
+        stateCheckTimer = 0;*/
+        if (isInDanger(world)) {
+            state = AIState::Fleeing;
+        } else if (canPlaceBomb() && isNearDestructibleWall(world)) {
+            state = AIState::PlacingBomb;
+        } else if (canPlaceBomb()) {
+            state = AIState::MovingToWall;
+        } else {
+            state = AIState::Wandering;
+        }
+    /*}*/
+
+    switch (state) {
+        case AIState::Fleeing:
+            attemptFlee(world, deltaTime);
+            break;
+        case AIState::PlacingBomb:
+            attemptPlaceBomb(world);
+            break;
+        case AIState::MovingToWall:
+            attemptMoveToDestructibleWall(world);
+            break;
+        case AIState::Wandering:
+            break;
+    }
 }
 
 bool AIBomber::attemptPlaceBomb(World& world) {
@@ -46,7 +69,7 @@ bool AIBomber::attemptPlaceBomb(World& world) {
     return false;
 }
 
-bool AIBomber::attemptMoveToDestructibleWall(const World& world, const float deltaTime) {
+bool AIBomber::attemptMoveToDestructibleWall(const World &world) {
     if (path.empty() || ++pathTimer > 50) {
         pathTimer = 0;
         path = findPathToNearestDestructibleWall(world);
@@ -81,6 +104,13 @@ bool AIBomber::tryMoveTowards(const World& world, const Position& target) {
         if (executeMovement(world, dx > 0 ? 1.0f : -1.0f, 0.0f)) return true;
     }
     return false;
+}
+
+bool AIBomber::isNearDestructibleWall(const World& world) const {
+    Position pos = getPosition();
+    auto [x, y] = toGrid(pos);
+    return (world.isDestructibleWallAt(x + 1, y) || world.isDestructibleWallAt(x - 1, y) ||
+            world.isDestructibleWallAt(x, y + 1) || world.isDestructibleWallAt(x, y - 1));
 }
 
 bool AIBomber::executeMovement(const World& world, const float dx, const float dy) {
@@ -132,8 +162,8 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
 
             if (nx >= 0 && nx < World::WIDTH && ny >= 0 && ny < World::HEIGHT) {
                 Rect rect = {static_cast<float>(nx) + 0.1f, static_cast<float>(ny) + 0.1f, 0.8f, 0.8f};
-                if (!world.isColliding(rect, this, getCollisionRect()) && 
-                    !isTileAtRisk(nx, ny, world) && 
+                if (!world.isColliding(rect, this, getCollisionRect()) &&
+                    !isTileAtRisk(nx, ny, world) &&
                     parent.find({nx, ny}) == parent.end()) {
                     parent[{nx, ny}] = current;
                     q.push({nx, ny});
@@ -153,21 +183,30 @@ std::vector<Position> AIBomber::findPathToNearestDestructibleWall(const World& w
     }
     return path;
 }
-/**
- * Returns true if the bomber is currently standing on a tile that lies
- * within the blast zone of any bomb already on the field.
- */
+
 bool AIBomber::isInDanger(const World& world) const {
     Position pos = getPosition();
-    int x = static_cast<int>(std::round(pos.x));
-    int y = static_cast<int>(std::round(pos.y));
-    return isTileAtRisk(x, y, world);
+    // Assuming a 0.8x0.8 hitbox, the distance from center to edge is 0.4.
+    float halfSize = 0.4f;
+
+    // Calculate the range of grid tiles that the hitbox overlaps
+    int minX = static_cast<int>(std::floor(pos.x - halfSize));
+    int maxX = static_cast<int>(std::floor(pos.x + halfSize));
+    int minY = static_cast<int>(std::floor(pos.y - halfSize));
+    int maxY = static_cast<int>(std::floor(pos.y + halfSize));
+
+    // Check if any of the tiles covered by the hitbox are in danger
+    for (int x = minX; x <= maxX; ++x) {
+        for (int y = minY; y <= maxY; ++y) {
+            // Check if this specific tile is at risk
+            if (isTileAtRisk(x, y, world)) {
+                return true; // The AI is in danger if any part of it is.
+            }
+        }
+    }
+    return false;
 }
 
-/**
- * Returns true if a bomb’s explosion (cross pattern, radius r) would reach (x,y).
- * Walls are taken into account – the blast is blocked by any wall.
- */
 bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
     if (world.isExplosionAt(x, y)) return true;
 
@@ -202,10 +241,6 @@ bool AIBomber::isTileAtRisk(int x, int y, const World& world) const {
     return false;
 }
 
-/**
- * Checks whether the tile (x,y) is passable (no static collision).
- * The check uses the same collision test as the existing pathfinding.
- */
 bool AIBomber::isPassable(int x, int y, const World& world) const {
     if (world.isExplosionAt(x, y)) return false;
 
@@ -215,19 +250,10 @@ bool AIBomber::isPassable(int x, int y, const World& world) const {
     return !world.isColliding(rect, this, getCollisionRect());
 }
 
-/**
- * A tile is safe if it is passable and not within any bomb’s blast radius.
- */
 bool AIBomber::isTileSafe(int x, int y, const World& world) const {
     return !isTileAtRisk(x, y, world) && isPassable(x, y, world);
 }
 
-/**
- * BFS that finds a path from the bomber’s current position to the nearest
- * grid cell that is safe (passable + not in any explosion zone).
- * The search only traverses cells that are themselves safe, so every step
- * of the returned path lies on a safe tile.
- */
 std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) const {
     auto [startX, startY] = toGrid(getPosition());
 
@@ -279,12 +305,6 @@ std::vector<Position> AIBomber::findPathToNearestSafeTile(const World& world) co
     return path;
 }
 
-/**
- * Main flee function.
- * If the bomber is inside a danger zone, it will try to move one step
- * along a path towards the nearest safe tile.
- * Returns true if a movement action was successfully executed.
- */
 bool AIBomber::attemptFlee(World& world, float deltaTime) {
     // If we are not in danger, only stop if we have finished our flee path.
     if (!isInDanger(world) && fleePath.empty()) {
@@ -296,11 +316,10 @@ bool AIBomber::attemptFlee(World& world, float deltaTime) {
         fleePath = findPathToNearestSafeTile(world);
         if (fleePath.empty()) {
             // No reachable safe tile – cannot flee.
-            return false;
+            return true;
         }
     }
 
-    // Follow the flee path node by node.
     Position currentPos = getPosition();
     Position next = fleePath.front();
 
@@ -317,5 +336,5 @@ bool AIBomber::attemptFlee(World& world, float deltaTime) {
 
     // Movement blocked; discard the path so we recompute next frame.
     fleePath.clear();
-    return false;
+    return true; // Still "fleeing" even if movement is blocked
 }

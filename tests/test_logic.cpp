@@ -214,6 +214,7 @@ TEST(AIBomberTest, IsNotInDangerAfterBombDestroyed) {
     
     // Destroy the bomb
     raw_bomb->destroy();
+    world->removeDestroyedEntities();
     
     // Bomber should NOT be in danger now
     EXPECT_FALSE(aiBomber->isInDanger(*world));
