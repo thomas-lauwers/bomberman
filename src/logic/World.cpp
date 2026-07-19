@@ -9,6 +9,7 @@
 #include "../../include/logic/factory/KnockedOutBomber.h"
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <utility>
 
 World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)) {
@@ -45,9 +46,9 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
     randomizeTiles();
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
-    entities.push_back(this->factory->createAIBomber(1.0f, 11.0f, BomberType::Variant1));
-    entities.push_back(this->factory->createAIBomber(13.0f, 1.0f, BomberType::Variant2));
-    entities.push_back(this->factory->createAIBomber(13.0f, 11.0f, BomberType::Variant3));
+    entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
+    entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));
 }
 
 void World::randomizeTiles() {
@@ -119,7 +120,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
         // Check for collision with player
         if (player) {
             Position player_pos = player->getPosition();
-            if (static_cast<int>(std::round(player_pos.x)) == ix && static_cast<int>(std::round(player_pos.y)) == iy) {
+            if (static_cast<int>(std::floor(player_pos.x)) == ix && static_cast<int>(std::floor(player_pos.y)) == iy) {
                 removePlayer();
             }
         }
@@ -130,7 +131,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
 
             switch (entity->getEntityType()) {
             case AIBomber_E:
-                if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
+                if (static_cast<int>(std::floor(pos.x)) == ix && static_cast<int>(std::floor(pos.y)) == iy) {
                     entity->destroy();
                 }
                 break;
@@ -207,6 +208,15 @@ void World::spawnPowerUp(const float x, const float y) {
     new_entities_to_add.push_back(factory->createPowerUp(x, y));
 }
 
+void World::spawnBomb(const float x, const float y, const int blast_radius, const std::weak_ptr<Observer>& observer) {
+    auto bomb = factory->createBomb(x, y, blast_radius);
+    bomb->addObserver(shared_from_this());
+    if (auto obs = observer.lock()) {
+        bomb->addObserver(observer);
+    }
+    new_entities_to_add.push_back(std::move(bomb));
+}
+
 void World::spawnKnockedOutBomber(const float x, const float y, const BomberType type) {
     new_entities_to_add.push_back(factory->createKnockedOutBomber(x, y, type));
 }
@@ -245,7 +255,16 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
     return false;
 }
 
+bool World::isWallAt(const int x, const int y) const {
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+        return true;
+    return getTile(x, y).getType() == TileType::W || isDestructibleWallAt(x, y);
+}
+
 bool World::isDestructibleWallAt(const int x, const int y) const {
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+        return false;
+
     for (const auto& entity : entities) {
         if (entity->getEntityType() == DestructibleWall_E) {
             Position pos = entity->getPosition();
@@ -259,8 +278,8 @@ bool World::isDestructibleWallAt(const int x, const int y) const {
 }
 
 bool World::isBombAt(const float x, const float y) const {
-    const int bx = static_cast<int>(std::round(x));
-    const int by = static_cast<int>(std::round(y));
+    const int bx = static_cast<int>(std::floor(x));
+    const int by = static_cast<int>(std::floor(y));
 
     for (const auto& entity : entities) {
         if (entity->getEntityType() == Bomb_E) {
@@ -274,12 +293,30 @@ bool World::isBombAt(const float x, const float y) const {
     return false;
 }
 
+bool World::isExplosionAt(const int x, const int y) const {
+    for (const auto& entity : entities) {
+        if (entity->getEntityType() == Explosion_E && !entity->isDestroyed()) {
+            const int ex = static_cast<int>(std::floor(entity->getPosition().x));
+            const int ey = static_cast<int>(std::floor(entity->getPosition().y));
+            if (ex == x && ey == y) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void World::checkExplosionCollision() {
-    if (player) {
-        for (const auto& entity : entities) {
-            if (entity->getEntityType() == Explosion_E) {
-                if (player && player->getCollisionRect().intersects(entity->getCollisionRect())) {
-                    removePlayer();
+    for (const auto& entity : entities) {
+        if (entity->getEntityType() == Explosion_E) {
+            if (player && player->getCollisionRect().intersects(entity->getCollisionRect())) {
+                removePlayer();
+            }
+            for (const auto& bomberEntity : entities) {
+                if (bomberEntity->getEntityType() == AIBomber_E && !bomberEntity->isDestroyed()) {
+                    if (bomberEntity->getCollisionRect().intersects(entity->getCollisionRect())) {
+                        bomberEntity->destroy();
+                    }
                 }
             }
         }
@@ -289,12 +326,28 @@ void World::checkExplosionCollision() {
 void World::checkPowerUpsCollection() const {
     if (player) {
         for (auto & entity : entities) {
-            if (entity->getEntityType() == PowerUp_E) {
+            if (entity->getEntityType() == PowerUp_E && !entity->isDestroyed()) {
                 if (player->getCollisionRect().intersects(entity->getCollisionRect())) {
                     auto* powerUp = static_cast<PowerUp*>(entity.get());
                     player->gainPowerUp(powerUp->getType());
                     powerUp->destroy();
                     return;
+                }
+            }
+        }
+    }
+
+    for (auto & entity : entities) {
+        if (entity->getEntityType() == AIBomber_E && !entity->isDestroyed()) {
+            auto* bomber = static_cast<Bomber*>(entity.get());
+            for (auto & powerUpEntity : entities) {
+                if (powerUpEntity->getEntityType() == PowerUp_E && !powerUpEntity->isDestroyed()) {
+                    if (bomber->getCollisionRect().intersects(powerUpEntity->getCollisionRect())) {
+                        auto* powerUp = static_cast<PowerUp*>(powerUpEntity.get());
+                        bomber->gainPowerUp(powerUp->getType());
+                        powerUp->destroy();
+                        return;
+                    }
                 }
             }
         }

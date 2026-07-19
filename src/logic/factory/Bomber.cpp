@@ -19,6 +19,15 @@ void Bomber::move(const float dx, const float dy) {
     }
 }
 
+void Bomber::moveDirectly(const float dx, const float dy) {
+    position.x += dx;
+    position.y += dy;
+
+    if (dx != 0 || dy != 0) {
+        isMoving = true;
+    }
+}
+
 void Bomber::update(const float deltaTime) {
     if (!isMoving && wasMoving) {
         notify(*this, Event::BomberStopped);
@@ -31,7 +40,7 @@ void Bomber::update(const float deltaTime) {
     }
 }
 
-Rect Bomber::getCollisionRect() const { return {position.x + 0.1f, position.y + 0.1f, 0.8f, 0.8f}; }
+Rect Bomber::getCollisionRect() const { return {position.x - 0.4f, position.y - 0.4f, 0.8f, 0.8f}; }
 
 void Bomber::onNotify(const Entity& entity, const Event event) {
     if (event == Event::BombExploded) {

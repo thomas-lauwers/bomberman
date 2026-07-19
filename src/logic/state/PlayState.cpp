@@ -3,6 +3,7 @@
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/IEntityFactory.h"
 #include "../../../include/logic/factory/Player.h"
+#include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/state/PlayState.h"
 
 PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {
@@ -73,7 +74,11 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
         player->update(deltaTime);
     }
     for (auto& entity : world->getEntities()) {
-        entity->update(deltaTime);
+        if (entity->getEntityType() == AIBomber_E) {
+            static_cast<AIBomber*>(entity.get())->update(deltaTime, *world);
+        } else {
+            entity->update(deltaTime);
+        }
     }
 
     world->checkExplosionCollision();

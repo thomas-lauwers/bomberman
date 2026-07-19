@@ -1,4 +1,5 @@
 #include "../../../include/view/entities/BombView.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
@@ -32,6 +33,7 @@ void BombView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setScale(spriteScaleX, spriteScaleY);
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
+    drawHitbox(window, entity);
 }
 
 void BombView::onNotify(const Entity& entity, Event event) {}

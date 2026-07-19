@@ -1,4 +1,5 @@
 #include "../../../include/view/entities/BomberView.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
@@ -9,7 +10,7 @@
 BomberView::BomberView(const TextureManager& t_manager)
     : currentAction{AnimationState::Idle}, currentDirection{Direction::Down} {
     sprite.setTexture(t_manager.getTexture("character_sprites"));
-    sprite.setOrigin(0.0f, 12.0f);
+    sprite.setOrigin(8.0f, 17.0f);
 }
 
 void BomberView::draw(sf::RenderWindow& window, const Entity& entity) {
@@ -25,6 +26,8 @@ void BomberView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setScale(spriteScaleX, spriteScaleY);
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
+    drawHitbox(window, entity);
+    drawPosition(window, entity);
 }
 
 void BomberView::update(const float deltaTime) {

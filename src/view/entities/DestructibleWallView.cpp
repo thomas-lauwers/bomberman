@@ -1,4 +1,5 @@
 #include "../../../include/view/entities/DestructibleWallView.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
@@ -20,6 +21,7 @@ void DestructibleWallView::draw(sf::RenderWindow& window, const Entity& entity) 
     sprite.setScale(spriteScaleX, spriteScaleY);
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
+    drawHitbox(window, entity);
 }
 
 void DestructibleWallView::update(float deltaTime) {}

@@ -164,7 +164,13 @@ void WorldRenderer::renderBombersSorted(sf::RenderWindow& window, const World& w
         if (entity->getEntityType() == AIBomber_E) {
             if (aiBomberViews.find(entity.get()) == aiBomberViews.end()) {
                 const auto aiBomber = static_cast<const AIBomber*>(entity.get());
-                aiBomberViews[entity.get()] = std::make_unique<AIBomberView>(t_manager, aiBomber->getType());
+
+                auto view = std::make_shared<AIBomberView>(t_manager, aiBomber->getType());
+
+                // Register as observer
+                const_cast<AIBomber*>(aiBomber)->addObserver(view);
+
+                aiBomberViews[entity.get()] = view;
             }
             bombers.push_back({entity.get(), aiBomberViews[entity.get()].get()});
         }

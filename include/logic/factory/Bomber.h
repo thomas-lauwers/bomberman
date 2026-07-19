@@ -14,12 +14,13 @@ public:
 
     virtual ~Bomber() = default;
 
-    virtual BomberType getBomberType() const = 0;
+    [[nodiscard]] virtual BomberType getBomberType() const = 0;
 
     void setPosition(float x, float y);
     [[nodiscard]] Position getPosition() const override;
 
     void move(float dx, float dy);
+    void moveDirectly(float dx, float dy);
 
     [[nodiscard]] Rect getCollisionRect() const override;
 
@@ -38,7 +39,7 @@ public:
     void update(float deltaTime) override;
 
 protected:
-    Position position{1.0f, 1.0f};
+    Position position{1.5f, 1.5f};
     float speed = 4.0f; // units per second
     bool isMoving = false;
     bool wasMoving = false;
