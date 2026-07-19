@@ -5,6 +5,7 @@
 class PlayerView : public BomberView {
 public:
     explicit PlayerView(const TextureManager& t_manager);
+    void draw(sf::RenderWindow& window, const Entity& entity) override;
 
 private:
 };

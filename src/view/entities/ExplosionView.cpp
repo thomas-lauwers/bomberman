@@ -1,4 +1,5 @@
 #include "../../../include/view/entities/ExplosionView.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Explosion.h"
@@ -62,6 +63,7 @@ void ExplosionView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setScale(spriteScaleX, spriteScaleY);
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
+    drawHitbox(window, entity);
 }
 
 void ExplosionView::onNotify(const Entity& entity, Event event) {}

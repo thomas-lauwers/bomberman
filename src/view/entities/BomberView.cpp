@@ -1,4 +1,5 @@
 #include "../../../include/view/entities/BomberView.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
@@ -25,6 +26,7 @@ void BomberView::draw(sf::RenderWindow& window, const Entity& entity) {
     sprite.setScale(spriteScaleX, spriteScaleY);
     sprite.setPosition(normPos.x, normPos.y);
     window.draw(sprite);
+    drawHitbox(window, entity);
 }
 
 void BomberView::update(const float deltaTime) {

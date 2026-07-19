@@ -102,6 +102,8 @@ SET(VIEW_SRC
         include/view/entities/PowerUpView.h
         src/view/entities/KnockedOutBomberView.cpp
         include/view/entities/KnockedOutBomberView.h
+        src/view/entities/HitboxRenderer.cpp
+        include/view/entities/HitboxRenderer.h
 )
 
 ADD_LIBRARY(bomberman_logic STATIC ${LOGIC_SRC})
