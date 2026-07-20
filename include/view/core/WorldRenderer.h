@@ -24,6 +24,13 @@ public:
 
     void loadTileSprites();
 
+    std::shared_ptr<BombView> createBombView(const Entity* entity);
+    std::shared_ptr<ExplosionView> createExplosionView(const Entity* entity);
+    std::shared_ptr<CrumblingWallView> createCrumblingWallView(const Entity* entity);
+    std::shared_ptr<PowerUpView> createPowerUpView(const Entity* entity);
+    std::shared_ptr<KnockedOutBomberView> createKnockedOutBomberView(const Entity* entity, BomberType type);
+    std::shared_ptr<AIBomberView> createAIBomberView(const Entity* entity, BomberType type);
+
     void render(const World& world) override;
     void update(float deltaTime) override;
     void renderTiles(const World& world);
@@ -45,11 +52,11 @@ private:
     // Entity views
     std::shared_ptr<PlayerView> p_view;
     DestructibleWallView d_wall_view;
-    std::map<const Entity*, std::unique_ptr<CrumblingWallView>> c_wallViews;
-    std::map<const Entity*, std::unique_ptr<BombView>> bombViews;
-    std::map<const Entity*, std::unique_ptr<ExplosionView>> explosionViews;
-    std::map<const Entity*, std::unique_ptr<PowerUpView>> powerupViews;
-    std::map<const Entity*, std::unique_ptr<KnockedOutBomberView>> knockedoutbomberViews;
+    std::map<const Entity*, std::shared_ptr<CrumblingWallView>> c_wallViews;
+    std::map<const Entity*, std::shared_ptr<BombView>> bombViews;
+    std::map<const Entity*, std::shared_ptr<ExplosionView>> explosionViews;
+    std::map<const Entity*, std::shared_ptr<PowerUpView>> powerupViews;
+    std::map<const Entity*, std::shared_ptr<KnockedOutBomberView>> knockedoutbomberViews;
     std::map<const Entity*, std::shared_ptr<AIBomberView>> aiBomberViews;
 };
 

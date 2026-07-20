@@ -2,15 +2,13 @@
 #define BOMBERMAN_BATTLESTAGEFACTORY_H
 
 #include "../../logic/factory/IEntityFactory.h"
-#include "../entities/PlayerView.h"
-#include "../entities/AIBomberView.h"
+#include "../core/WorldRenderer.h"
 #include <memory>
 
 class BattleStageFactory : public IEntityFactory {
 public:
-    explicit BattleStageFactory(const TextureManager& t_manager) : textureManager(t_manager) {}
+    explicit BattleStageFactory(const TextureManager& t_manager, WorldRenderer& renderer) : textureManager(t_manager), renderer(renderer) {}
 
-    void setPlayerView(std::shared_ptr<PlayerView> view);
     std::unique_ptr<Player> createPlayer() override;
     std::unique_ptr<AIBomber> createAIBomber(float x, float y, BomberType type) override;
     std::unique_ptr<Bomb> createBomb(float x, float y, int blast_radius) override;
@@ -23,8 +21,7 @@ public:
 
 private:
     const TextureManager& textureManager;
-    std::shared_ptr<PlayerView> playerView;
-    std::shared_ptr<AIBomberView> aiBomberView;
+    WorldRenderer& renderer;
 };
 
 #endif // BOMBERMAN_BATTLESTAGEFACTORY_H

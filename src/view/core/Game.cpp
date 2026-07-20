@@ -12,8 +12,7 @@ Game::Game()
       worldRenderer(textureManager, window) {
     window.setFramerateLimit(60);
     textureManager.loadAssets();
-    auto factory = make_shared<BattleStageFactory>(textureManager);
-    factory->setPlayerView(worldRenderer.getPlayerView());
+    auto factory = make_shared<BattleStageFactory>(textureManager, worldRenderer);
     addGameState(make_unique<PlayState>(factory));
 }
 

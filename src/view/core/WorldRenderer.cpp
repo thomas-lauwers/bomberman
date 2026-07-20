@@ -104,40 +104,22 @@ void WorldRenderer::renderNonBomberEntities(const World& world) {
             break;
 
         case Bomb_E:
-            if (bombViews.find(entity.get()) == bombViews.end()) {
-                bombViews[entity.get()] = std::make_unique<BombView>(t_manager);
-            }
             bombViews[entity.get()]->draw(window, *entity);
             break;
 
         case Explosion_E:
-            if (explosionViews.find(entity.get()) == explosionViews.end()) {
-                const auto explosion = static_cast<const Explosion*>(entity.get());
-                explosionViews[entity.get()] = std::make_unique<ExplosionView>(t_manager, explosion->getType());
-            }
             explosionViews[entity.get()]->draw(window, *entity);
             break;
 
         case CrumblingWall_E:
-            if (c_wallViews.find(entity.get()) == c_wallViews.end()) {
-                c_wallViews[entity.get()] = std::make_unique<CrumblingWallView>(t_manager);
-            }
             c_wallViews[entity.get()]->draw(window, *entity);
             break;
 
         case PowerUp_E:
-            if (powerupViews.find(entity.get()) == powerupViews.end()) {
-                const auto powerup = static_cast<const PowerUp*>(entity.get());
-                powerupViews[entity.get()] = std::make_unique<PowerUpView>(t_manager, powerup->getType());
-            }
             powerupViews[entity.get()]->draw(window, *entity);
             break;
 
         case KnockedOutBomber_E:
-            if (knockedoutbomberViews.find(entity.get()) == knockedoutbomberViews.end()) {
-                const auto kob = static_cast<const KnockedOutBomber*>(entity.get());
-                knockedoutbomberViews[entity.get()] = std::make_unique<KnockedOutBomberView>(t_manager, kob->getBomberType());
-            }
             knockedoutbomberViews[entity.get()]->draw(window, *entity);
             break;
 
@@ -162,16 +144,6 @@ void WorldRenderer::renderBombersSorted(const World& world) {
     // Add AI bombers
     for (const auto& entity : world.getEntities()) {
         if (entity->getEntityType() == AIBomber_E) {
-            if (aiBomberViews.find(entity.get()) == aiBomberViews.end()) {
-                const auto aiBomber = static_cast<const AIBomber*>(entity.get());
-
-                auto view = std::make_shared<AIBomberView>(t_manager, aiBomber->getType());
-
-                // Register as observer
-                const_cast<AIBomber*>(aiBomber)->addObserver(view);
-
-                aiBomberViews[entity.get()] = view;
-            }
             bombers.push_back({entity.get(), aiBomberViews[entity.get()].get()});
         }
     }
@@ -212,4 +184,42 @@ void WorldRenderer::removeDestroyedEntities(const World& world) {
     cleanup(powerupViews);
     cleanup(knockedoutbomberViews);
     cleanup(aiBomberViews);
+}
+
+std::shared_ptr<BombView> WorldRenderer::createBombView(const Entity* entity) {
+    auto view = std::make_shared<BombView>(t_manager);
+    bombViews[entity] = view;
+    return view;
+}
+
+std::shared_ptr<ExplosionView> WorldRenderer::createExplosionView(const Entity* entity) {
+    const auto explosion = static_cast<const Explosion*>(entity);
+    auto view = std::make_shared<ExplosionView>(t_manager, explosion->getType());
+    explosionViews[entity] = view;
+    return view;
+}
+
+std::shared_ptr<CrumblingWallView> WorldRenderer::createCrumblingWallView(const Entity* entity) {
+    auto view = std::make_shared<CrumblingWallView>(t_manager);
+    c_wallViews[entity] = view;
+    return view;
+}
+
+std::shared_ptr<PowerUpView> WorldRenderer::createPowerUpView(const Entity* entity) {
+    const auto powerup = static_cast<const PowerUp*>(entity);
+    auto view = std::make_shared<PowerUpView>(t_manager, powerup->getType());
+    powerupViews[entity] = view;
+    return view;
+}
+
+std::shared_ptr<KnockedOutBomberView> WorldRenderer::createKnockedOutBomberView(const Entity* entity, BomberType type) {
+    auto view = std::make_shared<KnockedOutBomberView>(t_manager, type);
+    knockedoutbomberViews[entity] = view;
+    return view;
+}
+
+std::shared_ptr<AIBomberView> WorldRenderer::createAIBomberView(const Entity* entity, BomberType type) {
+    auto view = std::make_shared<AIBomberView>(t_manager, type);
+    aiBomberViews[entity] = view;
+    return view;
 }
