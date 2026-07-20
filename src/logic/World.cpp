@@ -64,7 +64,7 @@ void World::randomizeTiles() {
                                          [y, x](const std::array<int, 2>& pos) { return pos[0] == y && pos[1] == x; });
 
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
-                if (Random::getInstance().roll(0.80)) {
+                if (utils::Random::getInstance().roll(0.80)) {
                     entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }
@@ -366,7 +366,7 @@ void World::onNotify(const Entity& entity, const Event event) {
         const auto& bomb = static_cast<const Bomb&>(entity);
         spawnExplosion(entity.getPosition().x, entity.getPosition().y, bomb.getBlastRadius());
     } else if (event == Event::EntityDestroyed && entity.getEntityType() == CrumblingWall_E) {
-        if (Random::getInstance().roll(0.25)) {
+        if (utils::Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
         }
     } else if (event == Event::EntityDestroyed && (entity.getEntityType() == Player_E || entity.getEntityType() == AIBomber_E)) {

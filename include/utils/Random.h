@@ -3,6 +3,7 @@
 
 #include <random>
 
+namespace utils {
 class Random {
 public:
     Random(const Random&) = delete;
@@ -23,5 +24,6 @@ private:
     std::uniform_real_distribution<> dist{0, 1};
     std::uniform_int_distribution<> distInt{0, 2};
 };
+}
 
 #endif // BOMBERMAN_RANDOM_H

@@ -1,5 +1,6 @@
 #include "../../include/utils/Random.h"
 
+namespace utils {
 bool Random::roll(const float chance) {
     if (dist(gen) <= chance) {
         return true;
@@ -10,4 +11,5 @@ bool Random::roll(const float chance) {
 
 int Random::getInt() {
     return distInt(gen);
+}
 }

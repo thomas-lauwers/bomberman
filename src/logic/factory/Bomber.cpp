@@ -10,7 +10,7 @@ void Bomber::setPosition(const float x, const float y) {
 Position Bomber::getPosition() const { return position; }
 
 void Bomber::move(const float dx, const float dy) {
-    const double deltaTime = Stopwatch::getInstance().getDeltaTime();
+    const double deltaTime = utils::Stopwatch::getInstance().getDeltaTime();
     position.x += dx * speed * static_cast<float>(deltaTime);
     position.y += dy * speed * static_cast<float>(deltaTime);
 

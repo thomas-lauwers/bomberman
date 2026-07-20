@@ -1,5 +1,6 @@
 #include "../../include/utils/Stopwatch.h"
 
+namespace utils {
 void Stopwatch::update() {
     const auto currentTick = std::chrono::steady_clock::now();
     const std::chrono::duration<double> elapsed = currentTick - lastTick;
@@ -10,3 +11,4 @@ void Stopwatch::update() {
 double Stopwatch::getDeltaTime() const { return deltaTime; }
 
 Stopwatch::Stopwatch() : lastTick(std::chrono::steady_clock::now()), deltaTime(0.0) {}
+}

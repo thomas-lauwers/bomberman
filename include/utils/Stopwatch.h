@@ -3,6 +3,7 @@
 
 #include <chrono>
 
+namespace utils {
 class Stopwatch {
 public:
     Stopwatch(const Stopwatch&) = delete;
@@ -22,5 +23,6 @@ private:
     std::chrono::steady_clock::time_point lastTick;
     double deltaTime;
 };
+}
 
 #endif // BOMBERMAN_STOPWATCH_H

@@ -20,8 +20,8 @@ void Game::run() {
     ViewportUtility::setViewport(window, static_cast<float>(World::WIDTH) / static_cast<float>(World::HEIGHT));
 
     while (window.isOpen()) {
-        Stopwatch::getInstance().update();
-        const auto deltaTime = static_cast<float>(Stopwatch::getInstance().getDeltaTime());
+        utils::Stopwatch::getInstance().update();
+        const auto deltaTime = static_cast<float>(utils::Stopwatch::getInstance().getDeltaTime());
 
         sf::Event event;
         while (window.pollEvent(event)) {
