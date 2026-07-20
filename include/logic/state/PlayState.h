@@ -18,7 +18,7 @@ public:
     void handleInput(Input input) override;
 
     void update(float deltaTime, IWorldView& renderer) override;
-    void render(sf::RenderWindow& window, IWorldView& renderer) override;
+    void render(IWorldView& renderer) override;
     [[nodiscard]] const World& getWorld() const { return *world; }
 
 private:

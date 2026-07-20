@@ -87,6 +87,6 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world->processNewEntities();
 }
 
-void PlayState::render(sf::RenderWindow& window, IWorldView& renderer) { renderer.render(window, *world); }
+void PlayState::render(IWorldView& renderer) { renderer.render(*world); }
 
 PlayState::~PlayState() = default;

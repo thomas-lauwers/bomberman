@@ -5,7 +5,7 @@
 class PauseState : public State {
 public:
     void update(float deltaTime, IWorldView& renderer) override;
-    void render(sf::RenderWindow& window, IWorldView& renderer) override;
+    void render(IWorldView& renderer) override;
 };
 
 #endif // BOMBERMAN_PAUSESTATE_H

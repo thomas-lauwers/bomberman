@@ -9,7 +9,7 @@ using namespace std;
 
 Game::Game()
     : window(sf::VideoMode({720, 624}), "Bomberman"), state_manager(make_unique<StateManager>()),
-      worldRenderer(textureManager) {
+      worldRenderer(textureManager, window) {
     window.setFramerateLimit(60);
     textureManager.loadAssets();
     auto factory = make_shared<BattleStageFactory>(textureManager);
@@ -54,7 +54,7 @@ void Game::run() {
         state_manager->update(deltaTime, worldRenderer);
 
         window.clear();
-        state_manager->getCurrentState()->render(window, worldRenderer);
+        state_manager->getCurrentState()->render(worldRenderer);
         window.display();
     }
 }

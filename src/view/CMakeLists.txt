@@ -1,0 +1,42 @@
+add_executable(bomberman
+    ${PROJECT_SOURCE_DIR}/main.cpp
+    ${PROJECT_SOURCE_DIR}/src/view/core/Game.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/core/Game.h
+    ${PROJECT_SOURCE_DIR}/src/view/core/WorldRenderer.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/core/WorldRenderer.h
+    ${PROJECT_SOURCE_DIR}/src/view/core/TextureManager.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/core/TextureManager.h
+    ${PROJECT_SOURCE_DIR}/include/view/entities/IEntityView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/PlayerView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/PlayerView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/AIBomberView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/AIBomberView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/BomberView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/BomberView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/DestructibleWallView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/DestructibleWallView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/BombView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/BombView.h
+    ${PROJECT_SOURCE_DIR}/src/view/ViewportUtility.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/ViewportUtility.h
+    ${PROJECT_SOURCE_DIR}/src/view/factory/BattleStageFactory.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/factory/BattleStageFactory.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/ExplosionView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/ExplosionView.h
+    ${PROJECT_SOURCE_DIR}/include/view/Direction.h
+    ${PROJECT_SOURCE_DIR}/include/view/AnimationState.h
+    ${PROJECT_SOURCE_DIR}/include/view/BomberAnimationConfig.h
+    ${PROJECT_SOURCE_DIR}/src/view/BomberAnimationConfig.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/Animation.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/CrumblingWallView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/CrumblingWallView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/PowerUpView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/PowerUpView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/KnockedOutBomberView.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/KnockedOutBomberView.h
+    ${PROJECT_SOURCE_DIR}/src/view/entities/HitboxRenderer.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/entities/HitboxRenderer.h
+)
+
+target_link_libraries(bomberman PRIVATE bomberman_logic sfml-graphics sfml-window sfml-system)
+install(TARGETS bomberman DESTINATION bin)

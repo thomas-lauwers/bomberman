@@ -4,10 +4,6 @@
 #include "../IWorldView.h"
 #include "../Input.h"
 
-namespace sf {
-class RenderWindow;
-}
-
 class IWorldView;
 
 class State {
@@ -16,7 +12,7 @@ public:
 
     virtual void handleInput(Input input) {}
     virtual void update(float deltaTime, IWorldView& renderer) = 0;
-    virtual void render(sf::RenderWindow& window, IWorldView& renderer) = 0;
+    virtual void render(IWorldView& renderer) = 0;
 };
 
 #endif // BOMBERMAN_STATE_H

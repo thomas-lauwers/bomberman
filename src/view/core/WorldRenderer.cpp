@@ -10,8 +10,8 @@
 #include <vector>
 #include <algorithm>
 
-WorldRenderer::WorldRenderer(TextureManager& manager)
-    : t_manager(manager), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
+WorldRenderer::WorldRenderer(TextureManager& manager, sf::RenderWindow& window)
+    : t_manager(manager), window(window), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();
 }
 
@@ -28,12 +28,12 @@ void WorldRenderer::loadTileSprites() {
     empty_shaded_sprite.setTextureRect(sf::IntRect(69, 15, 16, 16));
 }
 
-void WorldRenderer::render(sf::RenderWindow& window, const World& world) {
+void WorldRenderer::render(const World& world) {
     removeDestroyedEntities(world);
 
-    renderTiles(window, world);
-    renderNonBomberEntities(window, world);
-    renderBombersSorted(window, world);
+    renderTiles(world);
+    renderNonBomberEntities(world);
+    renderBombersSorted(world);
 }
 
 void WorldRenderer::update(const float deltaTime) {
@@ -59,7 +59,7 @@ void WorldRenderer::update(const float deltaTime) {
     }
 }
 
-void WorldRenderer::renderTiles(sf::RenderWindow& window, const World& world) {
+void WorldRenderer::renderTiles(const World& world) {
     constexpr float spriteScaleX = (2.0f / World::WIDTH) / 16.0f;
     constexpr float spriteScaleY = (2.0f / World::HEIGHT) / 16.0f;
 
@@ -96,7 +96,7 @@ void WorldRenderer::renderTiles(sf::RenderWindow& window, const World& world) {
     }
 }
 
-void WorldRenderer::renderNonBomberEntities(sf::RenderWindow& window, const World& world) {
+void WorldRenderer::renderNonBomberEntities(const World& world) {
     for (const auto& entity : world.getEntities()) {
         switch (entity->getEntityType()) {
         case DestructibleWall_E:
@@ -147,7 +147,7 @@ void WorldRenderer::renderNonBomberEntities(sf::RenderWindow& window, const Worl
     }
 }
 
-void WorldRenderer::renderBombersSorted(sf::RenderWindow& window, const World& world) {
+void WorldRenderer::renderBombersSorted(const World& world) {
     struct BomberViewPair {
         const Entity* entity;
         IEntityView* view;

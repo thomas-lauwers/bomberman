@@ -19,21 +19,22 @@
 
 class WorldRenderer : public IWorldView {
 public:
-    explicit WorldRenderer(TextureManager& manager);
+    WorldRenderer(TextureManager& manager, sf::RenderWindow& window);
     std::shared_ptr<PlayerView> getPlayerView() const;
 
     void loadTileSprites();
 
-    void render(sf::RenderWindow& window, const World& world) override;
+    void render(const World& world) override;
     void update(float deltaTime) override;
-    void renderTiles(sf::RenderWindow& window, const World& world);
-    void renderNonBomberEntities(sf::RenderWindow& window, const World& world);
-    void renderBombersSorted(sf::RenderWindow& window, const World& world);
+    void renderTiles(const World& world);
+    void renderNonBomberEntities(const World& world);
+    void renderBombersSorted(const World& world);
 
     void removeDestroyedEntities(const World& world);
 
 private:
     TextureManager& t_manager;
+    sf::RenderWindow& window;
 
     // Tile sprites
     sf::Sprite wall_sprite;
