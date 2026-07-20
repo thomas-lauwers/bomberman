@@ -36,6 +36,8 @@ add_executable(bomberman
     ${PROJECT_SOURCE_DIR}/include/view/entities/KnockedOutBomberView.h
     ${PROJECT_SOURCE_DIR}/src/view/entities/HitboxRenderer.cpp
     ${PROJECT_SOURCE_DIR}/include/view/entities/HitboxRenderer.h
+    ${PROJECT_SOURCE_DIR}/src/view/core/TitleRenderer.cpp
+    ${PROJECT_SOURCE_DIR}/include/view/core/TitleRenderer.h
 )
 
 target_link_libraries(bomberman PRIVATE bomberman_logic sfml-graphics sfml-window sfml-system)

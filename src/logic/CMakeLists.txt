@@ -5,8 +5,6 @@ add_library(bomberman_logic STATIC
     ${PROJECT_SOURCE_DIR}/include/logic/state/PlayState.h
     ${PROJECT_SOURCE_DIR}/src/logic/state/TitleState.cpp
     ${PROJECT_SOURCE_DIR}/include/logic/state/TitleState.h
-    ${PROJECT_SOURCE_DIR}/src/logic/state/PauseState.cpp
-    ${PROJECT_SOURCE_DIR}/include/logic/state/PauseState.h
     ${PROJECT_SOURCE_DIR}/src/logic/state/StateManager.cpp
     ${PROJECT_SOURCE_DIR}/include/logic/state/StateManager.h
     ${PROJECT_SOURCE_DIR}/src/logic/World.cpp

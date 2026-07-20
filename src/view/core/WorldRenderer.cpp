@@ -1,7 +1,7 @@
 #include "../../../include/view/core/WorldRenderer.h"
+#include "../../../include/view/core/TitleRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
-#include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/factory/Explosion.h"
 #include "../../../include/logic/factory/KnockedOutBomber.h"
 #include "../../../include/logic/factory/Player.h"
@@ -13,6 +13,7 @@
 WorldRenderer::WorldRenderer(TextureManager& manager, sf::RenderWindow& window)
     : t_manager(manager), window(window), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();
+    t_manager.loadFont("arcade", "assets/arcadeclassic.ttf");
 }
 
 std::shared_ptr<PlayerView> WorldRenderer::getPlayerView() const { return p_view; }
@@ -222,4 +223,54 @@ std::shared_ptr<AIBomberView> WorldRenderer::createAIBomberView(const Entity* en
     auto view = std::make_shared<AIBomberView>(t_manager, type);
     aiBomberViews[entity] = view;
     return view;
+}
+
+void WorldRenderer::renderCenteredText(const std::string& text, float y) {
+    sf::View oldView = window.getView();
+    
+    sf::View uiView;
+    uiView.setViewport(oldView.getViewport());
+    uiView.setSize(720.0f, 624.0f);
+    uiView.setCenter(720.0f / 2.0f, 624.0f / 2.0f);
+    window.setView(uiView);
+
+    sf::Text renderableText;
+    renderableText.setFont(t_manager.getFont("arcade"));
+    renderableText.setString(text);
+    renderableText.setCharacterSize(40);
+    renderableText.setFillColor(sf::Color::White);
+
+    // Calculate center based on bounding box
+    sf::FloatRect textRect = renderableText.getLocalBounds();
+    renderableText.setOrigin(textRect.left + textRect.width / 2.0f, 
+                             textRect.top + textRect.height / 2.0f);
+    
+    // Position at screen center horizontally
+    renderableText.setPosition(720.0f / 2.0f, y);
+
+    window.draw(renderableText);
+    window.setView(oldView);
+}
+
+void WorldRenderer::renderPortrait(float x, float y) {
+    const sf::View oldView = window.getView();
+    
+    sf::View uiView;
+    uiView.setViewport(oldView.getViewport());
+    uiView.setSize(720.0f, 624.0f);
+    uiView.setCenter(720.0f / 2.0f, 624.0f / 2.0f);
+    window.setView(uiView);
+    
+    sf::Sprite sprite;
+    sprite.setTexture(t_manager.getTexture("portrait"));
+    sprite.scale(4.0f, 4.0f);
+    sprite.setPosition({x, y});
+    
+    window.draw(sprite);
+    
+    window.setView(oldView);
+}
+
+void WorldRenderer::renderTitle(const bool showEnter) {
+    TitleRenderer::render(*this, showEnter);
 }

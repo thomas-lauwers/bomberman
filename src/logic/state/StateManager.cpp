@@ -8,7 +8,7 @@ void StateManager::popState() {
     }
 }
 
-void StateManager::update(float deltaTime, IWorldView& renderer) const {
+void StateManager::update(const float deltaTime, IWorldView& renderer) const {
     if (!states.empty()) {
         states.top()->update(deltaTime, renderer);
     }

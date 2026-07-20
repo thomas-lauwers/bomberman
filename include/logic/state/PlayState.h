@@ -6,7 +6,6 @@
 #include "../World.h"
 #include "State.h"
 #include <memory>
-#include <vector>
 
 class IEntityFactory;
 

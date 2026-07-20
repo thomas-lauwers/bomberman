@@ -47,6 +47,8 @@ void PlayState::handleInput(const Input input) {
                 world->pushBackEntity(std::move(bomb));
             }
             return;
+        case Input::Select:
+            return;
         }
 
         if (dx != 0.f || dy != 0.f) {

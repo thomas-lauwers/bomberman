@@ -2,6 +2,7 @@
 #include "../../../include/logic/Input.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/state/PlayState.h"
+#include "../../../include/logic/state/TitleState.h"
 #include "../../../include/utils/Stopwatch.h"
 #include "../../../include/view/ViewportUtility.h"
 #include "../../../include/view/factory/BattleStageFactory.h"
@@ -13,7 +14,7 @@ Game::Game()
     window.setFramerateLimit(60);
     textureManager.loadAssets();
     auto factory = make_shared<BattleStageFactory>(textureManager, worldRenderer);
-    addGameState(make_unique<PlayState>(factory));
+    addGameState(make_unique<TitleState>([this, factory] { addGameState(make_unique<PlayState>(factory)); }));
 }
 
 void Game::run() {
@@ -49,6 +50,8 @@ void Game::run() {
                 currentState->handleInput(Input::MoveDown);
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W))
                 currentState->handleInput(Input::PlaceBomb);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Enter))
+                currentState->handleInput(Input::Select);
         }
         state_manager->update(deltaTime, worldRenderer);
 

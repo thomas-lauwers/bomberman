@@ -32,6 +32,9 @@ public:
     std::shared_ptr<AIBomberView> createAIBomberView(const Entity* entity, BomberType type);
 
     void render(const World& world) override;
+    void renderCenteredText(const std::string& text, float y) override;
+    void renderPortrait(float x, float y) override;
+    void renderTitle(bool showEnter) override;
     void update(float deltaTime) override;
     void renderTiles(const World& world);
     void renderNonBomberEntities(const World& world);
