@@ -1,7 +1,7 @@
 #ifndef BOMBERMAN_AIBOMBERVIEW_H
 #define BOMBERMAN_AIBOMBERVIEW_H
-#include "BomberView.h"
 #include "../../logic/factory/AIBomber.h"
+#include "BomberView.h"
 
 class AIBomberView : public BomberView {
 public:

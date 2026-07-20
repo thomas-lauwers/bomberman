@@ -22,9 +22,10 @@ protected:
                 observer->onNotify(entity, event);
             }
         }
-        observers.erase(std::remove_if(observers.begin(), observers.end(), [](const std::weak_ptr<Observer>& weak_observer) {
-            return weak_observer.expired();
-        }), observers.end());
+        observers.erase(
+            std::remove_if(observers.begin(), observers.end(),
+                           [](const std::weak_ptr<Observer>& weak_observer) { return weak_observer.expired(); }),
+            observers.end());
     }
 
 private:

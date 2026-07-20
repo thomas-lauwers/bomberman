@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_KNOCKEDOUTBOMBER_H
 #define BOMBERMAN_KNOCKEDOUTBOMBER_H
 
-#include "Entity.h"
 #include "AIBomber.h"
+#include "Entity.h"
 
 class KnockedOutBomber : public Entity {
 public:
@@ -21,5 +21,4 @@ private:
     float lifetime = 2.0f;
 };
 
-
-#endif //BOMBERMAN_KNOCKEDOUTBOMBER_H
+#endif // BOMBERMAN_KNOCKEDOUTBOMBER_H

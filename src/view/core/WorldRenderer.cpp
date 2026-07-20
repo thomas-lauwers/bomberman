@@ -1,14 +1,14 @@
 #include "../../../include/view/core/WorldRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
-#include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/AIBomber.h"
-#include "../../../include/logic/factory/KnockedOutBomber.h"
 #include "../../../include/logic/factory/Explosion.h"
+#include "../../../include/logic/factory/KnockedOutBomber.h"
+#include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/PowerUp.h"
+#include <algorithm>
 #include <unordered_set>
 #include <vector>
-#include <algorithm>
 
 WorldRenderer::WorldRenderer(TextureManager& manager, sf::RenderWindow& window)
     : t_manager(manager), window(window), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {

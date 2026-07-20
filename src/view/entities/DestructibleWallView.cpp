@@ -1,10 +1,10 @@
 #include "../../../include/view/entities/DestructibleWallView.h"
-#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
 #include "../../../include/utils/Position.h"
 #include "../../../include/view/core/TextureManager.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 
 DestructibleWallView::DestructibleWallView(const TextureManager& t_manager) {
     sprite.setTexture(t_manager.getTexture("battle_stage_sprites"));

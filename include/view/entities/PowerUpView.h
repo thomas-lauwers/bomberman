@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_POWERUPVIEW_H
 #define BOMBERMAN_POWERUPVIEW_H
-#include "IEntityView.h"
-#include "../Animation.h"
 #include "../../logic/factory/PowerUp.h"
+#include "../Animation.h"
+#include "IEntityView.h"
 
 class TextureManager;
 
@@ -24,5 +24,4 @@ private:
     size_t frameIndex = 0;
 };
 
-
-#endif //BOMBERMAN_POWERUPVIEW_H
+#endif // BOMBERMAN_POWERUPVIEW_H

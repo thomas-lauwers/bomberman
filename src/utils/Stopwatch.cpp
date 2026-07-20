@@ -11,4 +11,4 @@ void Stopwatch::update() {
 double Stopwatch::getDeltaTime() const { return deltaTime; }
 
 Stopwatch::Stopwatch() : lastTick(std::chrono::steady_clock::now()), deltaTime(0.0) {}
-}
+} // namespace utils

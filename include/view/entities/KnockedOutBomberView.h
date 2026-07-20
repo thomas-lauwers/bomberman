@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_KNOCKEDOUTBOMBERVIEW_H
 #define BOMBERMAN_KNOCKEDOUTBOMBERVIEW_H
+#include "../../logic/factory/BomberType.h"
 #include "../Animation.h"
 #include "IEntityView.h"
-#include "../../logic/factory/BomberType.h"
 
 class TextureManager;
 
@@ -27,5 +27,4 @@ private:
     float bounceAmplitude = 2.0f;
 };
 
-
-#endif //BOMBERMAN_KNOCKEDOUTBOMBERVIEW_H
+#endif // BOMBERMAN_KNOCKEDOUTBOMBERVIEW_H

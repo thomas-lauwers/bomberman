@@ -3,7 +3,8 @@
 #include <cmath>
 #include <iostream>
 
-Bomb::Bomb(const float x, const float y, const int blast_radius) : position{std::floor(x), std::floor(y)}, blast_radius(blast_radius) {}
+Bomb::Bomb(const float x, const float y, const int blast_radius)
+    : position{std::floor(x), std::floor(y)}, blast_radius(blast_radius) {}
 
 EntityType Bomb::getEntityType() const { return Bomb_E; }
 

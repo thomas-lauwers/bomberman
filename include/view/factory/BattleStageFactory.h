@@ -7,7 +7,8 @@
 
 class BattleStageFactory : public IEntityFactory {
 public:
-    explicit BattleStageFactory(const TextureManager& t_manager, WorldRenderer& renderer) : textureManager(t_manager), renderer(renderer) {}
+    explicit BattleStageFactory(const TextureManager& t_manager, WorldRenderer& renderer)
+        : textureManager(t_manager), renderer(renderer) {}
 
     std::unique_ptr<Player> createPlayer() override;
     std::unique_ptr<AIBomber> createAIBomber(float x, float y, BomberType type) override;
@@ -17,7 +18,6 @@ public:
     std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) override;
     std::unique_ptr<PowerUp> createPowerUp(float x, float y) override;
     std::unique_ptr<KnockedOutBomber> createKnockedOutBomber(float x, float y, BomberType type) override;
-
 
 private:
     template <typename T, typename ViewCreator>

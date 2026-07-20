@@ -4,9 +4,9 @@
 #include "../../utils/Position.h"
 #include "../Observer.h"
 #include "../Rect.h"
+#include "BomberType.h"
 #include "Entity.h"
 #include "PowerUp.h"
-#include "BomberType.h"
 
 class Bomber : public Entity, public Observer {
 public:

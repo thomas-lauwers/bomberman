@@ -24,6 +24,6 @@ private:
     std::uniform_real_distribution<> dist{0, 1};
     std::uniform_int_distribution<> distInt{0, 2};
 };
-}
+} // namespace utils
 
 #endif // BOMBERMAN_RANDOM_H

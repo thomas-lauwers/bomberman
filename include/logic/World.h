@@ -18,7 +18,7 @@ public:
 
     explicit World(std::shared_ptr<IEntityFactory> factory);
     ~World() override;
-    
+
     void onNotify(const Entity& entity, Event event) override;
 
     void randomizeTiles();

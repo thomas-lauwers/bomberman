@@ -1,11 +1,11 @@
 #include "../../../include/view/entities/BomberView.h"
-#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
 #include "../../../include/utils/Position.h"
 #include "../../../include/view/Direction.h"
 #include "../../../include/view/core/TextureManager.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 
 BomberView::BomberView(const TextureManager& t_manager)
     : currentAction{AnimationState::Idle}, currentDirection{Direction::Down} {
@@ -82,30 +82,38 @@ void BomberView::onNotify(const Entity& entity, const Event event) {
 
 void BomberView::setupAnimations(const int xOffset, const int yOffset) {
     // Movement animations
-    animationConfig.addAnimation(AnimationState::Moving, Direction::Down,
-                                 {{sf::IntRect(3 + xOffset, 47 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24), sf::IntRect(37 + xOffset, 47 + yOffset, 16, 24),
-                                   sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24)},
-                                  0.2f,
-                                  true});
-    animationConfig.addAnimation(AnimationState::Moving, Direction::Up,
-                                 {{sf::IntRect(3 + xOffset, 97 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24), sf::IntRect(37 + xOffset, 97 + yOffset, 16, 24),
-                                   sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24)},
-                                  0.2f,
-                                  true});
-    animationConfig.addAnimation(AnimationState::Moving, Direction::Left,
-                                 {{sf::IntRect(3 + xOffset, 122 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24),
-                                   sf::IntRect(37 + xOffset, 122 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24)},
-                                  0.2f,
-                                  true});
-    animationConfig.addAnimation(AnimationState::Moving, Direction::Right,
-                                 {{sf::IntRect(3 + xOffset, 72 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24), sf::IntRect(37 + xOffset, 72 + yOffset, 16, 24),
-                                   sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24)},
-                                  0.2f,
-                                  true});
+    animationConfig.addAnimation(
+        AnimationState::Moving, Direction::Down,
+        {{sf::IntRect(3 + xOffset, 47 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24),
+          sf::IntRect(37 + xOffset, 47 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24)},
+         0.2f,
+         true});
+    animationConfig.addAnimation(
+        AnimationState::Moving, Direction::Up,
+        {{sf::IntRect(3 + xOffset, 97 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24),
+          sf::IntRect(37 + xOffset, 97 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24)},
+         0.2f,
+         true});
+    animationConfig.addAnimation(
+        AnimationState::Moving, Direction::Left,
+        {{sf::IntRect(3 + xOffset, 122 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24),
+          sf::IntRect(37 + xOffset, 122 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24)},
+         0.2f,
+         true});
+    animationConfig.addAnimation(
+        AnimationState::Moving, Direction::Right,
+        {{sf::IntRect(3 + xOffset, 72 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24),
+          sf::IntRect(37 + xOffset, 72 + yOffset, 16, 24), sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24)},
+         0.2f,
+         true});
 
     // Idle animations
-    animationConfig.addAnimation(AnimationState::Idle, Direction::Down, {{sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24)}, 1.0f, false});
-    animationConfig.addAnimation(AnimationState::Idle, Direction::Up, {{sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24)}, 1.0f, false});
-    animationConfig.addAnimation(AnimationState::Idle, Direction::Left, {{sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24)}, 1.0f, false});
-    animationConfig.addAnimation(AnimationState::Idle, Direction::Right, {{sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24)}, 1.0f, false});
+    animationConfig.addAnimation(AnimationState::Idle, Direction::Down,
+                                 {{sf::IntRect(20 + xOffset, 47 + yOffset, 16, 24)}, 1.0f, false});
+    animationConfig.addAnimation(AnimationState::Idle, Direction::Up,
+                                 {{sf::IntRect(20 + xOffset, 97 + yOffset, 16, 24)}, 1.0f, false});
+    animationConfig.addAnimation(AnimationState::Idle, Direction::Left,
+                                 {{sf::IntRect(20 + xOffset, 122 + yOffset, 16, 24)}, 1.0f, false});
+    animationConfig.addAnimation(AnimationState::Idle, Direction::Right,
+                                 {{sf::IntRect(20 + xOffset, 72 + yOffset, 16, 24)}, 1.0f, false});
 }

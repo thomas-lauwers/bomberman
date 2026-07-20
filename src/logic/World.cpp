@@ -3,10 +3,10 @@
 #include "../../include/logic/factory/CrumblingWall.h"
 #include "../../include/logic/factory/DestructibleWall.h"
 #include "../../include/logic/factory/Explosion.h"
-#include "../../include/logic/factory/Player.h"
-#include "../../include/utils/Random.h"
-#include "../../include/logic/factory/PowerUp.h"
 #include "../../include/logic/factory/KnockedOutBomber.h"
+#include "../../include/logic/factory/Player.h"
+#include "../../include/logic/factory/PowerUp.h"
+#include "../../include/utils/Random.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -78,9 +78,7 @@ void World::setTile(const int x, const int y, const Tile tile) { grid[y][x] = ti
 
 std::shared_ptr<Player> World::getPlayer() const { return player; }
 
-void World::setPlayer(std::shared_ptr<Player> player) {
-    this->player = std::move(player);
-}
+void World::setPlayer(std::shared_ptr<Player> player) { this->player = std::move(player); }
 
 const std::vector<std::unique_ptr<Entity>>& World::getEntities() const { return entities; }
 
@@ -157,7 +155,8 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
             case Bomb_E:
                 if (type != ExplosionType::Center) {
                     if (static_cast<int>(std::round(pos.x)) == ix && static_cast<int>(std::round(pos.y)) == iy) {
-                        if (std::find(bombs_to_explode.begin(), bombs_to_explode.end(), entity.get()) == bombs_to_explode.end()) {
+                        if (std::find(bombs_to_explode.begin(), bombs_to_explode.end(), entity.get()) ==
+                            bombs_to_explode.end()) {
                             bombs_to_explode.push_back(static_cast<Bomb*>(entity.get()));
                         }
                         return false;
@@ -180,16 +179,20 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
     spawnAt(x, y, ExplosionType::Center);
 
     for (int i = 1; i <= blast_radius; ++i) {
-        if (!spawnAt(x + i, y, i == blast_radius ? ExplosionType::EndRight : ExplosionType::Horizontal)) break;
+        if (!spawnAt(x + i, y, i == blast_radius ? ExplosionType::EndRight : ExplosionType::Horizontal))
+            break;
     }
     for (int i = 1; i <= blast_radius; ++i) {
-        if (!spawnAt(x - i, y, i == blast_radius ? ExplosionType::EndLeft : ExplosionType::Horizontal)) break;
+        if (!spawnAt(x - i, y, i == blast_radius ? ExplosionType::EndLeft : ExplosionType::Horizontal))
+            break;
     }
     for (int i = 1; i <= blast_radius; ++i) {
-        if (!spawnAt(x, y + i, i == blast_radius ? ExplosionType::EndDown : ExplosionType::Vertical)) break;
+        if (!spawnAt(x, y + i, i == blast_radius ? ExplosionType::EndDown : ExplosionType::Vertical))
+            break;
     }
     for (int i = 1; i <= blast_radius; ++i) {
-        if (!spawnAt(x, y - i, i == blast_radius ? ExplosionType::EndUp : ExplosionType::Vertical)) break;
+        if (!spawnAt(x, y - i, i == blast_radius ? ExplosionType::EndUp : ExplosionType::Vertical))
+            break;
     }
 
     if (is_top_level) {
@@ -204,9 +207,7 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
     }
 }
 
-void World::spawnPowerUp(const float x, const float y) {
-    new_entities_to_add.push_back(factory->createPowerUp(x, y));
-}
+void World::spawnPowerUp(const float x, const float y) { new_entities_to_add.push_back(factory->createPowerUp(x, y)); }
 
 void World::spawnBomb(const float x, const float y, const int blast_radius, const std::weak_ptr<Observer>& observer) {
     auto bomb = factory->createBomb(x, y, blast_radius);
@@ -325,7 +326,7 @@ void World::checkExplosionCollision() {
 
 void World::checkPowerUpsCollection() const {
     if (player) {
-        for (auto & entity : entities) {
+        for (auto& entity : entities) {
             if (entity->getEntityType() == PowerUp_E && !entity->isDestroyed()) {
                 if (player->getCollisionRect().intersects(entity->getCollisionRect())) {
                     auto* powerUp = static_cast<PowerUp*>(entity.get());
@@ -337,10 +338,10 @@ void World::checkPowerUpsCollection() const {
         }
     }
 
-    for (auto & entity : entities) {
+    for (auto& entity : entities) {
         if (entity->getEntityType() == AIBomber_E && !entity->isDestroyed()) {
             auto* bomber = static_cast<Bomber*>(entity.get());
-            for (auto & powerUpEntity : entities) {
+            for (auto& powerUpEntity : entities) {
                 if (powerUpEntity->getEntityType() == PowerUp_E && !powerUpEntity->isDestroyed()) {
                     if (bomber->getCollisionRect().intersects(powerUpEntity->getCollisionRect())) {
                         auto* powerUp = static_cast<PowerUp*>(powerUpEntity.get());
@@ -369,7 +370,8 @@ void World::onNotify(const Entity& entity, const Event event) {
         if (utils::Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);
         }
-    } else if (event == Event::EntityDestroyed && (entity.getEntityType() == Player_E || entity.getEntityType() == AIBomber_E)) {
+    } else if (event == Event::EntityDestroyed &&
+               (entity.getEntityType() == Player_E || entity.getEntityType() == AIBomber_E)) {
         const auto& bomber = static_cast<const Bomber&>(entity);
         spawnKnockedOutBomber(entity.getPosition().x, entity.getPosition().y, bomber.getBomberType());
     }

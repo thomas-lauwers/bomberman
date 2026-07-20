@@ -1,11 +1,11 @@
 #ifndef BOMBERMAN_POWERUP_H
 #define BOMBERMAN_POWERUP_H
-#include "Entity.h"
 #include "../../utils/Position.h"
+#include "Entity.h"
 
 enum PowerUpType { Fire, ExtraBomb, Skates };
 
-class PowerUp : public Entity  {
+class PowerUp : public Entity {
 public:
     PowerUp(float x, float y);
 
@@ -19,5 +19,4 @@ private:
     PowerUpType type;
 };
 
-
-#endif //BOMBERMAN_POWERUP_H
+#endif // BOMBERMAN_POWERUP_H

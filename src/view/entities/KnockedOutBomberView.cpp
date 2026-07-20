@@ -1,10 +1,10 @@
 #include "../../../include/view/entities/KnockedOutBomberView.h"
-#include "../../../include/view/entities/HitboxRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Entity.h"
 #include "../../../include/utils/Position.h"
 #include "../../../include/view/core/TextureManager.h"
+#include "../../../include/view/entities/HitboxRenderer.h"
 
 #include <cmath>
 
@@ -16,34 +16,29 @@ KnockedOutBomberView::KnockedOutBomberView(const TextureManager& t_manager, cons
     int yOffset = 0;
 
     switch (type) {
-        case BomberType::Variant1:
-            xOffset = 193;
-            yOffset = 0;
-            break;
-        case BomberType::Variant2:
-            xOffset = 0;
-            yOffset = 258;
-            break;
-        case BomberType::Variant3:
-            xOffset = 193;
-            yOffset = 258;
-            break;
-        case BomberType::Player:
-            break;
+    case BomberType::Variant1:
+        xOffset = 193;
+        yOffset = 0;
+        break;
+    case BomberType::Variant2:
+        xOffset = 0;
+        yOffset = 258;
+        break;
+    case BomberType::Variant3:
+        xOffset = 193;
+        yOffset = 258;
+        break;
+    case BomberType::Player:
+        break;
     }
 
-    animation.frames = {sf::IntRect(3 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(20 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(37 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(54 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(71 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(88 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
-        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24)
-    };
+    animation.frames = {
+        sf::IntRect(3 + xOffset, 160 + yOffset, 16, 24),   sf::IntRect(20 + xOffset, 160 + yOffset, 16, 24),
+        sf::IntRect(37 + xOffset, 160 + yOffset, 16, 24),  sf::IntRect(54 + xOffset, 160 + yOffset, 16, 24),
+        sf::IntRect(71 + xOffset, 160 + yOffset, 16, 24),  sf::IntRect(88 + xOffset, 160 + yOffset, 16, 24),
+        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24), sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
+        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24), sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24),
+        sf::IntRect(105 + xOffset, 160 + yOffset, 16, 24)};
     animation.duration = 0.18181818181f;
     animation.loop = false;
 }

@@ -1,12 +1,13 @@
 #include <utility>
 
+#include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/factory/Bomb.h"
 #include "../../../include/logic/factory/IEntityFactory.h"
 #include "../../../include/logic/factory/Player.h"
-#include "../../../include/logic/factory/AIBomber.h"
 #include "../../../include/logic/state/PlayState.h"
 
-PlayState::PlayState(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {
+PlayState::PlayState(std::shared_ptr<IEntityFactory> factory)
+    : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {
     if (const auto player = world->getPlayer()) {
         player->addObserver(world);
     }
@@ -37,7 +38,8 @@ void PlayState::handleInput(const Input input) {
             break;
         case Input::PlaceBomb:
             if (player->canPlaceBomb() && !world->isBombAt(player->getPosition().x, player->getPosition().y)) {
-                auto bomb = factory->createBomb(player->getPosition().x, player->getPosition().y, player->getBlastRadius());
+                auto bomb =
+                    factory->createBomb(player->getPosition().x, player->getPosition().y, player->getBlastRadius());
                 player->placeBomb();
                 bomb->addObserver(player);
                 bomb->addObserver(world);

@@ -1,8 +1,8 @@
 #ifndef BOMBERMAN_IENTITYFACTORY_H
 #define BOMBERMAN_IENTITYFACTORY_H
 
-#include <memory>
 #include "AIBomber.h"
+#include <memory>
 
 class KnockedOutBomber;
 class PowerUp;

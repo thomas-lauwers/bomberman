@@ -1,17 +1,18 @@
 #include "../../../include/view/core/TextureManager.h"
 #include <stdexcept>
-#include <vector>
 #include <string>
+#include <vector>
 
 TextureManager::TextureManager() { loadAssets(); }
 
 void TextureManager::loadAssets() {
-    struct AssetInfo { std::string key; std::string filename; };
-    const std::vector<AssetInfo> assets = {
-        {"battle_stage_sprites", "assets/battle_stage_sprites.png"},
-        {"character_sprites",    "assets/character_sprites.png"},
-        {"powerup_sprites",      "assets/powerup_sprites.png"}
+    struct AssetInfo {
+        std::string key;
+        std::string filename;
     };
+    const std::vector<AssetInfo> assets = {{"battle_stage_sprites", "assets/battle_stage_sprites.png"},
+                                           {"character_sprites", "assets/character_sprites.png"},
+                                           {"powerup_sprites", "assets/powerup_sprites.png"}};
 
     for (const auto& [key, filename] : assets) {
         sf::Texture texture;

@@ -23,6 +23,6 @@ private:
     std::chrono::steady_clock::time_point lastTick;
     double deltaTime;
 };
-}
+} // namespace utils
 
 #endif // BOMBERMAN_STOPWATCH_H

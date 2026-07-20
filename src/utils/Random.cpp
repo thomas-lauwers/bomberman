@@ -9,7 +9,5 @@ bool Random::roll(const float chance) {
     return false;
 }
 
-int Random::getInt() {
-    return distInt(gen);
-}
-}
+int Random::getInt() { return distInt(gen); }
+} // namespace utils
