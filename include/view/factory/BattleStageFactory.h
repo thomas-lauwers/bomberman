@@ -20,6 +20,13 @@ public:
 
 
 private:
+    template <typename T, typename ViewCreator>
+    std::unique_ptr<T> createEntity(std::unique_ptr<T> entity, ViewCreator&& viewCreator) {
+        const auto view = viewCreator(entity.get());
+        entity->addObserver(view);
+        return entity;
+    }
+
     const TextureManager& textureManager;
     WorldRenderer& renderer;
 };
