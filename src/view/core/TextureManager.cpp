@@ -1,18 +1,24 @@
 #include "../../../include/view/core/TextureManager.h"
+#include <stdexcept>
+#include <vector>
+#include <string>
 
 TextureManager::TextureManager() { loadAssets(); }
 
 void TextureManager::loadAssets() {
-    if (sf::Texture battleTexture; battleTexture.loadFromFile("assets/battle_stage_sprites.png")) {
-        textures.emplace("battle_stage_sprites", std::move(battleTexture));
-    }
+    struct AssetInfo { std::string key; std::string filename; };
+    const std::vector<AssetInfo> assets = {
+        {"battle_stage_sprites", "assets/battle_stage_sprites.png"},
+        {"character_sprites",    "assets/character_sprites.png"},
+        {"powerup_sprites",      "assets/powerup_sprites.png"}
+    };
 
-    if (sf::Texture characterTexture; characterTexture.loadFromFile("assets/character_sprites.png")) {
-        textures.emplace("character_sprites", std::move(characterTexture));
-    }
-
-    if (sf::Texture powerupTexture; powerupTexture.loadFromFile("assets/powerup_sprites.png")) {
-        textures.emplace("powerup_sprites", std::move(powerupTexture));
+    for (const auto& [key, filename] : assets) {
+        sf::Texture texture;
+        if (!texture.loadFromFile(filename)) {
+            throw std::runtime_error("Failed to load: " + filename);
+        }
+        textures.emplace(key, std::move(texture));
     }
 }
 

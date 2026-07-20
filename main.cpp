@@ -1,9 +1,15 @@
 #include "include/view/core/Game.h"
 #include "include/view/entities/HitboxRenderer.h"
+#include <iostream>
 
 int main() {
-    debugMode = false;
-    Game g;
-    g.run();
+    try {
+        debugMode = false;
+        Game g;
+        g.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
     return 0;
 }
