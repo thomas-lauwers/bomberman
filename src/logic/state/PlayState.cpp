@@ -73,6 +73,10 @@ void PlayState::handleInput(const Input input) {
 }
 
 void PlayState::update(const float deltaTime, IWorldView& renderer) {
+    if (isGameOver()) {
+        return;
+    }
+
     renderer.update(deltaTime);
     if (const auto player = world->getPlayer()) {
         player->update(deltaTime);
@@ -91,6 +95,36 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world->processNewEntities();
 }
 
-void PlayState::render(IWorldView& renderer) { renderer.render(*world); }
+void PlayState::render(IWorldView& renderer) {
+    renderer.render(*world);
+
+    if (isGameOver()) {
+        if (playerWon) {
+            renderer.renderCenteredText("YOU   WIN!", 300.0f);
+        } else {
+            renderer.renderCenteredText("YOU   LOSE!", 300.0f);
+        }
+    }
+}
+
+bool PlayState::isGameOver() {
+    int aliveBombers = 0;
+    const auto player = world->getPlayer();
+    if (player && !player->isDestroyed()) {
+        aliveBombers++;
+    }
+    for (const auto& entity : world->getEntities()) {
+        if ((entity->getEntityType() == AIBomber_E || entity->getEntityType() == KnockedOutBomber_E) && !entity->isDestroyed()) {
+            aliveBombers++;
+        }
+    }
+
+    if (aliveBombers <= 1) {
+        playerWon = (player && !player->isDestroyed());
+        return true;
+    }
+
+    return false;
+}
 
 PlayState::~PlayState() = default;

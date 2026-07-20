@@ -18,11 +18,16 @@ public:
 
     void update(float deltaTime, IWorldView& renderer) override;
     void render(IWorldView& renderer) override;
+
+    bool isGameOver();
+
     [[nodiscard]] const World& getWorld() const { return *world; }
 
 private:
     std::shared_ptr<IEntityFactory> factory;
     std::shared_ptr<World> world;
+
+    bool playerWon = false;
 };
 
 #endif // BOMBERMAN_PLAYSTATE_H

@@ -237,6 +237,8 @@ void WorldRenderer::renderCenteredText(const std::string& text, float y) {
     sf::Text renderableText;
     renderableText.setFont(t_manager.getFont("arcade"));
     renderableText.setString(text);
+    renderableText.setOutlineColor(sf::Color::Black);
+    renderableText.setOutlineThickness(2.5f);
     renderableText.setCharacterSize(40);
     renderableText.setFillColor(sf::Color::White);
 
