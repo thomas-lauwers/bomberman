@@ -2,7 +2,7 @@
 #include "../../../include/utils/Random.h"
 
 PowerUp::PowerUp(const float x, const float y) : position{x, y} {
-    switch (Random::getInstance().getInt(0, 2)) {
+    switch (Random::getInstance().getInt()) {
         case 0:
             type = Fire;
             break;
