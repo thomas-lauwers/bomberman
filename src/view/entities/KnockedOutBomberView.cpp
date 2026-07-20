@@ -4,13 +4,11 @@
 #include "../../../include/logic/factory/Entity.h"
 #include "../../../include/utils/Position.h"
 #include "../../../include/view/core/TextureManager.h"
-#include "../../../include/view/entities/HitboxRenderer.h"
-
 #include <cmath>
 
 KnockedOutBomberView::KnockedOutBomberView(const TextureManager& t_manager, const BomberType type) : type{type} {
     sprite.setTexture(t_manager.getTexture("character_sprites"));
-    sprite.setOrigin(0.0f, 12.0f);
+    sprite.setOrigin(8.0f, 17.0f);
 
     int xOffset = 0;
     int yOffset = 0;

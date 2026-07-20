@@ -1,6 +1,6 @@
 #include "../../../include/logic/factory/KnockedOutBomber.h"
 
-KnockedOutBomber::KnockedOutBomber(const float x, const float y, BomberType type) : position{x, y}, type{type} {}
+KnockedOutBomber::KnockedOutBomber(const float x, const float y, const BomberType type) : position{x, y}, type{type} {}
 
 EntityType KnockedOutBomber::getEntityType() const { return KnockedOutBomber_E; }
 
