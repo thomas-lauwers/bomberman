@@ -1,4 +1,4 @@
-name: Build Project
+name: Run Tests
 
 on:
   push:
@@ -6,16 +6,18 @@ on:
     paths:
       - 'src/**'
       - 'include/**'
+      - 'tests/**'
       - 'CMakeLists.txt'
   pull_request:
     branches: [ main ]
     paths:
       - 'src/**'
       - 'include/**'
+      - 'tests/**'
       - 'CMakeLists.txt'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -28,12 +30,8 @@ jobs:
       - name: Configure with G++
         run: cmake -B build-gcc -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++
 
-      - name: Build with G++
-        run: cmake --build build-gcc --target bomberman
+      - name: Build tests
+        run: cmake --build build-gcc --target test_logic
 
-      - name: Configure with Clang
-        run: cmake -B build-clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++
-
-      - name: Build with Clang
-        run: cmake --build build-clang --target bomberman
-
+      - name: Run tests
+        run: ./build-gcc/test_logic
