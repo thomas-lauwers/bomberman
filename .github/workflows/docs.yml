@@ -3,7 +3,6 @@ name: Deploy Doxygen docs
 on:
   push:
     branches: [ main ]
-  # Remove pull_request unless you truly want PR previews – see note below
 
 permissions:
   contents: read
@@ -30,7 +29,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./html   # make sure this matches your Doxygen output directory
+          path: ./html
 
   deploy:
     needs: build
