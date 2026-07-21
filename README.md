@@ -2,11 +2,11 @@
 A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clean separation of concerns between game logic and representation.
 
 ## Features
-- **Modular Architecture**: Clear separation between `logic` (Model) and `view` (Representation) layers.
-- **Observer Pattern**: Decoupled communication using Subject-Observer architecture.
-- **Event-Driven Scoring**: Real-time score tracking based on gameplay events (time, power-ups, kills, broken blocks).
-- **Data-Driven Assets**: Robust asset management with error handling.
-- **Persistence**: High score tracking saved to `data/highscores.txt`.
+- **Bomber Movement & Bomb Placement**: Classic Bomberman controls with destructible environment mechanics.
+- **Dynamic Power-ups**: Speed, blast radius, and bomb count upgrades.
+- **AI Opponents**: Intelligent bombers that navigate the stage to hunt the player and other AI.
+- **Scoring System**: Real-time score tracking based on gameplay events (time, power-ups, kills, broken blocks).
+- **High Scores**: Persistence of top 5 scores saved to `data/highscores.txt`.
 
 ## Build Instructions
 This project uses CMake. Ensure you have SFML and a C++17 compatible compiler installed.
@@ -38,3 +38,17 @@ cmake --build cmake-build-debug --target test_logic
 
 ## Documentation
 API documentation is generated using Doxygen. To generate it, run `doxygen Doxyfile` from the root directory. The HTML documentation will be available in the `html/` directory.
+
+## Design Overview
+The project is architected to ensure clear separation of concerns, maintainability, and extensibility.
+
+### Architectural Patterns
+- **Model-View Separation**: The game is split into `logic` (Model) and `view` (Representation). The logic layer has zero dependencies on graphics libraries (SFML), allowing for alternative renderers in the future.
+- **Observer Pattern**: Used for decoupled communication between game entities (Subjects) and their graphical representations (Observers/Views).
+- **Factory Pattern**: Centralizes entity creation and handles the binding of Models to their corresponding Views, reducing boilerplate code.
+- **Data-Driven Assets**: Asset management is decoupled from the loading logic, making it easy to add new assets without changing code.
+- **Fixed Timestep**: The game loop implements a fixed timestep to ensure deterministic game logic, regardless of the rendering framerate.
+- **Singleton Pattern**: Used for global access to utility classes, specifically for `utils::Random` (random number generation) and `utils::Stopwatch` (game timing).
+
+### Class Structure
+Class structure diagrams are automatically generated using Doxygen/Graphviz. You can view them in the generated documentation by navigating to the **Classes** -> **Class Hierarchy** tab in `html/index.html`.
