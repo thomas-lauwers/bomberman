@@ -41,7 +41,9 @@ cmake --build cmake-build-debug --target test_logic
 - `data/`: Data files (e.g., high scores).
 
 ## Documentation
-API documentation is generated using Doxygen. To generate it, run `doxygen Doxyfile` from the root directory. The HTML documentation will be available in the `html/` directory.
+API documentation is generated using Doxygen.
+You can view the **[online API documentation here](https://thomas-lauwers.github.io/bomberman/)**.
+To generate it locally, run `doxygen Doxyfile` from the root directory. The HTML documentation will be available in the `html/` directory.
 
 ## Design Overview
 The project is architected to ensure clear separation of concerns, maintainability, and extensibility.
