@@ -1,4 +1,11 @@
 #include "../../include/logic/Score.h"
+#include <fstream>
+#include <algorithm>
+#include <iostream>
+
+Score::Score() : currentScore{0}, timeAliveAccumulator{0.0f} {
+    loadHighScores();
+}
 
 void Score::update(const float deltaTime) {
     timeAliveAccumulator += deltaTime;
@@ -28,5 +35,31 @@ void Score::onNotify(const Entity& entity, const Event event) {
             break;
         default:
             break;
+    }
+}
+
+void Score::loadHighScores() {
+    highScores.clear();
+    std::ifstream file("./data/highscores.txt");
+    int score;
+    while (file >> score) {
+        highScores.push_back(score);
+    }
+    std::sort(highScores.rbegin(), highScores.rend());
+    if (highScores.size() > 5) {
+        highScores.resize(5);
+    }
+}
+
+void Score::saveFinalScore() {
+    highScores.push_back(currentScore);
+    std::sort(highScores.rbegin(), highScores.rend());
+    if (highScores.size() > 5) {
+        highScores.resize(5);
+    }
+
+    std::ofstream file("./data/highscores.txt");
+    for (const int score : highScores) {
+        file << score << "\n";
     }
 }

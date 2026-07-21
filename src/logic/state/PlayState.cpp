@@ -82,6 +82,7 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
             } else {
                 score->addPoints(-500);
             }
+            score->saveFinalScore();
             gameOverProcessed = true;
         }
         return;
