@@ -1,3 +1,8 @@
+/**
+ * @file AIBomber.h
+ * @brief Defines the AIBomber class for AI-controlled bomber entities.
+ */
+
 #ifndef BOMBERMAN_AIBOMBER_H
 #define BOMBERMAN_AIBOMBER_H
 
@@ -10,21 +15,79 @@
 class Bomber;
 class World;
 
+/**
+ * @class AIBomber
+ * @brief Represents an AI-controlled bomber entity.
+ */
 class AIBomber : public Bomber {
 public:
+    /**
+     * @enum AIState
+     * @brief Possible states for the AI behavior.
+     */
     enum class AIState { Fleeing, PlacingBomb, MovingToPowerUp, MovingToEnemy, Wandering };
 
+    /**
+     * @brief Constructs an AIBomber instance.
+     * @param type The type of bomber.
+     */
     explicit AIBomber(BomberType type);
 
+    /**
+     * @brief Gets the entity type.
+     * @return EntityType::AIBomber.
+     */
     [[nodiscard]] EntityType getEntityType() const override;
+
+    /**
+     * @brief Gets the bomber type.
+     * @return The BomberType.
+     */
     [[nodiscard]] BomberType getBomberType() const override;
+
+    /**
+     * @brief Gets the type of the bomber.
+     * @return The BomberType.
+     */
     [[nodiscard]] BomberType getType() const { return type; }
 
+    /**
+     * @brief Updates the AI bomber's logic.
+     * @param deltaTime Time elapsed since last update.
+     * @param world The game world.
+     */
     void update(float deltaTime, World& world);
 
+    /**
+     * @brief Checks if a tile is at risk from explosions.
+     * @param x X coordinate.
+     * @param y Y coordinate.
+     * @param world The game world.
+     * @return True if at risk, false otherwise.
+     */
     static bool isTileAtRisk(int x, int y, const World& world);
+
+    /**
+     * @brief Checks if the bomber is in danger.
+     * @param world The game world.
+     * @return True if in danger, false otherwise.
+     */
     [[nodiscard]] bool isInDanger(const World& world) const;
+
+    /**
+     * @brief Attempts to flee from danger.
+     * @param world The game world.
+     * @param deltaTime Time elapsed since last update.
+     * @return True if successfully moved towards safety, false otherwise.
+     */
     bool attemptFlee(const World& world, float deltaTime);
+
+    /**
+     * @brief Checks if near an enemy.
+     * @param world The game world.
+     * @return True if near enemy, false otherwise.
+     */
+    [[nodiscard]] bool isNearEnemy(const World& world) const;
 
 private:
     struct AIBomberObserver : Observer {
@@ -64,9 +127,6 @@ private:
     int pathTimer = 0;
     int aiStateTimer = 0;
     AIState state = AIState::Wandering;
-
-public:
-    [[nodiscard]] bool isNearEnemy(const World& world) const;
 };
 
 #endif // BOMBERMAN_AIBOMBER_H

@@ -1,3 +1,8 @@
+/**
+ * @file HitboxRenderer.h
+ * @brief Provides utility functions for rendering entity hitboxes and positions in debug mode.
+ */
+
 #ifndef BOMBERMAN_HITBOXRENDERER_H
 #define BOMBERMAN_HITBOXRENDERER_H
 
@@ -9,6 +14,11 @@
 
 extern bool debugMode;
 
+/**
+ * @brief Draws the hitbox of an entity if debug mode is enabled.
+ * @param window The SFML render window.
+ * @param entity The entity whose hitbox is to be drawn.
+ */
 inline void drawHitbox(sf::RenderWindow& window, const Entity& entity) {
     if (!debugMode)
         return;
@@ -26,6 +36,11 @@ inline void drawHitbox(sf::RenderWindow& window, const Entity& entity) {
     window.draw(hitbox);
 }
 
+/**
+ * @brief Draws the position of an entity if debug mode is enabled.
+ * @param window The SFML render window.
+ * @param entity The entity whose position is to be drawn.
+ */
 inline void drawPosition(sf::RenderWindow& window, const Entity& entity) {
     if (!debugMode)
         return;

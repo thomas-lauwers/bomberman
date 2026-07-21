@@ -335,7 +335,7 @@ void World::checkExplosionCollision() {
 
 void World::checkPowerUpsCollection() {
     if (player) {
-        for (auto& entity : entities) {
+        for (const auto& entity : entities) {
             if (entity->getEntityType() == PowerUp_E && !entity->isDestroyed()) {
                 if (player->getCollisionRect().intersects(entity->getCollisionRect())) {
                     auto* powerUp = static_cast<PowerUp*>(entity.get());
@@ -351,7 +351,7 @@ void World::checkPowerUpsCollection() {
     for (auto& entity : entities) {
         if (entity->getEntityType() == AIBomber_E && !entity->isDestroyed()) {
             auto* bomber = static_cast<Bomber*>(entity.get());
-            for (auto& powerUpEntity : entities) {
+            for (const auto& powerUpEntity : entities) {
                 if (powerUpEntity->getEntityType() == PowerUp_E && !powerUpEntity->isDestroyed()) {
                     if (bomber->getCollisionRect().intersects(powerUpEntity->getCollisionRect())) {
                         auto* powerUp = static_cast<PowerUp*>(powerUpEntity.get());
