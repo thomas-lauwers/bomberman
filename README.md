@@ -8,6 +8,11 @@ A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clea
 - **Scoring System**: Real-time score tracking based on gameplay events (time, power-ups, kills, broken blocks).
 - **High Scores**: Persistence of top 5 scores saved to `data/highscores.txt`.
 
+## Controls
+- **Start The Game**: Enter
+- **Movement**: Arrow Keys
+- **Place Bomb**: Z
+
 ## Build Instructions
 This project uses CMake. Ensure you have SFML and a C++17 compatible compiler installed.
 
