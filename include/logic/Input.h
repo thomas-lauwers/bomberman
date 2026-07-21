@@ -10,13 +10,13 @@
  * @enum Input
  * @brief Represents possible player input actions.
  */
-enum class Input { 
-    MoveLeft,   ///< Move left
-    MoveRight,  ///< Move right
-    MoveUp,     ///< Move up
-    MoveDown,   ///< Move down
-    PlaceBomb,  ///< Place a bomb
-    Select      ///< Select/Confirm action
+enum class Input {
+    MoveLeft,  ///< Move left
+    MoveRight, ///< Move right
+    MoveUp,    ///< Move up
+    MoveDown,  ///< Move down
+    PlaceBomb, ///< Place a bomb
+    Select     ///< Select/Confirm action
 };
 
 #endif

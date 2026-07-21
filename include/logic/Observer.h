@@ -13,18 +13,18 @@ class Entity;
  * @brief Represents game events that can be observed.
  */
 enum class Event {
-    EntityDestroyed,        ///< Entity was destroyed
-    BombExploded,           ///< Bomb exploded
-    BomberMovedUp,          ///< Bomber moved up
-    BomberMovedDown,        ///< Bomber moved down
-    BomberMovedLeft,        ///< Bomber moved left
-    BomberMovedRight,       ///< Bomber moved right
-    BomberStopped,          ///< Bomber stopped moving
-    PlayerBrokeBlock,       ///< Player broke a block
-    PlayerPickedUpPowerUp,  ///< Player picked up a power-up
-    PlayerKilledEnemy,      ///< Player killed an enemy
-    GameWon,                ///< Player won the game
-    GameLost                ///< Player lost the game
+    EntityDestroyed,       ///< Entity was destroyed
+    BombExploded,          ///< Bomb exploded
+    BomberMovedUp,         ///< Bomber moved up
+    BomberMovedDown,       ///< Bomber moved down
+    BomberMovedLeft,       ///< Bomber moved left
+    BomberMovedRight,      ///< Bomber moved right
+    BomberStopped,         ///< Bomber stopped moving
+    PlayerBrokeBlock,      ///< Player broke a block
+    PlayerPickedUpPowerUp, ///< Player picked up a power-up
+    PlayerKilledEnemy,     ///< Player killed an enemy
+    GameWon,               ///< Player won the game
+    GameLost               ///< Player lost the game
 };
 
 /**

@@ -28,13 +28,13 @@ public:
      * @param entity The bomb entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the bomb view animation.
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about bomb events.
      * @param entity The bomb entity that triggered the event.
@@ -43,10 +43,10 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 private:
-    sf::Sprite sprite;                      ///< The sprite for rendering
-    Animation animation;                    ///< Animation for the bomb
-    float animationTimer = 0.0f;            ///< Timer for frame switching
-    size_t frameIndex = 0;                  ///< Current animation frame index
+    sf::Sprite sprite;           ///< The sprite for rendering
+    Animation animation;         ///< Animation for the bomb
+    float animationTimer = 0.0f; ///< Timer for frame switching
+    size_t frameIndex = 0;       ///< Current animation frame index
 };
 
 #endif // BOMBERMAN_BOMBVIEW_H

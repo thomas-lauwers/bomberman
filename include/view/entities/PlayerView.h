@@ -18,7 +18,7 @@ public:
      * @param t_manager Reference to the texture manager.
      */
     explicit PlayerView(const TextureManager& t_manager);
-    
+
     /**
      * @brief Draws the player representation on the window.
      * @param window The SFML render window.

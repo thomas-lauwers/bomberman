@@ -58,9 +58,9 @@ public:
     void update(float deltaTime) override;
 
 private:
-    Position position;          ///< The position of the explosion
-    ExplosionType type;         ///< The type of explosion segment
-    float lifetime = 0.6f;      ///< The lifetime of the explosion
+    Position position;     ///< The position of the explosion
+    ExplosionType type;    ///< The type of explosion segment
+    float lifetime = 0.6f; ///< The lifetime of the explosion
 };
 
 #endif // BOMBERMAN_EXPLOSION_H

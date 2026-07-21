@@ -104,7 +104,7 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world->checkPowerUpsCollection();
     world->removeDestroyedEntities();
     world->processNewEntities();
-    
+
     const auto player = world->getPlayer();
     if (player && !player->isDestroyed()) {
         score->update(deltaTime);
@@ -133,7 +133,8 @@ bool PlayState::isGameOver() {
         aliveBombers++;
     }
     for (const auto& entity : world->getEntities()) {
-        if ((entity->getEntityType() == AIBomber_E || entity->getEntityType() == KnockedOutBomber_E) && !entity->isDestroyed()) {
+        if ((entity->getEntityType() == AIBomber_E || entity->getEntityType() == KnockedOutBomber_E) &&
+            !entity->isDestroyed()) {
             aliveBombers++;
         }
     }

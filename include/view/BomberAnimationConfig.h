@@ -23,7 +23,7 @@ public:
      * @return Const reference to the animation.
      */
     [[nodiscard]] const Animation& getAnimation(AnimationState action, Direction dir) const;
-    
+
     /**
      * @brief Adds an animation sequence for a specific action and direction.
      * @param action The animation action (Idle/Moving).
@@ -33,7 +33,8 @@ public:
     void addAnimation(AnimationState action, Direction dir, const Animation& anim);
 
 private:
-    std::map<std::pair<AnimationState, Direction>, Animation> animations; ///< Map of action-direction pairs to animations
+    std::map<std::pair<AnimationState, Direction>, Animation>
+        animations; ///< Map of action-direction pairs to animations
 };
 
 #endif // BOMBERMAN_BOMBERANIMATIONCONFIG_H

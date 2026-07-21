@@ -8,8 +8,8 @@
 
 #include "../IWorldView.h"
 #include "../Input.h"
-#include "../World.h"
 #include "../Score.h"
+#include "../World.h"
 #include "State.h"
 #include <memory>
 
@@ -22,7 +22,7 @@ class IEntityFactory;
 class PlayState : public State {
 public:
     ~PlayState() override;
-    
+
     /**
      * @brief Constructs a new PlayState instance.
      * @param factory Shared pointer to the entity factory.

@@ -30,13 +30,13 @@ public:
      * @param entity The power-up entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the power-up view animation.
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about power-up events.
      * @param entity The power-up entity that triggered the event.
@@ -45,11 +45,11 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 private:
-    sf::Sprite sprite;              ///< The sprite for rendering
-    Animation animation;            ///< Animation for the power-up
-    PowerUpType type;               ///< The type of the power-up
-    float animationTimer = 0.0f;    ///< Timer for frame switching
-    size_t frameIndex = 0;          ///< Current animation frame index
+    sf::Sprite sprite;           ///< The sprite for rendering
+    Animation animation;         ///< Animation for the power-up
+    PowerUpType type;            ///< The type of the power-up
+    float animationTimer = 0.0f; ///< Timer for frame switching
+    size_t frameIndex = 0;       ///< Current animation frame index
 };
 
 #endif // BOMBERMAN_POWERUPVIEW_H

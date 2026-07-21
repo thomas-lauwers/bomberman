@@ -10,7 +10,7 @@
  * @enum BomberType
  * @brief Represents the types of bombers available in the game.
  */
-enum class BomberType { 
+enum class BomberType {
     Player,   ///< The player-controlled bomber
     Variant1, ///< AI Variant 1
     Variant2, ///< AI Variant 2

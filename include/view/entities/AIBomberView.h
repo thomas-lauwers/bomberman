@@ -22,8 +22,8 @@ public:
     AIBomberView(const TextureManager& t_manager, BomberType type);
 
 protected:
-    BomberType type;            ///< The type of AI bomber
-    
+    BomberType type; ///< The type of AI bomber
+
     /**
      * @brief Configures animations for the AI bomber.
      */

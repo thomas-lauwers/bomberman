@@ -6,6 +6,4 @@ void TitleRenderer::render(IWorldView& renderer, const bool showEnter) {
     if (showEnter) {
         renderer.renderCenteredText("Press ENTER to Start", 200.0f);
     }
-
-
 }

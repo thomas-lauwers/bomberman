@@ -30,13 +30,13 @@ public:
      * @param entity The knocked-out bomber entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the knocked-out bomber view animation.
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about knocked-out bomber events.
      * @param entity The knocked-out bomber entity that triggered the event.
@@ -45,15 +45,15 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 private:
-    sf::Sprite sprite;              ///< The sprite for rendering
-    BomberType type;                ///< The type of the bomber
-    Animation animation;            ///< Animation for the knocked-out bomber
-    float animationTimer = 0.0f;    ///< Timer for frame switching
-    size_t frameIndex = 0;          ///< Current animation frame index
+    sf::Sprite sprite;           ///< The sprite for rendering
+    BomberType type;             ///< The type of the bomber
+    Animation animation;         ///< Animation for the knocked-out bomber
+    float animationTimer = 0.0f; ///< Timer for frame switching
+    size_t frameIndex = 0;       ///< Current animation frame index
 
-    float bounceTimer = 0.0f;       ///< Timer for the bouncing effect
-    float bounceDuration = 0.3f;    ///< Duration of the bounce animation
-    float bounceAmplitude = 2.0f;   ///< Amplitude of the bounce effect
+    float bounceTimer = 0.0f;     ///< Timer for the bouncing effect
+    float bounceDuration = 0.3f;  ///< Duration of the bounce animation
+    float bounceAmplitude = 2.0f; ///< Amplitude of the bounce effect
 };
 
 #endif // BOMBERMAN_KNOCKEDOUTBOMBERVIEW_H

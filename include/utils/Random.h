@@ -47,9 +47,9 @@ private:
      */
     Random() = default;
 
-    std::mt19937 gen{std::random_device{}()};           ///< Random number generator
-    std::uniform_real_distribution<> dist{0, 1};       ///< Real number distribution
-    std::uniform_int_distribution<> distInt{0, 2};     ///< Integer distribution
+    std::mt19937 gen{std::random_device{}()};      ///< Random number generator
+    std::uniform_real_distribution<> dist{0, 1};   ///< Real number distribution
+    std::uniform_int_distribution<> distInt{0, 2}; ///< Integer distribution
 };
 } // namespace utils
 

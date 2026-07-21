@@ -46,7 +46,7 @@ private:
     Stopwatch();
 
     std::chrono::steady_clock::time_point lastTick; ///< Time point of the last update
-    double deltaTime;                                ///< Time elapsed since last update
+    double deltaTime;                               ///< Time elapsed since last update
 };
 } // namespace utils
 

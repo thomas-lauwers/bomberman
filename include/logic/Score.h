@@ -6,8 +6,8 @@
 #ifndef BOMBERMAN_SCORE_H
 #define BOMBERMAN_SCORE_H
 
-#include <vector>
 #include "Observer.h"
+#include <vector>
 
 /**
  * @class Score
@@ -23,25 +23,25 @@ public:
      * @brief Constructs a new Score instance.
      */
     Score();
-    
+
     /**
      * @brief Updates the score based on time elapsed.
      * @param deltaTime The time elapsed since the last update.
      */
     void update(float deltaTime);
-    
+
     /**
      * @brief Adds points to the current score.
      * @param points The number of points to add.
      */
     void addPoints(const int points) { currentScore += points; }
-    
+
     /**
      * @brief Gets the current score.
      * @return The current score.
      */
     [[nodiscard]] int getCurrentScore() const { return currentScore; }
-    
+
     /**
      * @brief Gets the list of top 5 high scores.
      * @return A vector containing the high scores.
@@ -54,7 +54,7 @@ public:
      * @param event The event type.
      */
     void onNotify(const Entity& entity, Event event) override;
-    
+
     /**
      * @brief Saves the final score to the high scores list and persists it to a file.
      */

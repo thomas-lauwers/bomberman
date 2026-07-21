@@ -1,11 +1,11 @@
 #include "../../../include/view/core/WorldRenderer.h"
-#include "../../../include/view/core/TitleRenderer.h"
 #include "../../../include/logic/Camera.h"
 #include "../../../include/logic/World.h"
 #include "../../../include/logic/factory/Explosion.h"
 #include "../../../include/logic/factory/KnockedOutBomber.h"
 #include "../../../include/logic/factory/Player.h"
 #include "../../../include/logic/factory/PowerUp.h"
+#include "../../../include/view/core/TitleRenderer.h"
 #include <algorithm>
 #include <unordered_set>
 #include <vector>
@@ -248,9 +248,8 @@ void WorldRenderer::renderCenteredText(const std::string& text, const float y) {
 
     // Calculate center based on bounding box
     const sf::FloatRect textRect = renderableText.getLocalBounds();
-    renderableText.setOrigin(textRect.left + textRect.width / 2.0f, 
-                             textRect.top + textRect.height / 2.0f);
-    
+    renderableText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+
     // Position at screen center horizontally
     renderableText.setPosition(720.0f / 2.0f, y);
 
@@ -260,7 +259,7 @@ void WorldRenderer::renderCenteredText(const std::string& text, const float y) {
 
 void WorldRenderer::renderText(const std::string& text, const float x, const float y) {
     const sf::View oldView = setupUIView();
-    
+
     sf::Text renderableText;
     renderableText.setFont(t_manager.getFont("arcade"));
     renderableText.setString(text);
@@ -269,25 +268,23 @@ void WorldRenderer::renderText(const std::string& text, const float x, const flo
     renderableText.setCharacterSize(24);
     renderableText.setFillColor(sf::Color::White);
     renderableText.setPosition(x, y);
-    
+
     window.draw(renderableText);
-    
+
     window.setView(oldView);
 }
 
 void WorldRenderer::renderPortrait(float x, float y) {
     const sf::View oldView = setupUIView();
-    
+
     sf::Sprite sprite;
     sprite.setTexture(t_manager.getTexture("portrait"));
     sprite.scale(4.0f, 4.0f);
     sprite.setPosition({x, y});
-    
+
     window.draw(sprite);
-    
+
     window.setView(oldView);
 }
 
-void WorldRenderer::renderTitle(const bool showEnter) {
-    TitleRenderer::render(*this, showEnter);
-}
+void WorldRenderer::renderTitle(const bool showEnter) { TitleRenderer::render(*this, showEnter); }

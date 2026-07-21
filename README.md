@@ -17,7 +17,6 @@ A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clea
 This project uses CMake. Ensure you have SFML and a C++17 compatible compiler installed.
 
 ```bash
-# Build the project
 cmake --build cmake-build-debug --target bomberman
 ```
 

@@ -1,11 +1,9 @@
 #include "../../include/logic/Score.h"
-#include <fstream>
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
-Score::Score() : currentScore{0}, timeAliveAccumulator{0.0f} {
-    loadHighScores();
-}
+Score::Score() : currentScore{0}, timeAliveAccumulator{0.0f} { loadHighScores(); }
 
 void Score::update(const float deltaTime) {
     timeAliveAccumulator += deltaTime;
@@ -18,23 +16,23 @@ void Score::update(const float deltaTime) {
 
 void Score::onNotify(const Entity& entity, const Event event) {
     switch (event) {
-        case Event::PlayerBrokeBlock:
-            addPoints(10);
-            break;
-        case Event::PlayerPickedUpPowerUp:
-            addPoints(50);
-            break;
-        case Event::PlayerKilledEnemy:
-            addPoints(500);
-            break;
-        case Event::GameWon:
-            addPoints(1000);
-            break;
-        case Event::GameLost:
-            addPoints(-500);
-            break;
-        default:
-            break;
+    case Event::PlayerBrokeBlock:
+        addPoints(10);
+        break;
+    case Event::PlayerPickedUpPowerUp:
+        addPoints(50);
+        break;
+    case Event::PlayerKilledEnemy:
+        addPoints(500);
+        break;
+    case Event::GameWon:
+        addPoints(1000);
+        break;
+    case Event::GameLost:
+        addPoints(-500);
+        break;
+    default:
+        break;
     }
 }
 

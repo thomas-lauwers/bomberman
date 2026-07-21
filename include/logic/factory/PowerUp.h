@@ -32,19 +32,19 @@ public:
      * @return EntityType::PowerUp.
      */
     [[nodiscard]] EntityType getEntityType() const override;
-    
+
     /**
      * @brief Gets the position of the power-up.
      * @return The Position.
      */
     [[nodiscard]] Position getPosition() const override;
-    
+
     /**
      * @brief Gets the collision rectangle of the power-up.
      * @return The collision Rect.
      */
     [[nodiscard]] Rect getCollisionRect() const override;
-    
+
     /**
      * @brief Gets the type of the power-up.
      * @return The PowerUpType.

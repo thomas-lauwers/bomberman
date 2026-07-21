@@ -45,7 +45,7 @@ public:
     void update(float deltaTime) override;
 
 private:
-    Position position;    ///< The position of the wall
+    Position position;      ///< The position of the wall
     float lifetime = 0.75f; ///< The lifetime of the crumbling state
 };
 

@@ -54,8 +54,8 @@ public:
     void update(float deltaTime) override;
 
 private:
-    Position position; ///< The position of the bomber
-    BomberType type;   ///< The type of the bomber
+    Position position;     ///< The position of the bomber
+    BomberType type;       ///< The type of the bomber
     float lifetime = 2.0f; ///< The lifetime of the knocked-out state
 };
 

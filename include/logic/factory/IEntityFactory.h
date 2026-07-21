@@ -36,7 +36,7 @@ public:
      * @return Unique pointer to the created player.
      */
     virtual std::unique_ptr<Player> createPlayer() = 0;
-    
+
     /**
      * @brief Creates a new AI bomber entity.
      * @param x The x coordinate.
@@ -45,7 +45,7 @@ public:
      * @return Unique pointer to the created AI bomber.
      */
     virtual std::unique_ptr<AIBomber> createAIBomber(float x, float y, BomberType type) = 0;
-    
+
     /**
      * @brief Creates a new bomb entity.
      * @param x The x coordinate.
@@ -54,7 +54,7 @@ public:
      * @return Unique pointer to the created bomb.
      */
     virtual std::unique_ptr<Bomb> createBomb(float x, float y, int blast_radius) = 0;
-    
+
     /**
      * @brief Creates a new destructible wall entity.
      * @param x The x coordinate.
@@ -62,7 +62,7 @@ public:
      * @return Unique pointer to the created wall.
      */
     virtual std::unique_ptr<DestructibleWall> createDestructibleWall(float x, float y) = 0;
-    
+
     /**
      * @brief Creates a new explosion entity.
      * @param x The x coordinate.
@@ -71,7 +71,7 @@ public:
      * @return Unique pointer to the created explosion.
      */
     virtual std::unique_ptr<Explosion> createExplosion(float x, float y, ExplosionType type) = 0;
-    
+
     /**
      * @brief Creates a new crumbling wall entity.
      * @param x The x coordinate.
@@ -79,7 +79,7 @@ public:
      * @return Unique pointer to the created crumbling wall.
      */
     virtual std::unique_ptr<CrumblingWall> createCrumblingWall(float x, float y) = 0;
-    
+
     /**
      * @brief Creates a new power-up entity.
      * @param x The x coordinate.
@@ -87,7 +87,7 @@ public:
      * @return Unique pointer to the created power-up.
      */
     virtual std::unique_ptr<PowerUp> createPowerUp(float x, float y) = 0;
-    
+
     /**
      * @brief Creates a new knocked-out bomber entity.
      * @param x The x coordinate.

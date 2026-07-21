@@ -110,11 +110,11 @@ protected:
     bool isMoving = false;         ///< Is moving flag
     bool wasMoving = false;        ///< Was moving flag
 
-    int number_of_bombs = 1;       ///< Number of bombs available
+    int number_of_bombs = 1;          ///< Number of bombs available
     float bomb_cooldown_timer = 0.0f; ///< Bomb cooldown timer
     const float BOMB_COOLDOWN = 0.2f; ///< Bomb cooldown duration
 
-    int blast_radius = 1;          ///< Blast radius
+    int blast_radius = 1; ///< Blast radius
 };
 
 #endif // BOMBERMAN_BOMBER_H

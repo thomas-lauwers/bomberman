@@ -5,8 +5,8 @@
 
 #ifndef BOMBERMAN_TITLESTATE_H
 #define BOMBERMAN_TITLESTATE_H
-#include "State.h"
 #include "../Score.h"
+#include "State.h"
 #include <functional>
 
 /**

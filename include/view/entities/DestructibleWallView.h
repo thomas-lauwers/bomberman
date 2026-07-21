@@ -27,13 +27,13 @@ public:
      * @param entity The destructible wall entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the destructible wall view (no animation needed for static wall).
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about destructible wall events.
      * @param entity The destructible wall entity that triggered the event.

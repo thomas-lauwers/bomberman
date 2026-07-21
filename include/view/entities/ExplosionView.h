@@ -30,13 +30,13 @@ public:
      * @param entity The explosion entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the explosion view animation.
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about explosion events.
      * @param entity The explosion entity that triggered the event.
@@ -45,12 +45,12 @@ public:
     void onNotify(const Entity& entity, Event event) override;
 
 private:
-    sf::Sprite sprite;              ///< The sprite for rendering
-    Animation animation;            ///< Animation for the explosion
-    ExplosionType type;             ///< The type of explosion
-    
-    float animationTimer = 0.0f;    ///< Timer for frame switching
-    size_t frameIndex = 0;          ///< Current animation frame index
+    sf::Sprite sprite;   ///< The sprite for rendering
+    Animation animation; ///< Animation for the explosion
+    ExplosionType type;  ///< The type of explosion
+
+    float animationTimer = 0.0f; ///< Timer for frame switching
+    size_t frameIndex = 0;       ///< Current animation frame index
 };
 
 #endif // BOMBERMAN_EXPLOSIONVIEW_H

@@ -14,14 +14,14 @@
  * @brief Represents the different types of entities in the game.
  */
 enum EntityType {
-    Player_E,            ///< Player-controlled bomber
-    AIBomber_E,          ///< AI-controlled bomber
-    DestructibleWall_E,  ///< Wall that can be destroyed
-    CrumblingWall_E,     ///< Wall in the process of crumbling
-    Bomb_E,              ///< A placed bomb
-    Explosion_E,         ///< An active explosion
-    PowerUp_E,           ///< A collectable power-up
-    KnockedOutBomber_E   ///< A bomber in a knocked-out state
+    Player_E,           ///< Player-controlled bomber
+    AIBomber_E,         ///< AI-controlled bomber
+    DestructibleWall_E, ///< Wall that can be destroyed
+    CrumblingWall_E,    ///< Wall in the process of crumbling
+    Bomb_E,             ///< A placed bomb
+    Explosion_E,        ///< An active explosion
+    PowerUp_E,          ///< A collectable power-up
+    KnockedOutBomber_E  ///< A bomber in a knocked-out state
 };
 
 /**

@@ -24,7 +24,7 @@ public:
      * @param t_manager Reference to the texture manager.
      */
     explicit BomberView(const TextureManager& t_manager);
-    
+
     /**
      * @brief Destructor for BomberView.
      */
@@ -36,13 +36,13 @@ public:
      * @param entity The bomber entity model.
      */
     void draw(sf::RenderWindow& window, const Entity& entity) override;
-    
+
     /**
      * @brief Updates the bomber view animation.
      * @param deltaTime Time elapsed since last update.
      */
     void update(float deltaTime) override;
-    
+
     /**
      * @brief Handles notifications about bomber events.
      * @param entity The bomber entity that triggered the event.
@@ -58,14 +58,14 @@ protected:
      */
     void setupAnimations(int xOffset, int yOffset);
 
-    sf::Sprite sprite;                      ///< The sprite for rendering
-    BomberAnimationConfig animationConfig;  ///< Configuration for bomber animations
+    sf::Sprite sprite;                     ///< The sprite for rendering
+    BomberAnimationConfig animationConfig; ///< Configuration for bomber animations
 
-    AnimationState currentAction;           ///< The current animation action
-    Direction currentDirection;             ///< The current facing direction
+    AnimationState currentAction; ///< The current animation action
+    Direction currentDirection;   ///< The current facing direction
 
-    float animationTimer = 0.0f;            ///< Timer for frame switching
-    size_t frameIndex = 0;                  ///< Current animation frame index
+    float animationTimer = 0.0f; ///< Timer for frame switching
+    size_t frameIndex = 0;       ///< Current animation frame index
 };
 
 #endif // BOMBERMAN_BOMBERVIEW_H

@@ -165,20 +165,23 @@ private:
     sf::RenderWindow& window;  ///< Reference to the render window
 
     // Tile sprites
-    sf::Sprite wall_sprite;             ///< Sprite for unbreakable walls
-    sf::Sprite destructible_sprite;     ///< Sprite for destructible walls
-    sf::Sprite empty_sprite;            ///< Sprite for empty floor tiles
-    sf::Sprite empty_shaded_sprite;     ///< Sprite for shaded empty floor tiles
+    sf::Sprite wall_sprite;         ///< Sprite for unbreakable walls
+    sf::Sprite destructible_sprite; ///< Sprite for destructible walls
+    sf::Sprite empty_sprite;        ///< Sprite for empty floor tiles
+    sf::Sprite empty_shaded_sprite; ///< Sprite for shaded empty floor tiles
 
     // Entity views
-    std::shared_ptr<PlayerView> p_view;                                          ///< View for the player
-    DestructibleWallView d_wall_view;                                            ///< View for destructible walls
-    std::map<const Entity*, std::shared_ptr<CrumblingWallView>> c_wallViews;    ///< Map of crumbling wall entities to their views
-    std::map<const Entity*, std::shared_ptr<BombView>> bombViews;                ///< Map of bomb entities to their views
-    std::map<const Entity*, std::shared_ptr<ExplosionView>> explosionViews;      ///< Map of explosion entities to their views
-    std::map<const Entity*, std::shared_ptr<PowerUpView>> powerupViews;          ///< Map of power-up entities to their views
-    std::map<const Entity*, std::shared_ptr<KnockedOutBomberView>> knockedoutbomberViews; ///< Map of knocked-out bomber entities to their views
-    std::map<const Entity*, std::shared_ptr<AIBomberView>> aiBomberViews;        ///< Map of AI bomber entities to their views
+    std::shared_ptr<PlayerView> p_view; ///< View for the player
+    DestructibleWallView d_wall_view;   ///< View for destructible walls
+    std::map<const Entity*, std::shared_ptr<CrumblingWallView>>
+        c_wallViews;                                              ///< Map of crumbling wall entities to their views
+    std::map<const Entity*, std::shared_ptr<BombView>> bombViews; ///< Map of bomb entities to their views
+    std::map<const Entity*, std::shared_ptr<ExplosionView>>
+        explosionViews;                                                 ///< Map of explosion entities to their views
+    std::map<const Entity*, std::shared_ptr<PowerUpView>> powerupViews; ///< Map of power-up entities to their views
+    std::map<const Entity*, std::shared_ptr<KnockedOutBomberView>>
+        knockedoutbomberViews; ///< Map of knocked-out bomber entities to their views
+    std::map<const Entity*, std::shared_ptr<AIBomberView>> aiBomberViews; ///< Map of AI bomber entities to their views
 };
 
 #endif // BOMBERMAN_WORLDRENDERER_H

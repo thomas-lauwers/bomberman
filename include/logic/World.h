@@ -55,7 +55,7 @@ public:
      * @return The Tile at (x, y).
      */
     [[nodiscard]] Tile getTile(int x, int y) const;
-    
+
     /**
      * @brief Sets the tile at the specified coordinates.
      * @param x The x coordinate.
@@ -63,19 +63,19 @@ public:
      * @param tile The tile to set.
      */
     void setTile(int x, int y, Tile tile);
-    
+
     /**
      * @brief Gets the player entity.
      * @return Shared pointer to the player.
      */
     [[nodiscard]] std::shared_ptr<Player> getPlayer() const;
-    
+
     /**
      * @brief Sets the player entity.
      * @param player Shared pointer to the player.
      */
     void setPlayer(std::shared_ptr<Player> player);
-    
+
     /**
      * @brief Gets all entities in the world.
      * @return A constant reference to the vector of entities.
