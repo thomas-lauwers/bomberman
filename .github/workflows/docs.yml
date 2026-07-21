@@ -3,22 +3,22 @@ name: Deploy Doxygen docs
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # Remove pull_request unless you truly want PR previews – see note below
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install Doxygen
@@ -28,10 +28,17 @@ jobs:
         run: doxygen Doxyfile
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: './html'
+          path: ./html   # make sure this matches your Doxygen output directory
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
