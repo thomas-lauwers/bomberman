@@ -3,18 +3,8 @@ name: Deploy Doxygen docs
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/**'
-      - 'include/**'
-      - 'Doxyfile'
-      - 'README.md'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/**'
-      - 'include/**'
-      - 'Doxyfile'
-      - 'README.md'
 
 jobs:
   build-and-deploy:

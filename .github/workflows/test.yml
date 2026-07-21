@@ -3,18 +3,8 @@ name: Run Tests
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/**'
-      - 'include/**'
-      - 'tests/**'
-      - 'CMakeLists.txt'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/**'
-      - 'include/**'
-      - 'tests/**'
-      - 'CMakeLists.txt'
 
 jobs:
   test:
