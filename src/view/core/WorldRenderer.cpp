@@ -225,14 +225,18 @@ std::shared_ptr<AIBomberView> WorldRenderer::createAIBomberView(const Entity* en
     return view;
 }
 
-void WorldRenderer::renderCenteredText(const std::string& text, float y) {
-    sf::View oldView = window.getView();
-    
+sf::View WorldRenderer::setupUIView() const {
+    const sf::View oldView = window.getView();
     sf::View uiView;
     uiView.setViewport(oldView.getViewport());
     uiView.setSize(720.0f, 624.0f);
     uiView.setCenter(720.0f / 2.0f, 624.0f / 2.0f);
     window.setView(uiView);
+    return oldView;
+}
+
+void WorldRenderer::renderCenteredText(const std::string& text, const float y) {
+    const sf::View oldView = setupUIView();
 
     sf::Text renderableText;
     renderableText.setFont(t_manager.getFont("arcade"));
@@ -243,7 +247,7 @@ void WorldRenderer::renderCenteredText(const std::string& text, float y) {
     renderableText.setFillColor(sf::Color::White);
 
     // Calculate center based on bounding box
-    sf::FloatRect textRect = renderableText.getLocalBounds();
+    const sf::FloatRect textRect = renderableText.getLocalBounds();
     renderableText.setOrigin(textRect.left + textRect.width / 2.0f, 
                              textRect.top + textRect.height / 2.0f);
     
@@ -254,14 +258,25 @@ void WorldRenderer::renderCenteredText(const std::string& text, float y) {
     window.setView(oldView);
 }
 
-void WorldRenderer::renderPortrait(float x, float y) {
-    const sf::View oldView = window.getView();
+void WorldRenderer::renderText(const std::string& text, const float x, const float y) {
+    const sf::View oldView = setupUIView();
     
-    sf::View uiView;
-    uiView.setViewport(oldView.getViewport());
-    uiView.setSize(720.0f, 624.0f);
-    uiView.setCenter(720.0f / 2.0f, 624.0f / 2.0f);
-    window.setView(uiView);
+    sf::Text renderableText;
+    renderableText.setFont(t_manager.getFont("arcade"));
+    renderableText.setString(text);
+    renderableText.setOutlineColor(sf::Color::Black);
+    renderableText.setOutlineThickness(2.5f);
+    renderableText.setCharacterSize(24);
+    renderableText.setFillColor(sf::Color::White);
+    renderableText.setPosition(x, y);
+    
+    window.draw(renderableText);
+    
+    window.setView(oldView);
+}
+
+void WorldRenderer::renderPortrait(float x, float y) {
+    const sf::View oldView = setupUIView();
     
     sf::Sprite sprite;
     sprite.setTexture(t_manager.getTexture("portrait"));

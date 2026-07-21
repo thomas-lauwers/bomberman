@@ -7,7 +7,7 @@
 #include "../../../include/logic/state/PlayState.h"
 
 PlayState::PlayState(std::shared_ptr<IEntityFactory> factory)
-    : factory(std::move(factory)), world(std::make_shared<World>(this->factory)) {
+    : factory(std::move(factory)), world(std::make_shared<World>(this->factory)), score(std::make_unique<Score>()) {
     if (const auto player = world->getPlayer()) {
         player->addObserver(world);
     }
@@ -93,6 +93,11 @@ void PlayState::update(const float deltaTime, IWorldView& renderer) {
     world->checkPowerUpsCollection();
     world->removeDestroyedEntities();
     world->processNewEntities();
+    
+    const auto player = world->getPlayer();
+    if (player && !player->isDestroyed()) {
+        score->update(deltaTime);
+    }
 }
 
 void PlayState::render(IWorldView& renderer) {
@@ -104,6 +109,8 @@ void PlayState::render(IWorldView& renderer) {
         } else {
             renderer.renderCenteredText("YOU   LOSE!", 300.0f);
         }
+    } else {
+        renderer.renderText("Score    " + std::to_string(score->getCurrentScore()), 10.0f, 5.0f);
     }
 }
 

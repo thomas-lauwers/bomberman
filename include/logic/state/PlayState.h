@@ -4,6 +4,7 @@
 #include "../IWorldView.h"
 #include "../Input.h"
 #include "../World.h"
+#include "../Score.h"
 #include "State.h"
 #include <memory>
 
@@ -26,6 +27,7 @@ public:
 private:
     std::shared_ptr<IEntityFactory> factory;
     std::shared_ptr<World> world;
+    std::unique_ptr<Score> score;
 
     bool playerWon = false;
 };

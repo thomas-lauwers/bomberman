@@ -33,6 +33,7 @@ public:
 
     void render(const World& world) override;
     void renderCenteredText(const std::string& text, float y) override;
+    void renderText(const std::string& text, float x, float y) override;
     void renderPortrait(float x, float y) override;
     void renderTitle(bool showEnter) override;
     void update(float deltaTime) override;
@@ -43,6 +44,7 @@ public:
     void removeDestroyedEntities(const World& world);
 
 private:
+    sf::View setupUIView() const;
     TextureManager& t_manager;
     sf::RenderWindow& window;
 

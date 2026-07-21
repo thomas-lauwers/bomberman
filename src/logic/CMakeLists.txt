@@ -44,6 +44,8 @@ add_library(bomberman_logic STATIC
     ${PROJECT_SOURCE_DIR}/include/logic/factory/PowerUp.h
     ${PROJECT_SOURCE_DIR}/src/logic/factory/KnockedOutBomber.cpp
     ${PROJECT_SOURCE_DIR}/include/logic/factory/KnockedOutBomber.h
+    ${PROJECT_SOURCE_DIR}/src/logic/Score.cpp
+    ${PROJECT_SOURCE_DIR}/include/logic/Score.h
 )
 
 target_include_directories(bomberman_logic PUBLIC ${PROJECT_SOURCE_DIR}/include)
