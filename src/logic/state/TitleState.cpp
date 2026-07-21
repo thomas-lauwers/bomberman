@@ -22,4 +22,11 @@ void TitleState::update(const float deltaTime, IWorldView& renderer) {
 
 void TitleState::render(IWorldView& renderer) {
     renderer.renderTitle(showText);
+    
+    renderer.renderCenteredText("High Scores:", 400.0f);
+    int y = 450;
+    for (const auto& s : score.getHighScores()) {
+        renderer.renderCenteredText(std::to_string(s), static_cast<float>(y));
+        y += 35;
+    }
 }

@@ -1,7 +1,9 @@
 #ifndef BOMBERMAN_TITLESTATE_H
 #define BOMBERMAN_TITLESTATE_H
 #include "State.h"
+#include "../Score.h"
 #include <functional>
+#include <vector>
 
 class TitleState : public State {
 public:
@@ -17,6 +19,7 @@ private:
     float blinkTimer = 0.0f;
     bool showText = true;
     std::function<void()> onSelect;
+    Score score;
 };
 
 #endif // BOMBERMAN_TITLESTATE_H

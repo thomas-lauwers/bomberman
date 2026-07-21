@@ -47,8 +47,8 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
     entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
-    /*entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
-    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));*/
+    entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));
 }
 
 void World::randomizeTiles() {
@@ -64,7 +64,7 @@ void World::randomizeTiles() {
                                          [y, x](const std::array<int, 2>& pos) { return pos[0] == y && pos[1] == x; });
 
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
-                if (utils::Random::getInstance().roll(0.0)) {
+                if (utils::Random::getInstance().roll(0.80)) {
                     entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }
