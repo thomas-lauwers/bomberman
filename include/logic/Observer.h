@@ -10,7 +10,12 @@ enum class Event {
     BomberMovedDown,
     BomberMovedLeft,
     BomberMovedRight,
-    BomberStopped
+    BomberStopped,
+    PlayerBrokeBlock,
+    PlayerPickedUpPowerUp,
+    PlayerKilledEnemy,
+    GameWon,
+    GameLost
 };
 
 class Observer {

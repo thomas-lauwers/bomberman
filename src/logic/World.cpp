@@ -47,8 +47,8 @@ World::World(std::shared_ptr<IEntityFactory> factory) : factory(std::move(factor
 
     setPlayer(std::shared_ptr(this->factory->createPlayer()));
     entities.push_back(this->factory->createAIBomber(1.5f, 11.5f, BomberType::Variant1));
-    entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
-    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));
+    /*entities.push_back(this->factory->createAIBomber(13.5f, 1.5f, BomberType::Variant2));
+    entities.push_back(this->factory->createAIBomber(13.5f, 11.5f, BomberType::Variant3));*/
 }
 
 void World::randomizeTiles() {
@@ -64,7 +64,7 @@ void World::randomizeTiles() {
                                          [y, x](const std::array<int, 2>& pos) { return pos[0] == y && pos[1] == x; });
 
             if (it == spawnTiles.end() && getTile(x, y).getType() == TileType::E) {
-                if (utils::Random::getInstance().roll(0.80)) {
+                if (utils::Random::getInstance().roll(0.0)) {
                     entities.push_back(factory->createDestructibleWall(x, y));
                 }
             }
@@ -97,7 +97,7 @@ void World::processNewEntities() {
     new_entities_to_add.clear();
 }
 
-void World::spawnExplosion(const float x, const float y, const int blast_radius) {
+void World::spawnExplosion(const float x, const float y, const int blast_radius, const Bomb* bomb) {
     const bool is_top_level = !is_processing_explosions;
     if (is_top_level) {
         is_processing_explosions = true;
@@ -130,7 +130,13 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
             switch (entity->getEntityType()) {
             case AIBomber_E:
                 if (static_cast<int>(std::floor(pos.x)) == ix && static_cast<int>(std::floor(pos.y)) == iy) {
-                    entity->destroy();
+                    // This check is to prevent awarding points for killing the same enemy with multiple bombs at once
+                    if (!entity->isDestroyed()) {
+                        entity->destroy();
+                        if (bomb && bomb->isPlacedByPlayer()) {
+                            notify(*entity, Event::PlayerKilledEnemy);
+                        }
+                    }
                 }
                 break;
 
@@ -141,6 +147,9 @@ void World::spawnExplosion(const float x, const float y, const int blast_radius)
                     wall->addObserver(shared_from_this());
                     new_entities_to_add.push_back(std::move(wall));
                     entity->destroy();
+                    if (bomb && bomb->isPlacedByPlayer()) {
+                        notify(*bomb, Event::PlayerBrokeBlock);
+                    }
                     return false;
                 }
                 break;
@@ -244,7 +253,7 @@ bool World::isColliding(const Rect& entityRect, const Entity* ignoreEntity, cons
         if (entity.get() == ignoreEntity)
             continue;
         if (entityRect.intersects(entity->getCollisionRect())) {
-            EntityType type = entity->getEntityType();
+            const EntityType type = entity->getEntityType();
             if (type == Explosion_E || type == PowerUp_E || type == AIBomber_E || type == Player_E) {
                 return false;
             }
@@ -324,7 +333,7 @@ void World::checkExplosionCollision() {
     }
 }
 
-void World::checkPowerUpsCollection() const {
+void World::checkPowerUpsCollection() {
     if (player) {
         for (auto& entity : entities) {
             if (entity->getEntityType() == PowerUp_E && !entity->isDestroyed()) {
@@ -332,6 +341,7 @@ void World::checkPowerUpsCollection() const {
                     auto* powerUp = static_cast<PowerUp*>(entity.get());
                     player->gainPowerUp(powerUp->getType());
                     powerUp->destroy();
+                    notify(*powerUp, Event::PlayerPickedUpPowerUp);
                     return;
                 }
             }
@@ -365,7 +375,7 @@ void World::removePlayer() {
 void World::onNotify(const Entity& entity, const Event event) {
     if (event == Event::BombExploded) {
         const auto& bomb = static_cast<const Bomb&>(entity);
-        spawnExplosion(entity.getPosition().x, entity.getPosition().y, bomb.getBlastRadius());
+        spawnExplosion(entity.getPosition().x, entity.getPosition().y, bomb.getBlastRadius(), &bomb);
     } else if (event == Event::EntityDestroyed && entity.getEntityType() == CrumblingWall_E) {
         if (utils::Random::getInstance().roll(0.25)) {
             spawnPowerUp(entity.getPosition().x, entity.getPosition().y);

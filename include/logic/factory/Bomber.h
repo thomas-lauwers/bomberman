@@ -44,11 +44,11 @@ protected:
     bool isMoving = false;
     bool wasMoving = false;
 
-    int number_of_bombs = 1;
+    int number_of_bombs = 10;
     float bomb_cooldown_timer = 0.0f;
     const float BOMB_COOLDOWN = 0.2f;
 
-    int blast_radius = 1;
+    int blast_radius = 20;
 };
 
 #endif // BOMBERMAN_BOMBER_H

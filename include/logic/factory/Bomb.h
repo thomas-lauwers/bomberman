@@ -13,11 +13,14 @@ public:
 
     void update(float deltaTime) override;
     void explode();
+    void setPlacedByPlayer(const bool val) { placedByPlayer = val; }
+    [[nodiscard]] bool isPlacedByPlayer() const { return placedByPlayer; }
 
 private:
     Position position;
     float timer = 2.0f;
     int blast_radius;
+    bool placedByPlayer = false;
 };
 
 #endif // BOMBERMAN_BOMB_H

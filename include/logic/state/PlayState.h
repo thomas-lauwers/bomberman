@@ -27,9 +27,10 @@ public:
 private:
     std::shared_ptr<IEntityFactory> factory;
     std::shared_ptr<World> world;
-    std::unique_ptr<Score> score;
+    std::shared_ptr<Score> score;
 
     bool playerWon = false;
+    bool gameOverProcessed = false;
 };
 
 #endif // BOMBERMAN_PLAYSTATE_H

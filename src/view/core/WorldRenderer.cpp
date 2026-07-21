@@ -13,7 +13,7 @@
 WorldRenderer::WorldRenderer(TextureManager& manager, sf::RenderWindow& window)
     : t_manager(manager), window(window), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();
-    t_manager.loadFont("arcade", "assets/arcadeclassic.ttf");
+    t_manager.loadFont("arcade", "assets/PublicPixel-rv0pA.ttf");
 }
 
 std::shared_ptr<PlayerView> WorldRenderer::getPlayerView() const { return p_view; }
@@ -243,7 +243,7 @@ void WorldRenderer::renderCenteredText(const std::string& text, const float y) {
     renderableText.setString(text);
     renderableText.setOutlineColor(sf::Color::Black);
     renderableText.setOutlineThickness(2.5f);
-    renderableText.setCharacterSize(40);
+    renderableText.setCharacterSize(30);
     renderableText.setFillColor(sf::Color::White);
 
     // Calculate center based on bounding box

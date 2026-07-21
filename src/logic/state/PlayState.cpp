@@ -7,7 +7,8 @@
 #include "../../../include/logic/state/PlayState.h"
 
 PlayState::PlayState(std::shared_ptr<IEntityFactory> factory)
-    : factory(std::move(factory)), world(std::make_shared<World>(this->factory)), score(std::make_unique<Score>()) {
+    : factory(std::move(factory)), world(std::make_shared<World>(this->factory)), score(std::make_shared<Score>()) {
+    world->addObserver(score);
     if (const auto player = world->getPlayer()) {
         player->addObserver(world);
     }
@@ -40,6 +41,7 @@ void PlayState::handleInput(const Input input) {
             if (player->canPlaceBomb() && !world->isBombAt(player->getPosition().x, player->getPosition().y)) {
                 auto bomb =
                     factory->createBomb(player->getPosition().x, player->getPosition().y, player->getBlastRadius());
+                bomb->setPlacedByPlayer(true);
                 player->placeBomb();
                 bomb->addObserver(player);
                 bomb->addObserver(world);
@@ -74,6 +76,14 @@ void PlayState::handleInput(const Input input) {
 
 void PlayState::update(const float deltaTime, IWorldView& renderer) {
     if (isGameOver()) {
+        if (!gameOverProcessed) {
+            if (playerWon) {
+                score->addPoints(1000);
+            } else {
+                score->addPoints(-500);
+            }
+            gameOverProcessed = true;
+        }
         return;
     }
 
@@ -104,13 +114,14 @@ void PlayState::render(IWorldView& renderer) {
     renderer.render(*world);
 
     if (isGameOver()) {
+        renderer.renderCenteredText("Score: " + std::to_string(score->getCurrentScore()), 350.0f);
         if (playerWon) {
-            renderer.renderCenteredText("YOU   WIN!", 300.0f);
+            renderer.renderCenteredText("YOU WIN!", 300.0f);
         } else {
-            renderer.renderCenteredText("YOU   LOSE!", 300.0f);
+            renderer.renderCenteredText("YOU LOSE!", 300.0f);
         }
     } else {
-        renderer.renderText("Score    " + std::to_string(score->getCurrentScore()), 10.0f, 5.0f);
+        renderer.renderText("Score: " + std::to_string(score->getCurrentScore()), 10.0f, 5.0f);
     }
 }
 
@@ -126,7 +137,7 @@ bool PlayState::isGameOver() {
         }
     }
 
-    if (aliveBombers <= 1) {
+    if (aliveBombers <= 1 || !player) {
         playerWon = (player && !player->isDestroyed());
         return true;
     }
