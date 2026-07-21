@@ -1,5 +1,5 @@
 # Bomberman
-A C++ implementation of the classic Bomberman game, featuring a clean separation of concerns between game logic and representation.
+A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clean separation of concerns between game logic and representation.
 
 ## Features
 - **Modular Architecture**: Clear separation between `logic` (Model) and `view` (Representation) layers.
