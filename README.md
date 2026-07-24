@@ -56,5 +56,5 @@ The project is architected to ensure clear separation of concerns, maintainabili
 - **Fixed Timestep**: The game loop implements a fixed timestep to ensure deterministic game logic, regardless of the rendering framerate.
 - **Singleton Pattern**: Used for global access to utility classes, specifically for `utils::Random` (random number generation) and `utils::Stopwatch` (game timing).
 
-### Class Structure
-Class structure diagrams are automatically generated using Doxygen/Graphviz. You can view them in the generated documentation by navigating to the **Classes** -> **Class Hierarchy** tab in `html/index.html`.
+### Class Structure Diagram
+<img width="1320" height="730" alt="diagram" src="https://github.com/user-attachments/assets/02f118ae-b849-45e7-a6a9-ce23fb82d893" />
