@@ -13,7 +13,7 @@
 WorldRenderer::WorldRenderer(TextureManager& manager, sf::RenderWindow& window)
     : t_manager(manager), window(window), p_view(std::make_shared<PlayerView>(manager)), d_wall_view(manager) {
     loadTileSprites();
-    t_manager.loadFont("arcade", "assets/PublicPixel-rv0pA.ttf");
+    t_manager.loadFont("arcade", "../../../assets/PublicPixel-rv0pA.ttf");
 }
 
 std::shared_ptr<PlayerView> WorldRenderer::getPlayerView() const { return p_view; }

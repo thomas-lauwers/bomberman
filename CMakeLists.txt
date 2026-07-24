@@ -4,7 +4,7 @@ IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     SET (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/installed" CACHE PATH "default install path" FORCE)
 ENDIF()
 
-FIND_PACKAGE(SFML REQUIRED COMPONENTS system window graphics)
+FIND_PACKAGE(SFML 2.6.1 REQUIRED COMPONENTS system window graphics)
 
 include(FetchContent)
 FetchContent_Declare(

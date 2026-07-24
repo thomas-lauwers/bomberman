@@ -38,7 +38,7 @@ void Score::onNotify(const Entity& entity, const Event event) {
 
 void Score::loadHighScores() {
     highScores.clear();
-    std::ifstream file("./data/highscores.txt");
+    std::ifstream file("../../../data/highscores.txt");
     int score;
     while (file >> score) {
         highScores.push_back(score);
@@ -56,7 +56,7 @@ void Score::saveFinalScore() {
         highScores.resize(5);
     }
 
-    std::ofstream file("./data/highscores.txt");
+    std::ofstream file("../../../data/highscores.txt");
     for (const int score : highScores) {
         file << score << "\n";
     }
