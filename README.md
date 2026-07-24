@@ -1,5 +1,5 @@
 # Bomberman
-A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clean separation of concerns between game logic and representation.
+A C++ implementation of the classic SNES Bomberman Battle Mode, featuring a clean separation of concerns between game logic and representation, found at https://github.com/thomas-lauwers/bomberman.
 
 ## Features
 - **Bomber Movement & Bomb Placement**: Classic Bomberman controls with destructible environment mechanics.
